@@ -1,0 +1,1 @@
+FROM registry.head-labs.com/ton/ton-base:latest
