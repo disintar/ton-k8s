@@ -6,6 +6,6 @@ export VERSION=v0
 cd ton-compile-source
 
 docker build -f Dockerfile -t ton-base .
-docker tag ton-base ${REGISTRY}/ton/ton-base
-docker push ${REGISTRY}/ton/ton-base
+docker tag ton-base ${REGISTRY}/ton/ton-base:${VERSION}
+docker push ${REGISTRY}/ton/ton-base:${VERSION}
 
