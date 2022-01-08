@@ -15,7 +15,7 @@ RUN mkdir build && \
 
 FROM ubuntu:18.04
 RUN apt-get update && \
-	apt-get install -y openssl wget python nano&& \
+	apt-get install -y openssl wget python python3.7 wget nano&& \
 	rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
@@ -45,3 +45,6 @@ WORKDIR /var/ton-work/db
 COPY node_init.sh control.template prepare_network.sh init.sh clean_all.sh ./
 ADD validator_scripts /var/ton-work/validator_scripts
 RUN chmod +x node_init.sh prepare_network.sh init.sh clean_all.sh
+
+RUN wget https://newton-blockchain.github.io/global.config.json
+RUN wget https://newton-blockchain.github.io/testnet-global.config.json
