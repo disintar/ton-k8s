@@ -36,6 +36,7 @@ COPY --from=builder /ton/crypto/smartcont /var/ton-work/contracts
 COPY --from=builder /ton/build/crypto/create-state /var/ton-work/contracts
 COPY --from=builder /ton/build/dht-server/dht-server /usr/local/bin
 COPY --from=builder /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
+COPY --from=builder /ton/build/util/* /usr/local/bin
 
 RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
