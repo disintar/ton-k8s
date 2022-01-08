@@ -4,6 +4,6 @@ ENV PUBLIC_IP 0.0.0.0
 ENV CONFIG https://test.ton.org/ton-global.config.json
 ENV CONSOLE_PORT 46731
 ENV LITESERVER true
-ENV LITE_PORT true
+ENV LITE_PORT 46732
 
 ENTRYPOINT ["/var/ton-work/db/init.sh"]
