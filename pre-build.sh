@@ -1,11 +1,11 @@
-export REGISTRY = registry.head-labs.com
-export VERSION = v0
+export REGISTRY=registry.head-labs.com
+export VERSION=v0
+
+# Build base compile source
 
 cd ton-compile-source
 
 docker build -f Dockerfile -t ton-base .
-docker tag ton-base:latest ${REGISTRY}/ton/ton-base:${VERSION}
-docker push registry.head-labs.com/ton/ton-base:${VERSION}
-
-
+docker tag ton-base ${REGISTRY}/ton/ton-base
+docker push ${REGISTRY}/ton/ton-base
 
