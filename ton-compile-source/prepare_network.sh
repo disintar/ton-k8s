@@ -76,7 +76,7 @@ if [ -z "$LITESERVER" ]; then
 else
     if [ -f "./liteserver" ]; then
         echo -e "\e[1;33m[=]\e[0m Found existing liteserver certificate, skipping"
-    else
+    else 
         echo -e "\e[1;32m[+]\e[0m Generating and installing liteserver certificate for remote control"
         read -r LITESERVER_ID1 LITESERVER_ID2 <<< $(generate-random-id -m keys -n liteserver)
         echo "Liteserver IDs: $LITESERVER_ID1 $LITESERVER_ID2"
@@ -97,3 +97,4 @@ else
        fi
     fi
 fi
+

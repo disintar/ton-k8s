@@ -14,7 +14,7 @@ fi
 # Generating server certificate
 if [ -f "./server" ]; then
     echo -e "\e[1;33m[=]\e[0m Found existing server certificate, skipping"
-else
+else 
     echo -e "\e[1;32m[+]\e[0m Generating and installing server certificate for remote control"
     read -r SERVER_ID1 SERVER_ID2 <<< $(generate-random-id -m keys -n server)
     echo "Server IDs: $SERVER_ID1 $SERVER_ID2"
@@ -22,7 +22,7 @@ else
 fi
 
 # Generating client certificate
-if [ -f "./client" ]; then
+if [ -f "./client" ]; then 
     echo -e "\e[1;33m[=]\e[0m Found existing client certificate, skipping"
 else
     read -r CLIENT_ID1 CLIENT_ID2 <<< $(generate-random-id -m keys -n client)
@@ -33,3 +33,4 @@ else
     sed -e "s~\"control\"\ \:\ \[~$(printf "%q" $(cat control.new))~g" config.json > config.json.new
     mv config.json.new config.json
 fi
+
