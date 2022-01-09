@@ -28,7 +28,7 @@ RUN mkdir /usr/local/lib/fift
 ENV FIFTPATH /usr/local/lib/fift
 RUN cp -r /ton/crypto/fift/lib /usr/local/lib/fift
 RUN mkdir /var/ton-work/contracts
-RUN cp /ton/crypto/smartcont /var/ton-work/contracts
+RUN cp -r /ton/crypto/smartcont /var/ton-work/contracts
 RUN cp /ton/build/crypto/create-state /var/ton-work/contracts
 RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 
