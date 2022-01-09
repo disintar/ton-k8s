@@ -6,7 +6,7 @@ if [ ! -z "$PUBLIC_IP" ]; then
         CONSOLE_PORT="43678"
     fi
     echo -e "\e[1;32m[+]\e[0m Using provided IP: $PUBLIC_IP:$CONSOLE_PORT"
-    validator-engine -C /var/ton-work/db/my-ton-global.config.json --db /var/ton-work/db --ip "$PUBLIC_IP:$PUBLIC_PORT"
+    validator-engine -C /var/ton-work/db/my-ton-global.config.json --db /var/ton-work/db --ip "$PUBLIC_IP:$PUBLIC_PORT" -F 13991798:218126:7
 else
     echo -e "\e[1;31m[!]\e[0m No IP:PORT provided, exiting"
     exit 1

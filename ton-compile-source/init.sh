@@ -23,4 +23,5 @@ if [[ "$GENESIS" == 1 ]]; then
 fi
 
 echo "Start validator";
-validator-engine -C /var/ton-work/db/my-ton-global.config.json --db /var/ton-work/db --ip "$PUBLIC_IP:$PUBLIC_PORT"
+validator-engine --daemonize -C /var/ton-work/db/my-ton-global.config.json --db /var/ton-work/db --ip  "$PUBLIC_IP:$PUBLIC_PORT"  --threads 15 --state-ttl 604800 -v 3 -F 13991798:218126:7
+
