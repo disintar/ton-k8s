@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as builder
+FROM ubuntu:18.04
 RUN apt-get update && \
 	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git openssl wget python nano && \
 	rm -rf /var/lib/apt/lists/*
