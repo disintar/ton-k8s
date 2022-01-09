@@ -34,7 +34,7 @@ RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 
 RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
-RUN cp gen-zerostate.fif ./
+COPY gen-zerostate.fif ./
 WORKDIR /var/ton-work/db
 COPY ton-private-testnet.config.json.template node_init.sh control.template prepare_network.sh init.sh clean_all.sh example.config.json ./
 ADD validator_scripts /var/ton-work/validator_scripts
