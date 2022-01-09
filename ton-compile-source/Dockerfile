@@ -1,6 +1,6 @@
 FROM ubuntu:21.10 as builder
 RUN apt-get update && \
-	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git python3 python3-pip && \
+	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git && \
 	rm -rf /var/lib/apt/lists/*
 ENV CC clang-6.0
 ENV CXX clang++-6.0
@@ -13,9 +13,9 @@ RUN mkdir build && \
 	cmake .. -DCMAKE_BUILD_TYPE=Release && \
 	make -j 4
 
-FROM ubuntu:18.04
+FROM ubuntu:21.10
 RUN apt-get update && \
-	apt-get install -y openssl wget python nano&& \
+	apt-get install -y openssl wget python python3 python3-pip nano&& \
 	rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
