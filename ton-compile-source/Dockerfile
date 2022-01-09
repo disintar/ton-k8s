@@ -26,7 +26,7 @@ RUN cp /ton/build/crypto/fift /usr/local/bin
 RUN cp /ton/build/crypto/func /usr/local/bin
 RUN mkdir /usr/local/lib/fift
 ENV FIFTPATH /usr/local/lib/fift
-RUN cp /ton/crypto/fift/lib /usr/local/lib/fift
+RUN cp -r /ton/crypto/fift/lib /usr/local/lib/fift
 RUN mkdir /var/ton-work/contracts
 RUN cp /ton/crypto/smartcont /var/ton-work/contracts
 RUN cp /ton/build/crypto/create-state /var/ton-work/contracts
@@ -36,7 +36,7 @@ RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
 RUN cp gen-zerostate.fif ./
 WORKDIR /var/ton-work/db
-RUN cp ton-private-testnet.config.json.template node_init.sh control.template prepare_network.sh init.sh clean_all.sh example.config.json ./
+COPY ton-private-testnet.config.json.template node_init.sh control.template prepare_network.sh init.sh clean_all.sh example.config.json ./
 ADD validator_scripts /var/ton-work/validator_scripts
 RUN chmod +x node_init.sh prepare_network.sh init.sh clean_all.sh
 
