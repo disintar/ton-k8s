@@ -6,4 +6,6 @@ ENV CONSOLE_PORT 46731
 ENV LITESERVER true
 ENV LITE_PORT 46732
 
+RUN env
+
 ENTRYPOINT ["/var/ton-work/db/init.sh"]
