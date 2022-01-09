@@ -1,23 +1,17 @@
-FROM ubuntu:18.04
-
-ENV DEBIAN_FRONTEND=noninteractive
-
+FROM ubuntu:18.04 as builder
 RUN apt-get update && \
-	apt-get install -y build-essential cmake clang openssl libssl-dev \
-    libgflags-dev zlib1g-dev libssl-dev libreadline-dev libmicrohttpd-dev pkg-config libgsl-dev \
-     zlib1g-dev gperf wget git openssl wget python python3 python3-pip nano vim && \
+	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git openssl wget python nano& && \
 	rm -rf /var/lib/apt/lists/*
-
+ENV CC clang-6.0
+ENV CXX clang++-6.0
 WORKDIR /
 RUN git clone --recursive https://github.com/newton-blockchain/ton 
 WORKDIR /ton
 
-RUN CC=$(which clang) && CXX=$(which clang++) && CCACHE_DISABLE=1 && \
-    mkdir build && \
+RUN mkdir build && \
 	cd build && \
 	cmake .. -DCMAKE_BUILD_TYPE=Release && \
 	make -j 4
-
 
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
@@ -37,7 +31,6 @@ RUN mkdir /var/ton-work/contracts
 COPY /ton/crypto/smartcont /var/ton-work/contracts
 COPY /ton/build/crypto/create-state /var/ton-work/contracts
 COPY /ton/build/dht-server/dht-server /usr/local/bin
-COPY /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
 
 RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
@@ -46,3 +39,5 @@ WORKDIR /var/ton-work/db
 COPY ton-private-testnet.config.json.template node_init.sh control.template prepare_network.sh init.sh clean_all.sh example.config.json ./
 ADD validator_scripts /var/ton-work/validator_scripts
 RUN chmod +x node_init.sh prepare_network.sh init.sh clean_all.sh
+
+ENTRYPOINT ["/var/ton-work/db/init.sh"]
