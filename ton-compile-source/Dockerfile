@@ -1,41 +1,44 @@
-FROM ubuntu:21.10 as builder
+FROM ubuntu:21.10
+
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
-	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git && \
+	apt-get install -y build-essential cmake clang openssl libssl-dev \
+    libgflags-dev zlib1g-dev libssl-dev libreadline-dev libmicrohttpd-dev pkg-config libgsl-dev \
+     zlib1g-dev gperf wget git openssl wget python python3 python3-pip nano vim && \
 	rm -rf /var/lib/apt/lists/*
-ENV CC clang-6.0
-ENV CXX clang++-6.0
+
 WORKDIR /
 RUN git clone --recursive https://github.com/newton-blockchain/ton 
 WORKDIR /ton
 
-RUN mkdir build && \
+RUN CC=$(which clang) && CXX=$(which clang++) && CCACHE_DISABLE=1 && \
+    mkdir build && \
 	cd build && \
 	cmake .. -DCMAKE_BUILD_TYPE=Release && \
 	make -j 4
 
-FROM ubuntu:21.10
-RUN apt-get update && \
-	apt-get install -y openssl wget python python3 python3-pip nano&& \
-	rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
 
-COPY --from=builder /ton/build/lite-client/lite-client /usr/local/bin/
-COPY --from=builder /ton/build/validator-engine/validator-engine /usr/local/bin/
-COPY --from=builder /ton/build/validator-engine-console/validator-engine-console /usr/local/bin/
-COPY --from=builder /ton/build/utils/generate-random-id /usr/local/bin/
+COPY /ton/build/lite-client/lite-client /usr/local/bin/
+COPY /ton/build/validator-engine/validator-engine /usr/local/bin/
+COPY /ton/build/validator-engine-console/validator-engine-console /usr/local/bin/
+COPY /ton/build/utils/generate-random-id /usr/local/bin/
 
-COPY --from=builder /ton/build/test-ton-collator /usr/local/bin
-COPY --from=builder /ton/build/crypto/fift /usr/local/bin
-COPY --from=builder /ton/build/crypto/func /usr/local/bin
+COPY /ton/build/test-ton-collator /usr/local/bin
+COPY /ton/build/crypto/fift /usr/local/bin
+COPY /ton/build/crypto/func /usr/local/bin
 RUN mkdir /usr/local/lib/fift
 ENV FIFTPATH /usr/local/lib/fift
-COPY --from=builder /ton/crypto/fift/lib /usr/local/lib/fift
+COPY /ton/crypto/fift/lib /usr/local/lib/fift
 RUN mkdir /var/ton-work/contracts
-COPY --from=builder /ton/crypto/smartcont /var/ton-work/contracts
-COPY --from=builder /ton/build/crypto/create-state /var/ton-work/contracts
-COPY --from=builder /ton/build/dht-server/dht-server /usr/local/bin
-COPY --from=builder /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
+COPY /ton/crypto/smartcont /var/ton-work/contracts
+COPY /ton/build/crypto/create-state /var/ton-work/contracts
+COPY /ton/build/dht-server/dht-server /usr/local/bin
+COPY /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
 
 RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
