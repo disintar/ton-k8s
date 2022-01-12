@@ -1,11 +1,15 @@
-FROM ubuntu:18.04
+FROM python:3.7-bullseye
+ARG is_testnet=false
+
 RUN apt-get update && \
 	apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git openssl wget python nano && \
 	rm -rf /var/lib/apt/lists/*
 ENV CC clang-6.0
 ENV CXX clang++-6.0
 WORKDIR /
-RUN git clone --recursive https://github.com/newton-blockchain/ton 
+RUN git clone --recursive https://github.com/newton-blockchain/ton
+RUN if is_testnet; then git checkout safer_overlay; fi
+
 WORKDIR /ton
 
 RUN mkdir build && \
@@ -35,9 +39,6 @@ RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 RUN mkdir -p /var/ton-work/db/keyring
 WORKDIR /var/ton-work/contracts
 COPY gen-zerostate.fif ./
-WORKDIR /var/ton-work/db
-COPY ton-private-testnet.config.json.template node_init.sh control.template prepare_network.sh init.sh clean_all.sh example.config.json ./
-ADD validator_scripts /var/ton-work/validator_scripts
-RUN chmod +x node_init.sh prepare_network.sh init.sh clean_all.sh
 
-ENTRYPOINT ["/var/ton-work/db/init.sh"]
+WORKDIR /var/ton-work/db
+ADD  scripts ./

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ton-full-node-deployment
+  labels:
+    app: ton-full-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-full-node
+  template:
+    metadata:
+      labels:
+        app: ton-full-node
+    spec:
+      containers:
+      - name: ton-full-node
+        image: "{{ .Values.registry }}/ton/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.ports.PUBLIC_PORT }}
+          name: ton-public-port
+        - containerPort: {{ .Values.ports.CONSOLE_PORT }}
+          name: ton-console-port
+        - containerPort: {{ .Values.ports.LITESERVER_PORT }}
+          name: liteserver-port
