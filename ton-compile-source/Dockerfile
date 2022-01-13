@@ -1,5 +1,4 @@
 FROM python:3.7-bullseye
-ARG is_testnet=false
 
 RUN apt-get update && \
         apt-get install -y build-essential cmake clang-11 openssl libssl-dev zlib1g-dev gperf wget git openssl wget python nano && \
@@ -7,7 +6,10 @@ RUN apt-get update && \
 ENV CMAKE_C_COMPILER clang-11.0
 ENV CMAKE_CXX_COMPILER clang++-11.0
 WORKDIR /
+
 RUN git clone --recursive https://github.com/newton-blockchain/ton
+
+ARG is_testnet
 RUN if is_testnet; then git checkout safer_overlay; fi
 
 WORKDIR /ton
