@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ton-mainnet
+  labels:
+    run: ton-mainnet
+spec:
+  ports:
+  - port: ton-public-port
+    protocol: UDP
+  - port: ton-console-port
+    protocol: UDP
+  - port: liteserver-port
+    protocol: UDP
+  selector:
+    run: ton-mainnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ton-testnet
+  labels:
+    run: ton-testnet
+spec:
+  ports:
+  - port: testnet-ton-public-port
+    protocol: UDP
+  - port: testnet-ton-console-port
+    protocol: UDP
+  - port: testnet-liteserver-port
+    protocol: UDP
+  selector:
+    run: ton-testnet

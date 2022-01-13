@@ -3,15 +3,21 @@ imagePullPolicy: always
 
 images:
   tonFullNode:
-    - name: ton/ton-node
-      version: v0
+    name: ton/ton-node
+    version: mainnet-v0 # `v0` - is version from pre-build.sh
+
+  testnetFullNode:
+    name: ton/ton-node
+    version: testnet-v0
 
 ports:
+  # MAINNET
   tonFullNode:
     CONSOLE_PORT: 46731
     PUBLIC_PORT: 50000
     LITESERVER_PORT: 43679
 
+  # TESTNET
   testnetFullNode:
     CONSOLE_PORT: 46732
     PUBLIC_PORT: 50001
@@ -27,10 +33,6 @@ env:
   # TESTNET
   - name: TESTNET_CONFIG
     value: https://newton-blockchain.github.io/testnet-global.config.json # testnet config
-  - name: TESTNET_CONSOLE_PORT # testnet console port
-    value: 46732
-  - name: TESTNET_PUBLIC_PORT # mainnet console port
-    value: 50001
   - name: TESTNET_LITESERVER # need to run liteserver on testnet / not
     value: true
 

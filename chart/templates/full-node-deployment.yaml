@@ -1,27 +1,55 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ton-full-node-deployment
+  name: ton-mainnet-deployment
   labels:
-    app: ton-full-node
+    app: ton-mainnet
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ton-full-node
+      app: ton-mainnet
   template:
     metadata:
       labels:
-        app: ton-full-node
+        app: ton-mainnet
     spec:
       containers:
-      - name: ton-full-node
+      - name: ton-mainnet
         image: "{{ .Values.registry }}/ton/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.ports.PUBLIC_PORT }}
+        - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
           name: ton-public-port
-        - containerPort: {{ .Values.ports.CONSOLE_PORT }}
+        - containerPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
           name: ton-console-port
-        - containerPort: {{ .Values.ports.LITESERVER_PORT }}
+        - containerPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
           name: liteserver-port
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ton-testnet-deployment
+  labels:
+    app: ton-testnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-testnet
+  template:
+    metadata:
+      labels:
+        app: ton-testnet
+    spec:
+      containers:
+      - name: ton-testnet
+        image: "{{ .Values.registry }}/ton/{{ .Values.images.testnetFullNode.name }}:{{ .Values.images.testnetFullNode.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+          name: testnet-ton-public-port
+        - containerPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+          name: testnet-ton-console-port
+        - containerPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+          name: testnet-liteserver-port
