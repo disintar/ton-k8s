@@ -1,5 +1,5 @@
-ARG version
-FROM registry.head-labs.com/ton/ton-base:${version}
+ARG  CODE_VERSION=latest
+FROM registry.head-labs.com/ton/ton-base:${CODE_VERSION}
 
 # ENV PUBLIC_IP 94.130.163.226
 # ENV CONFIG https://test.ton.org/ton-global.config.json

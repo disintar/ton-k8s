@@ -41,4 +41,4 @@ RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 RUN mkdir -p /var/ton-work/db/keyring
 
 WORKDIR /var/ton-work/db
-ADD  scripts ./
+COPY ./scripts /var/ton-work/db/scripts
