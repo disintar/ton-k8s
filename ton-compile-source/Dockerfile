@@ -37,8 +37,6 @@ RUN cp /ton/build/crypto/create-state /var/ton-work/contracts
 RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 
 RUN mkdir -p /var/ton-work/db/keyring
-WORKDIR /var/ton-work/contracts
-COPY gen-zerostate.fif ./
 
 WORKDIR /var/ton-work/db
 ADD  scripts ./
