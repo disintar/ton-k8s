@@ -14,6 +14,11 @@ docker tag ton-base ${REGISTRY}/ton/ton-base:testnet-${VERSION}
 docker push ${REGISTRY}/ton/ton-base:testnet-${VERSION}
 
 cd ../ton-full-node
-docker build -f Dockerfile -t ton-node .
-docker tag ton-base ${REGISTRY}/ton/ton-node:${VERSION}
-docker push ${REGISTRY}/ton/ton-node:${VERSION}
+
+docker build -f Dockerfile -t ton-node . --build-arg version=mainnet-${VERSION}
+docker tag ton-base ${REGISTRY}/ton/ton-node:mainnet-${VERSION}
+docker push ${REGISTRY}/ton/ton-node:mainnet-${VERSION}
+
+docker build -f Dockerfile -t ton-node . --build-arg version=testnet-${VERSION}
+docker tag ton-base ${REGISTRY}/ton/ton-node:testnet-${VERSION}
+docker push ${REGISTRY}/ton/ton-node:testnet-${VERSION}
