@@ -43,3 +43,4 @@ spec:
     port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
   selector:
     run: ton-testnet
+---

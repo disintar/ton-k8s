@@ -37,5 +37,5 @@ while True:
         if ready[0]:
             data, address = s.recvfrom(4096)
 
-            print(f"Server {port} received: ", data.decode('utf-8'))
+            logger.info(f"Server {port} received: ", data.decode('utf-8'))
             s.sendto("👋".encode('utf-8'), address)
