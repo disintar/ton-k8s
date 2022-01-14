@@ -27,6 +27,8 @@ for port in [46731, 50000, 43679, 46732, 50001, 43680]:
     sockets[port] = s
 
 print("👋 Hi there!")
+print(f"My ip is: {ip}")
+print("Will listen ports ;)")
 
 while True:
     for port, s in sockets.items():
