@@ -20,11 +20,11 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
-          name: ton-public-port
+          name: ton-pp
         - containerPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
-          name: ton-console-port
+          name: ton-cp
         - containerPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
-          name: liteserver-port
+          name: ton-lp
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,8 +48,8 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
-          name: testnet-ton-public-port
+          name: testnet-pp
         - containerPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
-          name: testnet-ton-console-port
+          name: testnet-cp
         - containerPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
-          name: testnet-liteserver-port
+          name: testnet-lp

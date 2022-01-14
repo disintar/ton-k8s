@@ -6,13 +6,13 @@ metadata:
     run: ton-mainnet
 spec:
   ports:
-  - targetPort: ton-public-port
+  - targetPort: ton-pp
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
-  - targetPort: ton-console-port
+  - targetPort: ton-cp
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
-  - targetPort: liteserver-port
+  - targetPort: ton-lp
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
   selector:
@@ -26,13 +26,13 @@ metadata:
     run: ton-testnet
 spec:
   ports:
-  - targetPort: testnet-ton-public-port
+  - targetPort: testnet-pp
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
-  - targetPort: testnet-ton-console-port
+  - targetPort: testnet-cp
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
-  - targetPort: testnet-liteserver-port
+  - targetPort: testnet-lp
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
   selector:
