@@ -14,6 +14,7 @@ spec:
       labels:
         app: ton-mainnet
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
@@ -44,6 +45,7 @@ spec:
       labels:
         app: ton-testnet
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
