@@ -1,13 +1,14 @@
 import select
 import socket
+from hllib.log import logger
+from hllib.net import get_my_ip
 
-from lib.net import get_my_ip
 
 ip = get_my_ip()
 
-print("👋 Hi there!")
-print(f"My public ip is: {ip}")
-print("Will listen ports ;)")
+logger.info("👋 Hi there!")
+logger.info(f"My public ip is: {ip}")
+logger.info("Will listen ports ;)")
 
 
 class KeyStorage:
