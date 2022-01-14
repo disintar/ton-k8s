@@ -14,10 +14,8 @@ spec:
       labels:
         app: ton-mainnet
     spec:
-      { { - with .Values.imagePullSecrets } }
       imagePullSecrets:
-        { { - toYaml . | nindent 8 } }
-      { { - end } }
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
       - name: ton-mainnet
         image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
@@ -46,10 +44,8 @@ spec:
       labels:
         app: ton-testnet
     spec:
-      { { - with .Values.imagePullSecrets } }
       imagePullSecrets:
-        { { - toYaml . | nindent 8 } }
-      { { - end } }
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
       - name: ton-testnet
         image: "{{ .Values.registry }}/{{ .Values.images.testnetFullNode.name }}:{{ .Values.images.testnetFullNode.version }}"
