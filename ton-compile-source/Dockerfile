@@ -43,3 +43,5 @@ RUN mkdir -p /var/ton-work/db/keyring
 
 WORKDIR /var/ton-work/db
 COPY ./scripts /var/ton-work/db/scripts
+
+RUN pip install -r /var/ton-work/db/scripts/requirements.txt
