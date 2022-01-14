@@ -23,10 +23,13 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
+          protocol: UDP
           name: ton-pp
         - containerPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
+          protocol: UDP
           name: ton-cp
         - containerPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
+          protocol: UDP
           name: ton-lp
 ---
 apiVersion: apps/v1
@@ -54,8 +57,11 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+          protocol: UDP
           name: testnet-pp
         - containerPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+          protocol: UDP
           name: testnet-cp
         - containerPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+          protocol: UDP
           name: testnet-lp
