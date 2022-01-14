@@ -5,6 +5,10 @@ from lib.net import get_my_ip
 
 ip = get_my_ip()
 
+print("👋 Hi there!")
+print(f"My public ip is: {ip}")
+print("Will listen ports ;)")
+
 
 class KeyStorage:
     def __init__(self):
@@ -22,13 +26,9 @@ for port in [46731, 50000, 43679, 46732, 50001, 43680]:
     # Create a UDP socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    server_address = (ip, port)
+    server_address = ("0.0.0.0", port)
     s.bind(server_address)
     sockets[port] = s
-
-print("👋 Hi there!")
-print(f"My ip is: {ip}")
-print("Will listen ports ;)")
 
 while True:
     for port, s in sockets.items():
