@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ton-mainnet
-        image: "{{ .Values.registry }}/ton/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
+        image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
       - name: ton-testnet
-        image: "{{ .Values.registry }}/ton/{{ .Values.images.testnetFullNode.name }}:{{ .Values.images.testnetFullNode.version }}"
+        image: "{{ .Values.registry }}/{{ .Values.images.testnetFullNode.name }}:{{ .Values.images.testnetFullNode.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
