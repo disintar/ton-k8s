@@ -7,12 +7,15 @@ metadata:
 spec:
   ports:
   - targetPort: ton-pp
+    name: ton-node
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
   - targetPort: ton-cp
+    name: ton-client
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
   - targetPort: ton-lp
+    name: ton-liteserver
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
   selector:
@@ -27,12 +30,15 @@ metadata:
 spec:
   ports:
   - targetPort: testnet-pp
+    name: testnet-node
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
   - targetPort: testnet-cp
+    name: testnet-client
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
   - targetPort: testnet-lp
+    name: testnet-liteserver
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
   selector:
