@@ -20,3 +20,9 @@ Then:
 kubectl create namespace ton
 helm upgrade --install --namespace ton ton ./chart/ --values ./chart/values.yaml 
 ```
+
+
+### Tips and tricks
+
+After publish UDP services to k8s you need to specify `externalIp` to bind public port. 
+[Read more about externalIp](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips)

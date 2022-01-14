@@ -1,7 +1,9 @@
 import select
 import socket
 
-ip = "0.0.0.0"
+from lib.net import get_my_ip
+
+ip = get_my_ip()
 
 
 class KeyStorage:
