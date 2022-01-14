@@ -1,6 +1,10 @@
 registry: registry.head-labs.com
 imagePullPolicy: Always
 
+# Your docker registry keys
+imagePullSecrets:
+  - name: regcred
+
 images:
   tonFullNode:
     name: ton/ton-node
@@ -36,6 +40,3 @@ env:
   - name: TESTNET_LITESERVER # need to run liteserver on testnet / not
     value: true
 
-# Your docker registry keys
-imagePullSecrets:
-  - name: regcred
