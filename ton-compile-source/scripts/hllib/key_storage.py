@@ -16,12 +16,18 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
 
-    def get_key(self, name: str, store_to_keyring: bool = False) -> Tuple[str, str]:
-        """Create server key """
-        key_hex, key_b64 = KeyStorage.generate_key('keys', f'{self.db_path}/{name}')
+    def get_key(self, path: str, store_to_keyring: bool = False) -> Tuple[str, str]:
+        """
+        Create key pair and move key to db keyring if needed
+
+        :param path: Where we need to create key
+        :param store_to_keyring: Need to move private key to keyring?
+        """
+
+        key_hex, key_b64 = KeyStorage.generate_key('keys', path)
 
         if store_to_keyring:
-            os.rename(f"{self.db_path}/{name}", f"{self.db_path}/keyring/{key_hex}")
+            os.rename(path, f"{self.db_path}/keyring/{key_hex}")
 
         return key_hex, key_b64
 
@@ -39,13 +45,13 @@ class KeyStorage:
             logging.debug(f"🔒 Keyring folder already exist - so keys also")
             return
 
-        server_key_hex, server_key_b64 = self.get_key(name='server', store_to_keyring=True)
+        server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
 
-        client_key_hex, client_key_b64 = self.get_key(name='client')
+        client_key_hex, client_key_b64 = self.get_key(f'/tmp/client')
         logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
 
-        liteserver_key_hex, liteserver_key_b64 = self.get_key(name='liteserver', store_to_keyring=True)
+        liteserver_key_hex, liteserver_key_b64 = self.get_key(f'/tmp/liteserver', store_to_keyring=True)
         logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
         with open(f"{self.db_path}/config.json") as f:
