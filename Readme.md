@@ -12,11 +12,13 @@
 
 ## Features
 
-- Full node for mainnet / testnet 💾
-- Lite-client for mainnet / testnet 🎮
-- K8s / docker-compose support 🦾
-- You can change resource limit for nodes in helm values 🚀
-- Save keys as k8s secret 🔒
+- Full node for mainnet / testnet 💾 [100%]
+- Lite-client for mainnet / testnet 🎮 [100%]
+- K8s / docker-compose support 🦾 [50%]
+- You can change resource limit for nodes in helm values 🚀 [0%]
+- Save keys as k8s secret 🔒 [50%]
+- Custom private TON network [0%]
+- Status page for all networks running [0%]
 
 ## Helm / k8s
 
