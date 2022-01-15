@@ -32,8 +32,12 @@ class KeyStorage:
         https://ton.org/docs/#/howto/full-node?id=_6-setting-up-remote-control-cli
         """
 
-        if 'keyring' not in os.listdir(self.db_path):
+        # Check if keyring folder already exist and some keys contains in this folder
+        if 'keyring' not in os.listdir(self.db_path) and len(os.listdir(f"{self.db_path}/keyring")) > 0:
             os.mkdir(f'{self.db_path}/keyring')
+        else:
+            logging.debug(f"🔒 Keyring folder already exist - so keys also")
+            return
 
         server_key_hex, server_key_b64 = self.get_key(name='server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
@@ -63,6 +67,7 @@ class KeyStorage:
         }]
 
         # If we need to add liteserver keys - we will do it! 😁
+        # https://ton.org/docs/#/howto/full-node?id=_9-setting-up-the-full-node-as-a-lite-server
         if self.config['LITESERVER']:
             ton_config['liteservers'] = [
                 {

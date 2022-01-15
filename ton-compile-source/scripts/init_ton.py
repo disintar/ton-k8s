@@ -44,19 +44,20 @@ if __name__ == "__main__":
 
         logger.info(f"Download success, initializing validator-engine 🤓")
 
-        # Main command from https://ton.org/docs/#/howto/full-node?id=_5-initializing-the-local-configuration
-        initializing_command = [f"/usr/local/bin/validator-engine",
-                                "--global-config", f"{config_path}",
-                                "--db", f"{db_path}",
-                                "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
+        if 'config.json' not in os.listdir(db_path):
+            # Main command from https://ton.org/docs/#/howto/full-node?id=_5-initializing-the-local-configuration
+            initializing_command = [f"/usr/local/bin/validator-engine",
+                                    "--global-config", f"{config_path}",
+                                    "--db", f"{db_path}",
+                                    "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
 
-        output = run(initializing_command)
+            output = run(initializing_command)
 
-        if 'config.json' in os.listdir(db_path):
-            logger.info(f"Basic config successfully created! 😉\n"
-                        f"Start key management process... 🔑")
-        else:
-            raise ValueError(f"✋ Can't create initial config file with {pformat(initializing_command)}")
+            if 'config.json' in os.listdir(db_path):
+                logger.info(f"Basic config successfully created! 😉\n"
+                            f"Start key management process... 🔑")
+            else:
+                raise ValueError(f"✋ Can't create initial config file with {pformat(initializing_command)}")
 
         #
         # Create / use keys
@@ -75,7 +76,6 @@ if __name__ == "__main__":
                        "--state-ttl", "604800",
                        "--verbosity", f"{config['VERBOSE']}",
                        "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
-        print(run_command)
         subprocess.run(run_command)
 
 else:
