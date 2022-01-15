@@ -3,21 +3,21 @@ kind: PersistentVolumeClaim
 metadata:
   name: ton-database
 spec:
-  storageClassName: {{ .Values.persistent.storageClassName }}
+  storageClassName: {{ .Values.persistent.tonFullNode.storageClassName }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage:  {{ .Values.persistent.storageSize }}
+      storage:  {{ .Values.persistent.tonFullNode.storageSize }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ton-testnet-database
 spec:
-  storageClassName: {{ .Values.persistent.storageClassName }}
+  storageClassName: {{ .Values.persistent.testnetFullNode.storageClassName }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage:  {{ .Values.persistent.storageSize }}
+      storage:  {{ .Values.persistent.testnetFullNode.storageSize }}
