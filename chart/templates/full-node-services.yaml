@@ -21,7 +21,7 @@ spec:
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: ton-mainnet
   externalIPs:
@@ -50,7 +50,7 @@ spec:
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
-
+  type: ClusterIP
   selector:
     app: ton-testnet
   externalIPs:
