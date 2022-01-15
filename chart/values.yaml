@@ -1,6 +1,16 @@
 registry: registry.head-labs.com
 imagePullPolicy: Always
 
+# By default we create volume and mount it to /var/ton-work/db
+persistent:
+  tonFullNode:
+    storageClassName: manual
+    storageSize: 100Gi
+
+  testnetFullNode:
+    storageClassName: manual
+    storageSize: 100Gi
+
 serviceAccount:
   create: true
   annotations: {}
