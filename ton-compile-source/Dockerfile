@@ -40,6 +40,9 @@ RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 RUN cp /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
 
 WORKDIR /var/ton-work/
-COPY ./scripts /var/ton-work/scripts
 
-RUN pip install -r /var/ton-work/scripts/requirements.txt
+RUN mkdir /var/ton-work/scripts
+COPY ./scripts/requirements.txt /var/ton-work/
+RUN pip install -r /var/ton-work/requirements.txt
+
+ADD ./scripts/ /var/ton-work/scripts/

@@ -48,8 +48,7 @@ if __name__ == "__main__":
         initializing_command = [f"/usr/local/bin/validator-engine",
                                 "--global-config", f"{config_path}",
                                 "--db", f"{db_path}",
-                                "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}",
-                                "--logname", f"{log_path}"]
+                                "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
 
         output = run(initializing_command)
 
@@ -75,8 +74,7 @@ if __name__ == "__main__":
                        "--threads", f"{config['THREADS']}",
                        "--state-ttl", "604800",
                        "--verbosity", f"{config['VERBOSE']}",
-                       "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}",
-                       "--logname", f"{log_path}"]
+                       "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
         print(run_command)
         subprocess.run(run_command)
 

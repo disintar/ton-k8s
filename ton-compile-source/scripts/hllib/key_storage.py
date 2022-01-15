@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from typing import Tuple, List
 
@@ -15,18 +16,14 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
 
-    def get_server_key(self) -> Tuple[str, str]:
-        server_key_hex, server_key_b64 = KeyStorage.generate_key('keys', f'{self.db_path}/server')
-        os.rename(f"{self.db_path}/server", f"{self.db_path}/keyring/{server_key_hex}")
-        return server_key_hex, server_key_b64
+    def get_key(self, name: str, store_to_keyring: bool = False) -> Tuple[str, str]:
+        """Create server key """
+        key_hex, key_b64 = KeyStorage.generate_key('keys', f'{self.db_path}/{name}')
 
-    def get_client_key(self) -> Tuple[str, str]:
-        client_key_hex, client_key_b64 = KeyStorage.generate_key('keys', f'{self.db_path}/client')
-        return client_key_hex, client_key_b64
+        if store_to_keyring:
+            os.rename(f"{self.db_path}/{name}", f"{self.db_path}/keyring/{key_hex}")
 
-    def get_liteserver_key(self) -> Tuple[str, str]:
-        liteserver_key_hex, liteserver_key_b64 = KeyStorage.generate_key('keys', f'{self.db_path}/liteserver')
-        return liteserver_key_hex, liteserver_key_b64
+        return key_hex, key_b64
 
     def init_console_client_keys(self):
         """
@@ -38,9 +35,14 @@ class KeyStorage:
         if 'keyring' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring')
 
-        server_key_hex, server_key_b64 = self.get_server_key()
-        client_key_hex, client_key_b64 = self.get_client_key()
-        liteserver_key_hex, liteserver_key_b64 = self.get_liteserver_key()
+        server_key_hex, server_key_b64 = self.get_key(name='server', store_to_keyring=True)
+        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
+
+        client_key_hex, client_key_b64 = self.get_key(name='client')
+        logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
+
+        liteserver_key_hex, liteserver_key_b64 = self.get_key(name='liteserver', store_to_keyring=True)
+        logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
         with open(f"{self.db_path}/config.json") as f:
             ton_config = json.load(f)
@@ -49,7 +51,7 @@ class KeyStorage:
         # Now we can access our server via validator-engine-console
         # validator-engine-console -k client -p server.pub -a <IP>:<CLIENT-PORT>
 
-        ton_config['control'] = {
+        ton_config['control'] = [{
             "id": server_key_b64,
             "port": self.config['CONSOLE_PORT'],
             "allowed": [
@@ -58,7 +60,7 @@ class KeyStorage:
                     "permissions": 15
                 }
             ]
-        }
+        }]
 
         # If we need to add liteserver keys - we will do it! 😁
         if self.config['LITESERVER']:
@@ -70,7 +72,7 @@ class KeyStorage:
             ]
 
         with open(f"{self.db_path}/config.json", "w") as f:
-            json.dump(ton_config, f)
+            json.dump(ton_config, f, indent=4)
 
     @staticmethod
     def generate_key(mode: str, path: str) -> Tuple[str, str]:
