@@ -68,8 +68,8 @@ spec:
           protocol: UDP
         env:
           - name: PUBLIC_PORT
-            value: { { .Values.ports.testnetFullNode.PUBLIC_PORT } }
+            value: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
           - name: CONSOLE_PORT
-            value: { { .Values.ports.testnetFullNode.CONSOLE_PORT } }
+            value: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
           - name: LITESERVER_PORT
-            value: { { .Values.ports.testnetFullNode.LITESERVER_PORT } }
+            value: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
