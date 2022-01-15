@@ -30,11 +30,11 @@ spec:
           protocol: UDP
         env:
           - name: PUBLIC_PORT
-            value: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
+            value: "{{ .Values.ports.tonFullNode.PUBLIC_PORT }}"
           - name: CONSOLE_PORT
-            value: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
+            value: "{{ .Values.ports.tonFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
-            value: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
+            value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -68,8 +68,8 @@ spec:
           protocol: UDP
         env:
           - name: PUBLIC_PORT
-            value: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+            value: "{{ .Values.ports.testnetFullNode.PUBLIC_PORT }}"
           - name: CONSOLE_PORT
-            value: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+            value: "{{ .Values.ports.testnetFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
-            value: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+            value: "{{ .Values.ports.testnetFullNode.LITESERVER_PORT }}"
