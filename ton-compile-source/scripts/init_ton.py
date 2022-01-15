@@ -21,7 +21,7 @@ config = {
     "PUBLIC_PORT": int(os.getenv("PUBLIC_PORT", 50001)),
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "THREADS": cpu_count,
-    "VERBOSE": 5
+    "VERBOSE": 3
 }
 
 logger.info("👋 Hi there!\n"
