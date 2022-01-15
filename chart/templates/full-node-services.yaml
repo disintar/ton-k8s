@@ -10,14 +10,17 @@ spec:
     name: ton-node
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
     name: ton-client
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
     name: ton-liteserver
     protocol: UDP
     port: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
   type: LoadBalancer
   selector:
     app: ton-mainnet
@@ -36,15 +39,18 @@ spec:
     name: testnet-node
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
     name: testnet-client
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
-  type: LoadBalancer
+    nodePort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+
   selector:
     app: ton-testnet
   externalIPs:
