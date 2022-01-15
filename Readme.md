@@ -19,6 +19,7 @@
 - Save keys as k8s secret 🔒 [50%]
 - Custom private TON network [0%]
 - Status page for all networks running [0%]
+- TON proxy with k8s ingress and site publish [0%]
 
 ## Helm / k8s
 
