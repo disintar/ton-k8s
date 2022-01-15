@@ -35,6 +35,15 @@ spec:
             value: "{{ .Values.ports.tonFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
             value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
+        volumeMounts:
+          - mountPath: "/var/ton-work/db/"
+            name: ton-database
+      volumes:
+        - name: ton-database
+          persistentVolumeClaim:
+            claimName: ton-database
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -73,3 +82,10 @@ spec:
             value: "{{ .Values.ports.testnetFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
             value: "{{ .Values.ports.testnetFullNode.LITESERVER_PORT }}"
+        volumeMounts:
+          - mountPath: "/var/ton-work/db/"
+            name: ton-testnet-database
+      volumes:
+        - name: ton-testnet-database
+          persistentVolumeClaim:
+            claimName: ton-testnet-database
