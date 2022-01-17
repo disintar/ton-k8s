@@ -1,2 +1,3 @@
 requests
 kubernetes
+ed25519

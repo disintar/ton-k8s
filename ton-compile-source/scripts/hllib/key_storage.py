@@ -1,9 +1,11 @@
 import json
 import logging
 import os
-from typing import Tuple, List
+from base64 import b64encode
+from typing import Tuple
 
-from hllib.command_line import run
+import ed25519
+from ed25519 import SigningKey, VerifyingKey
 
 
 class KeyStorage:
@@ -16,7 +18,7 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
 
-    def get_key(self, path: str, store_to_keyring: bool = False) -> Tuple[str, str]:
+    def get_key(self, key_name: str, store_to_keyring: bool = False) -> Tuple[SigningKey, VerifyingKey]:
         """
         Create key pair and move key to db keyring if needed
 
@@ -24,12 +26,16 @@ class KeyStorage:
         :param store_to_keyring: Need to move private key to keyring?
         """
 
-        key_hex, key_b64 = KeyStorage.generate_key('keys', path)
+        signing_key, verifying_key = KeyStorage.generate_key()
 
         if store_to_keyring:
-            os.rename(path, f"{self.db_path}/keyring/{key_hex}")
+            private_hex = signing_key.to_ascii(encoding='hex')
+            private_bytes = signing_key.to_bytes()
 
-        return key_hex, key_b64
+            with open(f"{self.db_path}/keyring/{private_hex}", "wb") as f:
+                f.write(private_bytes)
+
+        return signing_key, verifying_key
 
     def init_console_client_keys(self):
         """
@@ -45,15 +51,29 @@ class KeyStorage:
             logging.debug(f"🔒 Keyring folder already exist - so keys also")
             return
 
-        server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
-        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
+        #
+        # Server key
+        #
+        server_signing_key, server_verifying_key = self.get_key('server', store_to_keyring=True)
+        server_verifying_key_base64 = b64encode(server_verifying_key.to_bytes())
 
-        client_key_hex, client_key_b64 = self.get_key(f'/tmp/client')
-        logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
+        logging.debug(f"🔑 Server: b64: {server_verifying_key_base64}")
 
-        liteserver_key_hex, liteserver_key_b64 = self.get_key(f'/tmp/liteserver', store_to_keyring=True)
-        logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
+        #
+        # Client key
+        #
+        client_signing_key, client_verifying_key = self.get_key('client')
+        client_verifying_key_base64 = b64encode(client_verifying_key.to_bytes())
 
+        logging.debug(f"🔑 Client: b64: {client_verifying_key_base64}")
+
+        #
+        # Liteserver key
+        #
+        liteserver_signing_key, liteserver_verifying_key = self.get_key('liteserver', store_to_keyring=True)
+        liteserver_verifying_key_base64 = b64encode(liteserver_verifying_key.to_bytes())
+
+        logging.debug(f"🔑 Liteserver: b64: {liteserver_verifying_key_base64}")
         with open(f"{self.db_path}/config.json") as f:
             ton_config = json.load(f)
 
@@ -62,11 +82,11 @@ class KeyStorage:
         # validator-engine-console -k client -p server.pub -a <IP>:<CLIENT-PORT>
 
         ton_config['control'] = [{
-            "id": server_key_b64,
+            "id": server_verifying_key_base64,
             "port": self.config['CONSOLE_PORT'],
             "allowed": [
                 {
-                    "id": client_key_b64,
+                    "id": client_verifying_key_base64,
                     "permissions": 15
                 }
             ]
@@ -77,7 +97,7 @@ class KeyStorage:
         if self.config['LITESERVER']:
             ton_config['liteservers'] = [
                 {
-                    "id": liteserver_key_b64,
+                    "id": liteserver_verifying_key_base64,
                     "port": self.config['LITESERVER_PORT']
                 }
             ]
@@ -86,15 +106,8 @@ class KeyStorage:
             json.dump(ton_config, f, indent=4)
 
     @staticmethod
-    def generate_key(mode: str, path: str) -> Tuple[str, str]:
-        """Runs ton generate-random-id
-        Return HEX and base64 encode of public key
-        """
-
-        output: str = run(['generate-random-id', '-m', mode, '-n', path])
-        output: List[str] = output.strip().split()
-
-        if len(output) == 2:
-            return output[0], output[1]
-
-        raise ValueError(f"💬 generate-random-id returned WTF {output}")
+    def generate_key():
+        # similar to generate-random-id
+        # https://github.com/newton-blockchain/ton/blob/9875f02ef4ceba5b065d5e63c920f91aec73224e/utils/generate-random-id.cpp#L102
+        signing_key, verifying_key = ed25519.create_keypair()
+        return signing_key, verifying_key
