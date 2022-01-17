@@ -7,6 +7,9 @@ from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
 
+import select
+import socket
+
 ip = get_my_ip()
 cpu_count = os.cpu_count() - 1
 
@@ -38,14 +41,6 @@ if __name__ == "__main__":
     success = download(config['CONFIG'], config_path)
 
     if success:
-
-        #
-        # Create / use keys
-        #
-
-        key_storage = KeyStorage(db_path=db_path, config=config)
-        key_storage.init_console_client_keys()
-
         #
         # Init config.json
         #
@@ -66,6 +61,17 @@ if __name__ == "__main__":
                             f"Start key management process... 🔑")
             else:
                 raise ValueError(f"✋ Can't create initial config file with {pformat(initializing_command)}")
+
+            # By default validator-engine creates keyring
+            # But we want to use our "правильные" (meme) keys
+            os.removedirs(f'{db_path}/keyring')
+
+        #
+        # Create / use keys
+        #
+
+        key_storage = KeyStorage(db_path=db_path, config=config)
+        key_storage.init_console_client_keys()
 
         logger.info(f"All stuff with keys done! 🤴"
                     f"I'll try to run full-node 4you 🤖")
