@@ -38,15 +38,21 @@ spec:
             value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
           - name: NAMESPACE
             value: "{{ .Values.namespace }}"
+          - name: SERVICE_ACCOUNT
+            value: "{{ .Values.serviceAccount.name }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-database
+          - name: secret-volume
+            readOnly: true
+            mountPath: "/etc/secret-volume"
       volumes:
         - name: ton-database
           persistentVolumeClaim:
             claimName: ton-database
-
-
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -88,10 +94,18 @@ spec:
             value: "{{ .Values.ports.testnetFullNode.LITESERVER_PORT }}"
           - name: NAMESPACE
             value: "{{ .Values.namespace }}"
+          - name: SERVICE_ACCOUNT
+            value: "{{ .Values.serviceAccount.name }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-testnet-database
+          - name: secret-volume
+            readOnly: true
+            mountPath: "/etc/secret-volume"
       volumes:
         - name: ton-testnet-database
           persistentVolumeClaim:
             claimName: ton-testnet-database
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.serviceAccount.name }}-token-secret

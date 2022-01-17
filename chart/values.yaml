@@ -14,8 +14,7 @@ persistent:
 
 serviceAccount:
   create: true
-  annotations: {}
-  name: "ton-service-account"
+  name: "ton"
 
 # Your docker registry keys
 imagePullSecrets:
