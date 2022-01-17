@@ -1,25 +1,30 @@
 # ton-k8s
 
-Набор докер образов и helm чарт для поднятия комфортной инфраструктуры для работы с [TON](https://ton.org)
-
-`pre-build.sh` - собирает все образы и отправляет их в docker-registry
-
-`ton-compile-source` - основной докер образ который клонит `https://github.com/newton-blockchain/ton/` и компилирует
-его. При сборке доступен аргумент `is_testnet`. Если он `true` - клонирует и собирает `safer_overlay` ветку,
-т.к. [тестнет работает на ней](https://t.me/testnetstatus/3).
-
-`ton-full-node` - образ full node тона. Очень требователен к ресурсам, так что будьте осторожны :)
+Docker images, python mini-lib, helm chart for comfortable [TON](https://ton.org) infrastructure
 
 ## Features
 
-- Full node for mainnet / testnet 💾 [100%]
-- Lite-client for mainnet / testnet 🎮 [100%]
-- K8s / docker-compose support 🦾 [50%]
-- You can change resource limit for nodes in helm values 🚀 [0%]
-- Save keys as k8s secret 🔒 [50%]
-- Custom private TON network [0%]
-- Status page for all networks running [0%]
-- TON proxy with k8s ingress and site publish [0%]
+| Feature name                       | % of realization |
+|------------------------------------|------------------|
+| Full node for mainnet / testnet 💾 | ✅                |
+| Lite-client for mainnet / testnet  | ✅                |
+| Helm chart                         | ✅                |
+| K8s secrets for keys               | ✅                |
+| Status page                        | ⌛                |
+| K8s resource limits                | ⌛                |
+| RPC API                            | ⌛                |
+| Custom ton network                 | ⌛                |
+
+### Files
+
+`pre-build.sh` - build all docker files and send them to registry
+
+`ton-compile-source` - main Docker image, compile [TON](`https://github.com/newton-blockchain/ton/`) sources. You can
+pass`is_testnet`. If `true` - compile and build `safer_overlay` branch,
+because [testnet is working on it](https://t.me/testnetstatus/3).
+
+`ton-full-node` - run mainnet / testnet full node, you need to pass `version` build argument `mainnet-v0`
+or `testnet-v0`
 
 ## Helm / k8s
 
