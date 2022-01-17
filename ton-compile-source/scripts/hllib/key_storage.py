@@ -29,7 +29,7 @@ class KeyStorage:
         signing_key, verifying_key = KeyStorage.generate_key()
 
         if store_to_keyring:
-            private_hex = signing_key.to_ascii(encoding='hex')
+            private_hex = signing_key.to_ascii(encoding='hex').decode()
             private_bytes = signing_key.to_bytes()
 
             with open(f"{self.db_path}/keyring/{private_hex}", "wb") as f:
