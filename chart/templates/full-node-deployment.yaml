@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Values.namespace }}
   name: ton-mainnet-deployment
   labels:
     app: ton-mainnet
@@ -35,6 +36,8 @@ spec:
             value: "{{ .Values.ports.tonFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
             value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
+          - name: NAMESPACE
+            value: "{{ .Values.namespace }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-database
@@ -48,6 +51,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Values.namespace }}
   name: ton-testnet-deployment
   labels:
     app: ton-testnet
@@ -82,6 +86,8 @@ spec:
             value: "{{ .Values.ports.testnetFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
             value: "{{ .Values.ports.testnetFullNode.LITESERVER_PORT }}"
+          - name: NAMESPACE
+            value: "{{ .Values.namespace }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-testnet-database
