@@ -45,8 +45,10 @@ class KeyStorage:
         """
 
         # Check if keyring folder already exist and some keys contains in this folder
-        if 'keyring' not in os.listdir(self.db_path) and len(os.listdir(f"{self.db_path}/keyring")) > 0:
+        if 'keyring' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring')
+        elif len(os.listdir(f"{self.db_path}/keyring")) == 0:
+            logging.debug(f"🔒 Keyring folder already exist, but no keys found, so continue")
         else:
             logging.debug(f"🔒 Keyring folder already exist - so keys also")
             return
