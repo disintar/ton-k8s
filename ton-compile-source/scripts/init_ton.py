@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from pprint import pformat
 
@@ -6,9 +7,6 @@ from hllib.command_line import run
 from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
-
-import select
-import socket
 
 ip = get_my_ip()
 cpu_count = os.cpu_count() - 1
@@ -64,7 +62,7 @@ if __name__ == "__main__":
 
             # By default validator-engine creates keyring
             # But we want to use our "правильные" (meme) keys
-            os.removedirs(f'{db_path}/keyring')
+            shutil.rmtree(f'{db_path}/keyring', ignore_errors=True)
 
         #
         # Create / use keys
