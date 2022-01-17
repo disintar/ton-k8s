@@ -57,7 +57,7 @@ class KeyStorage:
         # Server key
         #
         server_signing_key, server_verifying_key = self.get_key('server', store_to_keyring=True)
-        server_verifying_key_base64 = b64encode(server_verifying_key.to_bytes()).encode()
+        server_verifying_key_base64 = b64encode(server_verifying_key.to_bytes()).decode()
 
         logging.debug(f"🔑 Server: b64: {server_verifying_key_base64}")
 
@@ -65,7 +65,7 @@ class KeyStorage:
         # Client key
         #
         client_signing_key, client_verifying_key = self.get_key('client')
-        client_verifying_key_base64 = b64encode(client_verifying_key.to_bytes()).encode()
+        client_verifying_key_base64 = b64encode(client_verifying_key.to_bytes()).decode()
 
         logging.debug(f"🔑 Client: b64: {client_verifying_key_base64}")
 
@@ -73,7 +73,7 @@ class KeyStorage:
         # Liteserver key
         #
         liteserver_signing_key, liteserver_verifying_key = self.get_key('liteserver', store_to_keyring=True)
-        liteserver_verifying_key_base64 = b64encode(liteserver_verifying_key.to_bytes()).encode()
+        liteserver_verifying_key_base64 = b64encode(liteserver_verifying_key.to_bytes()).decode()
 
         logging.debug(f"🔑 Liteserver: b64: {liteserver_verifying_key_base64}")
         with open(f"{self.db_path}/config.json") as f:
