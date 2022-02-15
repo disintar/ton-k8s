@@ -1,6 +1,6 @@
 registry: registry.head-labs.com
 imagePullPolicy: Always
-namespace: head-labs-ton
+namespace: ton
 
 # By default we create volume and mount it to /var/ton-work/db
 persistent:
