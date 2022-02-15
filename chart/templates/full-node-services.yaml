@@ -1,31 +1,4 @@
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  namespace: {{ .Values.namespace }}
-#  name: ton-mainnet-load-balancer
-#  labels:
-#    run: ton-mainnet-load-balancer
-#spec:
-#  ports:
-#  - targetPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
-#    name: ton-node
-#    protocol: UDP
-#    port: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
-#    nodePort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
-#  - targetPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
-#    name: ton-client
-#    protocol: UDP
-#    port: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
-#    nodePort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
-#  - targetPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
-#    name: ton-liteserver
-#    protocol: UDP
-#    port: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
-#    nodePort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
-#  type: LoadBalancer
-#  selector:
-#    app: ton-mainnet
-#---
+---
 apiVersion: v1
 kind: Service
 metadata:
