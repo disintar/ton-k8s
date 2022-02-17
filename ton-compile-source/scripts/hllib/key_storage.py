@@ -50,13 +50,13 @@ class KeyStorage:
             logging.debug(f"👀 Keyring folder already exist, so no need to change it")
             return
 
-        client_key_hex, client_key_b64 = self.get_key(f'/tmp/client', store_to_keyring=True)
+        client_key_hex, client_key_b64 = self.get_key(f'{self.db_path}/keyring/client', store_to_keyring=True)
         logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
 
-        server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
+        server_key_hex, server_key_b64 = self.get_key(f'{self.db_path}/keyring/server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
 
-        liteserver_key_hex, liteserver_key_b64 = self.get_key(f'/tmp/liteserver', store_to_keyring=True)
+        liteserver_key_hex, liteserver_key_b64 = self.get_key(f'{self.db_path}/keyring/liteserver', store_to_keyring=True)
         logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
         with open(f"{self.db_path}/config.json") as f:
