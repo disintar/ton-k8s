@@ -73,15 +73,15 @@ if __name__ == "__main__":
 
         logger.info(f"All stuff with keys done! 🤴"
                     f"I'll try to run full-node 4you 🤖")
-
-        run_command = [f"/usr/local/bin/validator-engine",
-                       "--global-config", f"{config_path}",
-                       "--db", f"{db_path}",
-                       "--threads", f"{config['THREADS']}",
-                       "--state-ttl", "604800",
-                       "--verbosity", f"{config['VERBOSE']}",
-                       "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
-        subprocess.run(run_command)
+        #
+        # run_command = [f"/usr/local/bin/validator-engine",
+        #                "--global-config", f"{config_path}",
+        #                "--db", f"{db_path}",
+        #                "--threads", f"{config['THREADS']}",
+        #                "--state-ttl", "604800",
+        #                "--verbosity", f"{config['VERBOSE']}",
+        #                "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
+        # subprocess.run(run_command)
 
 else:
     logger.error("Can't download config, please do something 😩")
