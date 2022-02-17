@@ -45,6 +45,9 @@ class KeyStorage:
         client_key_hex, client_key_b64 = self.get_key(f'/tmp/client', store_to_keyring=True)
         logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
 
+        server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
+        logging.debug(f"🔑 Client: b64: {server_key_b64}, hex: {server_key_hex}")
+
         liteserver_key_hex, liteserver_key_b64 = self.get_key(f'/tmp/liteserver', store_to_keyring=True)
         logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
@@ -55,10 +58,10 @@ class KeyStorage:
         # Now we can access our server via validator-engine-console
         # validator-engine-console -k client -p server.pub -a <IP>:<CLIENT-PORT>
 
-        server_key_b64 = ton_config['fullnode']
-        server_key_hex = base64.b64decode(server_key_b64)
+        fullnode_key_b64 = ton_config['fullnode']
+        fullnode_key_hex = base64.b64decode(fullnode_key_b64)
 
-        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex.hex().upper()}")
+        logging.debug(f"🔑 FullNode: b64: {fullnode_key_b64}, hex: {fullnode_key_hex.hex().upper()}")
 
         ton_config['control'] = [{
             "id": server_key_b64,
