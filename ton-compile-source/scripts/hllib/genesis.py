@@ -93,6 +93,8 @@ class Genesis:
             json.dumps(nodes_info)
         ], cwd=f'{self.db_path}/dht-server')
 
+        print(dht_nodes)
+
         own_net_config = {
             "@type": "config.global",
             "dht": {
