@@ -60,10 +60,6 @@ if __name__ == "__main__":
             else:
                 raise ValueError(f"✋ Can't create initial config file with {pformat(initializing_command)}")
 
-            # By default validator-engine creates keyring
-            # But we want to use our "правильные" (meme) keys
-            shutil.rmtree(f'{db_path}/keyring', ignore_errors=True)
-
         #
         # Create / use keys
         #

@@ -35,12 +35,11 @@ class KeyStorage:
         # Check if keyring folder already exist and some keys contains in this folder
         if 'keyring' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring')
-            os.mkdir(f'{self.db_path}/keyring_pub')
         elif len(os.listdir(f"{self.db_path}/keyring")) == 0:
             logging.debug(f"🔒 Keyring folder already exist, but no keys found, so continue")
-        else:
-            logging.debug(f"🔒 Keyring folder already exist - so keys also")
-            return
+
+        if 'keyring' not in os.listdir(self.db_path):
+            os.mkdir(f'{self.db_path}/keyring_pub')
 
         server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
@@ -72,10 +71,7 @@ class KeyStorage:
         for index, adnl in enumerate(ton_config['adnl']):
             if adnl['category'] == 1:
                 ton_config['adnl'][index]['id'] = server_key_b64
-            elif adnl['category'] == 0:
-                ton_config['adnl'][index]['id'] = client_key_b64
 
-        ton_config['dht'][0]['id'] = client_key_b64
         ton_config['fullnode'] = server_key_b64
 
         # If we need to add liteserver keys - we will do it! 😁
