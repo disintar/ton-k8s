@@ -64,7 +64,33 @@ class Genesis:
         with open("/var/ton-work/contracts/zerostate.fhash", 'rb') as f:
             zerostate_fhash_b64 = b.b64encode(f.read()).decode()
 
-        config = {
+        if 'dht-server' not in os.listdir(self.db_path):
+            os.mkdir(f'{self.db_path}/dht-server')
+
+        shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
+
+        run(['dht-server', '-C', self.config_path, '-D', '.', '-I',
+             f'{self.config["PUBLIC_IP"]}:{self.config["DHT_PORT"]}'])
+
+        nodes_info = {
+            "@type": "adnl.addressList",
+            "addrs": [
+                {
+                    "@type": "adnl.address.udp",
+                    "ip": ip2int(self.config['PUBLIC_IP']),
+                    "port": self.config["DHT_PORT"]
+                }
+            ],
+            "version": 0,
+            "reinit_date": 0,
+            "priority": 0,
+            "expire_at": 0
+        }
+        dht_nodes = run([
+            'generate-random-id', '-m', 'dht', '-k', 'keyring/*', '-a', json.dumps(nodes_info)
+        ], cwd=f'{self.db_path}/dht-server')
+
+        own_net_config = {
             "@type": "config.global",
             "dht": {
                 "@type": "dht.config.global",
@@ -93,28 +119,3 @@ class Genesis:
                 }
             }
         }
-
-        if 'dht-server' not in os.listdir(self.db_path):
-            os.mkdir(f'{self.db_path}/dht-server')
-
-        shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
-
-        run(['dht-server', '-C', self.config_path, '-D', '.', '-I', f'{config["PUBLIC_IP"]}:{config["DHT_PORT"]}'])
-
-        nodes_info = {
-            "@type": "adnl.addressList",
-            "addrs": [
-                {
-                    "@type": "adnl.address.udp",
-                    "ip": ip2int(config['PUBLIC_IP']),
-                    "port": config["DHT_PORT"]
-                }
-            ],
-            "version": 0,
-            "reinit_date": 0,
-            "priority": 0,
-            "expire_at": 0
-        }
-        dht_nodes = run([
-            'generate-random-id', '-m', 'dht', '-k', 'keyring/*', '-a', json.dumps(nodes_info)
-        ], cwd=f'{self.db_path}/dht-server')
