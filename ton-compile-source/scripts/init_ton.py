@@ -15,15 +15,16 @@ cpu_count = os.cpu_count() - 1
 config = {
     "PUBLIC_IP": ip,
     "CONFIG": os.getenv('CONFIG', 'https://test.ton.org/ton-global.config.json'),
+    "PRIVATE_CONFIG": os.getenv('PRIVATE_CONFIG', 'false') == 'true',
     "LITESERVER": os.getenv('LITESERVER', 'true') == 'true',  # convert to bool
     "CONSOLE_PORT": int(os.getenv("CONSOLE_PORT", 46732)),
     "PUBLIC_PORT": int(os.getenv("PUBLIC_PORT", 50001)),
     "DHT_PORT": int(os.getenv("DHT_PORT", 6302)),
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
-    "THREADS": cpu_count,
-    "GENESIS": True,
-    "VERBOSE": 3
+    "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
+    "GENESIS": os.getenv("GENESIS", False),
+    "VERBOSE": os.getenv("VERBOSE", 3)
 }
 
 logger.info("👋 Hi there!\n"

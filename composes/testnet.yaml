@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  testnet:
+    container_name: testnet
+    image: ton-node-testnet
+    environment:
+      - CONFIG=https://newton-blockchain.github.io/testnet-global.config.json
+      - LITESERVER=true
+      - CONSOLE_PORT=30004
+      - PUBLIC_PORT=30005
+      - LITESERVER_PORT=30006
+

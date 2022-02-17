@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  testnet:
+    container_name: mainnet
+    image: ton-node-mainnet
+    environment:
+      - CONFIG=https://test.ton.org/ton-global.config.json
+      - LITESERVER=true
+      - CONSOLE_PORT=30001
+      - PUBLIC_PORT=30002
+      - LITESERVER_PORT=30003
+
