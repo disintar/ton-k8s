@@ -29,7 +29,8 @@ class Genesis:
         with open(f"/var/ton-work/contracts/validator-keys.pub", 'wb') as f:
             f.write(key_with_prefix[4:])
 
-        run(['/var/ton-work/contracts/create-state', 'gen-zerostate.fif'], cwd="/var/ton-work/contracts/")
+        run(['/var/ton-work/contracts/create-state', '-I', '/usr/local/lib/fift/lib', 'gen-zerostate.fif'],
+            cwd="/var/ton-work/contracts/")
 
         with open(f"/var/ton-work/contracts/zerostate.fhash", 'rb') as f:
             zerostate_hex = f.read().hex().upper()
