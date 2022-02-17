@@ -126,7 +126,7 @@ class Genesis:
             }
         }
 
-        with open(f"{self.db_path}/dht-server/my-ton-global.config.json") as f_dht:
-            with open(f"{self.db_path}/my-ton-global.config.json") as f:
+        with open(f"{self.db_path}/dht-server/my-ton-global.config.json", 'w') as f_dht:
+            with open(f"{self.db_path}/my-ton-global.config.json", 'w') as f:
                 json.dump(own_net_config, f_dht)
                 json.dump(own_net_config, f)
