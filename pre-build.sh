@@ -1,6 +1,6 @@
 export REGISTRY=registry.head-labs.com
 export PUSH_TO_REGISTRY=false
-export VERSION=v0
+export VERSION=v1
 
 # Build base compile source
 

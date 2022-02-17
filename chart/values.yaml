@@ -23,11 +23,11 @@ imagePullSecrets:
 images:
   tonFullNode:
     name: ton/ton-node
-    version: mainnet-v0 # `v0` - is version from pre-build.sh
+    version: mainnet-v1 # `v0` - is version from pre-build.sh
 
   testnetFullNode:
     name: ton/ton-node
-    version: testnet-v0
+    version: testnet-v1
 
 ports:
   # MAINNET

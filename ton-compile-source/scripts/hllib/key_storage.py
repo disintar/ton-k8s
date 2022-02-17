@@ -42,7 +42,7 @@ class KeyStorage:
         if 'keyring_pub' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring_pub')
         else:
-            logging.debug(f"🔒 Keyring folder already exist, so need to change it")
+            logging.debug(f"👀 Keyring folder already exist, so no need to change it")
             return
 
         client_key_hex, client_key_b64 = self.get_key(f'/tmp/client', store_to_keyring=True)
