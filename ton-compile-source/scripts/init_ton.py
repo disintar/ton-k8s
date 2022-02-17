@@ -37,6 +37,7 @@ if __name__ == "__main__":
     config_path = '/tmp/config.json'
     db_path = '/var/ton-work/db'
     log_path = '/var/ton-work/log'
+    hard_rewrite = False
 
     if not config['GENESIS']:
         logger.info(f"Download config from 👾 [{config['CONFIG']}]")
@@ -45,6 +46,7 @@ if __name__ == "__main__":
         genesis = Genesis(db_path=db_path, config=config)
         genesis.run_genesis()
         success = True
+        hard_rewrite = True
 
     if success:
         #
@@ -73,7 +75,7 @@ if __name__ == "__main__":
         #
 
         key_storage = KeyStorage(db_path=db_path, config=config)
-        key_storage.init_console_client_keys()
+        key_storage.init_console_client_keys(hard_rewrite)
 
         logger.info(f"All stuff with keys done! 🤴\n"
                     f"I'll try to run full-node 4you 🤖")

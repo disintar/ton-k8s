@@ -14,6 +14,9 @@ class Genesis:
         self.key_storage = KeyStorage(db_path=db_path, config=config)
 
     def run_genesis(self):
+        if 'keyring' not in os.listdir(self.db_path):
+            os.mkdir(f'{self.db_path}/keyring')
+
         validator_key_hex, validator_key_b64 = self.key_storage.get_key(f'{self.db_path}/keyring/validator',
                                                                         store_to_keyring=True)
         logger.debug(f"🔑 Validator: b64: {validator_key_b64}, hex: {validator_key_hex}")
