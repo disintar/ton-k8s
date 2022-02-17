@@ -18,6 +18,7 @@ config = {
     "CONSOLE_PORT": int(os.getenv("CONSOLE_PORT", 46732)),
     "PUBLIC_PORT": int(os.getenv("PUBLIC_PORT", 50001)),
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
+    "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": cpu_count,
     "VERBOSE": 5
 }

@@ -5,6 +5,7 @@ import os
 from base64 import b64encode
 from typing import Tuple, List
 from hllib.command_line import run
+from hllib.kube_secrets import KubeConnector
 
 
 class KeyStorage:
@@ -16,6 +17,10 @@ class KeyStorage:
         """
         self.db_path = db_path
         self.config = config
+        self.kubernetes = None
+
+        if self.config['NAMESPACE']:
+            self.kubernetes = KubeConnector(self.config['NAMESPACE'])
 
     def get_key(self, path: str, store_to_keyring: bool = False):
         key_hex, key_b64 = KeyStorage.generate_key('keys', path)
@@ -65,6 +70,15 @@ class KeyStorage:
         fullnode_key_hex = base64.b64decode(fullnode_key_b64)
 
         logging.debug(f"🔑 FullNode: b64: {fullnode_key_b64}, hex: {fullnode_key_hex.hex().upper()}")
+
+        if self.kubernetes:
+            self.kubernetes.create_secret('ton-keys', {
+                'client': client_key_b64,
+                'server': server_key_b64,
+                'liteserver': liteserver_key_b64,
+                'fullnode': fullnode_key_b64,
+            })
+            logging.info(f"🧞 Saved keys to kube secret")
 
         ton_config['control'] = [{
             "id": server_key_b64,

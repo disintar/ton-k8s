@@ -27,7 +27,7 @@ class KubeConnector:
     def create_secret(self, name: str, data: dict) -> bool:
         data_encoded = {key: b64encode(data[key].encode()).decode() for key in data}
         self.api.create_namespaced_secret(self.namespace, {'data': data_encoded,
-                                                  'metadata': {'name': name}})
+                                                           'metadata': {'name': name}})
         return True
 
     def get_secret(self, name: str):
