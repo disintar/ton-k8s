@@ -21,7 +21,7 @@ class KeyStorage:
 
         if store_to_keyring:
             os.rename(path, f"{self.db_path}/keyring/{key_hex}")
-            os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_hex}")
+            os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_b64}.pub")
 
         return key_hex, key_b64
 
@@ -45,7 +45,7 @@ class KeyStorage:
         server_key_hex, server_key_b64 = self.get_key(f'/tmp/server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
 
-        client_key_hex, client_key_b64 = self.get_key(f'/tmp/client')
+        client_key_hex, client_key_b64 = self.get_key(f'/tmp/client', store_to_keyring=True)
         logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
 
         liteserver_key_hex, liteserver_key_b64 = self.get_key(f'/tmp/liteserver', store_to_keyring=True)
