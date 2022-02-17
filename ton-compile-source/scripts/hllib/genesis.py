@@ -86,8 +86,11 @@ class Genesis:
             "priority": 0,
             "expire_at": 0
         }
+
+        key = os.listdir(f'{self.db_path}/dht-server/keyring')[0]
         dht_nodes = run([
-            'generate-random-id', '-m', 'dht', '-k', 'keyring/*', '-a', json.dumps(nodes_info)
+            'generate-random-id', '-m', 'dht', '-k', f'{self.db_path}/dht-server/keyring/{key}', '-a',
+            json.dumps(nodes_info)
         ], cwd=f'{self.db_path}/dht-server')
 
         own_net_config = {
