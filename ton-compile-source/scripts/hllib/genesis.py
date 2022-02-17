@@ -8,6 +8,7 @@ from hllib.log import logger
 import base64 as b
 import struct
 import socket
+from pprint import pprint
 
 
 def ip2int(addr: str):
@@ -93,7 +94,7 @@ class Genesis:
             json.dumps(nodes_info)
         ], cwd=f'{self.db_path}/dht-server')
 
-        print(dht_nodes)
+        dht_nodes = json.loads(dht_nodes)
 
         own_net_config = {
             "@type": "config.global",
@@ -103,7 +104,7 @@ class Genesis:
                 "a": 3,
                 "static_nodes": {
                     "@type": "dht.nodes",
-                    "nodes": []
+                    "nodes": [dht_nodes]
                 }
             },
             "validator": {
@@ -124,3 +125,5 @@ class Genesis:
                 }
             }
         }
+
+        pprint(own_net_config)
