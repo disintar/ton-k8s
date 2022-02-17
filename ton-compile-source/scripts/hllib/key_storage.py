@@ -76,10 +76,10 @@ class KeyStorage:
         # Liteserver key
         #
         liteserver_signing_key, liteserver_verifying_key = self.get_key('liteserver', store_to_keyring=True)
-        liteserver_verifying_key_base64 = b64encode(liteserver_verifying_key.to_bytes()).decode()
+        liteserver_signing_key_base64 = b64encode(liteserver_signing_key.to_bytes()).decode()
 
         logging.debug(
-            f"🔑 Liteserver: b64: {liteserver_verifying_key_base64}, hex: {liteserver_verifying_key.to_bytes().hex().upper()}")
+            f"🔑 Liteserver: b64: {liteserver_signing_key_base64}, hex: {liteserver_signing_key.to_bytes().hex().upper()}")
         with open(f"{self.db_path}/config.json") as f:
             ton_config = json.load(f)
 
@@ -112,7 +112,7 @@ class KeyStorage:
         if self.config['LITESERVER']:
             ton_config['liteservers'] = [
                 {
-                    "id": liteserver_verifying_key_base64,
+                    "id": liteserver_signing_key_base64,
                     "port": self.config['LITESERVER_PORT']
                 }
             ]
