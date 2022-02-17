@@ -10,10 +10,11 @@ Docker images, python mini-lib, helm chart for comfortable [TON](https://ton.org
 | Lite-client for mainnet / testnet | ✅      |
 | Helm chart                        | ✅      |
 | K8s secrets for keys              | ✅      |
+| Custom ton network                | ⌛      |
 | Status page                       | ⌛      |
 | K8s resource limits               | ⌛      |
 | RPC API                           | ⌛      |
-| Custom ton network                | ⌛      |
+
 
 ### Files
 

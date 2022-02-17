@@ -4,6 +4,7 @@ import subprocess
 from pprint import pformat
 
 from hllib.command_line import run
+from hllib.genesis import Genesis
 from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
@@ -20,6 +21,7 @@ config = {
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": cpu_count,
+    "GENESIS": True,
     "VERBOSE": 3
 }
 
@@ -36,8 +38,13 @@ if __name__ == "__main__":
     db_path = '/var/ton-work/db'
     log_path = '/var/ton-work/log'
 
-    logger.info(f"Download config from 👾 [{config['CONFIG']}]")
-    success = download(config['CONFIG'], config_path)
+    if not config['GENESIS']:
+        logger.info(f"Download config from 👾 [{config['CONFIG']}]")
+        success = download(config['CONFIG'], config_path)
+    else:
+        genesis = Genesis(db_path=db_path, config=config)
+        genesis.run_genesis()
+        success = True
 
     if success:
         #
