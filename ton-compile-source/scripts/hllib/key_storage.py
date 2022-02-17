@@ -18,31 +18,22 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
 
-    def get_key(self, key_name: str, store_to_keyring: bool = False,
-                store_public_to_keyring: bool = False) -> Tuple[SigningKey, VerifyingKey]:
+    def get_key(self, key_name: str, store_to_keyring: bool = False, store_public_to_keyring: bool = False) -> Tuple[SigningKey, VerifyingKey]:
         """
         Create key pair and move key to db keyring if needed
 
         :param path: Where we need to create key
         :param store_to_keyring: Need to move private key to keyring?
-        :param store_public_to_keyring: Need to move public key to keyring?
         """
 
         signing_key, verifying_key = KeyStorage.generate_key()
 
         if store_to_keyring:
-            private_hex = signing_key.to_ascii(encoding='hex').decode()
+            public_hex = verifying_key.to_ascii(encoding='hex').decode()
             private_bytes = signing_key.to_bytes()
 
-            with open(f"{self.db_path}/keyring/{private_hex.upper()}", "wb") as f:
-                f.write(private_bytes)
-
-        if store_public_to_keyring:
-            public_hex = verifying_key.to_ascii(encoding='hex').decode()
-            public_bytes = verifying_key.to_bytes()
-
             with open(f"{self.db_path}/keyring/{public_hex.upper()}", "wb") as f:
-                f.write(public_bytes)
+                f.write(private_bytes)
 
         return signing_key, verifying_key
 
@@ -65,8 +56,7 @@ class KeyStorage:
         #
         # Server key
         #
-        server_signing_key, server_verifying_key = self.get_key('server', store_to_keyring=True,
-                                                                store_public_to_keyring=True)
+        server_signing_key, server_verifying_key = self.get_key('server', store_to_keyring=True)
         server_verifying_key_base64 = b64encode(server_verifying_key.to_bytes()).decode()
 
         logging.debug(
@@ -75,8 +65,7 @@ class KeyStorage:
         #
         # Client key
         #
-        client_signing_key, client_verifying_key = self.get_key('client', store_to_keyring=True,
-                                                                store_public_to_keyring=True)
+        client_signing_key, client_verifying_key = self.get_key('client', store_to_keyring=True)
         client_verifying_key_base64 = b64encode(client_verifying_key.to_bytes()).decode()
 
         logging.debug(
@@ -85,8 +74,7 @@ class KeyStorage:
         #
         # Liteserver key
         #
-        liteserver_signing_key, liteserver_verifying_key = self.get_key('liteserver', store_to_keyring=True,
-                                                                        store_public_to_keyring=True)
+        liteserver_signing_key, liteserver_verifying_key = self.get_key('liteserver', store_to_keyring=True)
         liteserver_verifying_key_base64 = b64encode(liteserver_verifying_key.to_bytes()).decode()
 
         logging.debug(
