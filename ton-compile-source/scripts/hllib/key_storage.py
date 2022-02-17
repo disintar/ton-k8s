@@ -95,10 +95,10 @@ class KeyStorage:
             ]
         }]
 
-        for index in enumerate(ton_config['adnl']):
-            if ton_config['adnl'][index]['category'] == 1:
+        for index, adnl in enumerate(ton_config['adnl']):
+            if adnl['category'] == 1:
                 ton_config['adnl'][index]['id'] = server_verifying_key_base64
-            elif ton_config['adnl'][index]['category'] == 0:
+            elif adnl['category'] == 0:
                 ton_config['adnl'][index]['id'] = client_verifying_key_base64
 
         ton_config['dht'][0]['id'] = client_verifying_key_base64
