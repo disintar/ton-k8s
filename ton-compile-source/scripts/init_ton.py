@@ -20,7 +20,7 @@ config = {
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": cpu_count,
-    "VERBOSE": 5
+    "VERBOSE": 3
 }
 
 logger.info("👋 Hi there!\n"
