@@ -16,12 +16,12 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
 
-    def get_key(self, key_name: str, store_to_keyring: bool = False):
-        path = f"{self.db_path}/keyring/"
+    def get_key(self, path: str, store_to_keyring: bool = False):
         key_hex, key_b64 = KeyStorage.generate_key('keys', path)
 
         if store_to_keyring:
             os.rename(path, f"{self.db_path}/keyring/{key_hex}")
+            os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_hex}")
 
         return key_hex, key_b64
 
@@ -35,6 +35,7 @@ class KeyStorage:
         # Check if keyring folder already exist and some keys contains in this folder
         if 'keyring' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring')
+            os.mkdir(f'{self.db_path}/keyring_pub')
         elif len(os.listdir(f"{self.db_path}/keyring")) == 0:
             logging.debug(f"🔒 Keyring folder already exist, but no keys found, so continue")
         else:
