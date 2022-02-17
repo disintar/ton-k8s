@@ -70,7 +70,7 @@ class Genesis:
         shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
 
         run(['dht-server', '-C', f'{self.db_path}/dht-server/example.json', '-D', '.', '-I',
-             f'{self.config["PUBLIC_IP"]}:{self.config["DHT_PORT"]}'])
+             f'{self.config["PUBLIC_IP"]}:{self.config["DHT_PORT"]}'], cwd=f'{self.db_path}/dht-server')
 
         nodes_info = {
             "@type": "adnl.addressList",
@@ -87,9 +87,8 @@ class Genesis:
             "expire_at": 0
         }
         dht_nodes = run([
-            'generate-random-id', '-m', 'dht', '-k', f'{self.db_path}/dht-server/keyring/*', '-a', json.dumps(nodes_info)
+            'generate-random-id', '-m', 'dht', '-k', 'keyring/*', '-a', json.dumps(nodes_info)
         ], cwd=f'{self.db_path}/dht-server')
-        print(dht_nodes)
 
         own_net_config = {
             "@type": "config.global",
