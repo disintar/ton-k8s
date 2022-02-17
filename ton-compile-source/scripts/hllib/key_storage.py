@@ -94,6 +94,8 @@ class KeyStorage:
             ]
         }]
 
+        ton_config['fullnode'] = server_verifying_key_base64
+
         # If we need to add liteserver keys - we will do it! 😁
         # https://ton.org/docs/#/howto/full-node?id=_9-setting-up-the-full-node-as-a-lite-server
         if self.config['LITESERVER']:
