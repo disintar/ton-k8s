@@ -55,17 +55,10 @@ class KeyStorage:
         # Now we can access our server via validator-engine-console
         # validator-engine-console -k client -p server.pub -a <IP>:<CLIENT-PORT>
 
-        server_key_b64 = None
-        server_key_hex = None
-        for index, adnl in enumerate(ton_config['adnl']):
-            if adnl['category'] == 1:
-                server_key_b64 = ton_config['adnl'][index]['id']
-                server_key_hex = base64.b64decode(server_key_b64)
+        server_key_b64 = ton_config['fullnode']
+        server_key_hex = base64.b64decode(server_key_b64)
 
-        if not server_key_hex or not server_key_b64:
-            raise ValueError("No keys found, please run validate-engine")
-
-        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
+        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex.decode().upper()}")
 
         ton_config['control'] = [{
             "id": server_key_b64,
@@ -77,8 +70,6 @@ class KeyStorage:
                 }
             ]
         }]
-
-        ton_config['fullnode'] = server_key_b64
 
         # If we need to add liteserver keys - we will do it! 😁
         # https://ton.org/docs/#/howto/full-node?id=_9-setting-up-the-full-node-as-a-lite-server
