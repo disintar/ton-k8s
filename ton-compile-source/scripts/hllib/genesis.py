@@ -26,7 +26,7 @@ class Genesis:
         with open(f"{self.db_path}/keyring_pub/{validator_key_hex}.pub", 'rb') as f:
             key_with_prefix = f.read()
 
-        with open(f"/var/ton-work/contracts/validator-keys.pub", 'rb') as f:
+        with open(f"/var/ton-work/contracts/validator-keys.pub", 'wb') as f:
             f.write(key_with_prefix)
 
         run(['/var/ton-work/contracts/create-state', 'gen-zerostate.fif'], cwd="/var/ton-work/contracts/")
