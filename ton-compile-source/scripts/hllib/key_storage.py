@@ -32,7 +32,7 @@ class KeyStorage:
             private_hex = signing_key.to_ascii(encoding='hex').decode()
             private_bytes = signing_key.to_bytes()
 
-            with open(f"{self.db_path}/keyring/{private_hex}", "wb") as f:
+            with open(f"{self.db_path}/keyring/{private_hex.upper()}", "wb") as f:
                 f.write(private_bytes)
 
         return signing_key, verifying_key
