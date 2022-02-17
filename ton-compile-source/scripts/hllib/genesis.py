@@ -69,7 +69,7 @@ class Genesis:
 
         shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
 
-        run(['dht-server', '-C', self.config_path, '-D', '.', '-I',
+        run(['dht-server', '-C', f'{self.db_path}/dht-server/example.json', '-D', '.', '-I',
              f'{self.config["PUBLIC_IP"]}:{self.config["DHT_PORT"]}'])
 
         nodes_info = {
