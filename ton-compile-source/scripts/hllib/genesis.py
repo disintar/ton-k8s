@@ -17,7 +17,7 @@ class Genesis:
         if 'keyring' not in os.listdir(self.db_path):
             os.mkdir(f'{self.db_path}/keyring')
         if 'keyring_pub' not in os.listdir(self.db_path):
-            os.mkdir(f'{self.db_path}/keyring')
+            os.mkdir(f'{self.db_path}/keyring_pub')
 
         validator_key_hex, validator_key_b64 = self.key_storage.get_key(f'{self.db_path}/keyring/validator',
                                                                         store_to_keyring=True)
