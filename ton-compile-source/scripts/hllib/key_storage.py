@@ -21,7 +21,7 @@ class KeyStorage:
 
         if store_to_keyring:
             os.rename(path, f"{self.db_path}/keyring/{key_hex}")
-            os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_b64}.pub")
+            os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_hex}.pub")
 
         return key_hex, key_b64
 
