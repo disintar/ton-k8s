@@ -58,7 +58,7 @@ class KeyStorage:
         server_key_b64 = ton_config['fullnode']
         server_key_hex = base64.b64decode(server_key_b64)
 
-        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex.decode().upper()}")
+        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex.hex().upper()}")
 
         ton_config['control'] = [{
             "id": server_key_b64,
