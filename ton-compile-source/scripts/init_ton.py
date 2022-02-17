@@ -46,6 +46,13 @@ if __name__ == "__main__":
         logger.info(f"Download success, initializing validator-engine 🤓")
 
         if 'config.json' not in os.listdir(db_path):
+            #
+            # Create / use keys
+            #
+
+            key_storage = KeyStorage(db_path=db_path, config=config)
+            key_storage.init_console_client_keys()
+
             # Main command from https://ton.org/docs/#/howto/full-node?id=_5-initializing-the-local-configuration
             initializing_command = [f"/usr/local/bin/validator-engine",
                                     "--global-config", f"{config_path}",
@@ -63,13 +70,13 @@ if __name__ == "__main__":
             # By default validator-engine creates keyring
             # But we want to use our "правильные" (meme) keys
             shutil.rmtree(f'{db_path}/keyring', ignore_errors=True)
+        else:
+            #
+            # Create / use keys
+            #
 
-        #
-        # Create / use keys
-        #
-
-        key_storage = KeyStorage(db_path=db_path, config=config)
-        key_storage.init_console_client_keys()
+            key_storage = KeyStorage(db_path=db_path, config=config)
+            key_storage.init_console_client_keys()
 
         logger.info(f"All stuff with keys done! 🤴"
                     f"I'll try to run full-node 4you 🤖")
