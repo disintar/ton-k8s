@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 import os
+import shutil
 from base64 import b64encode
 from typing import Tuple, List
 from hllib.command_line import run
@@ -26,8 +27,14 @@ class KeyStorage:
         key_hex, key_b64 = KeyStorage.generate_key('keys', path)
 
         if store_to_keyring:
+            name = path.split('/')[-1]
             os.rename(path, f"{self.db_path}/keyring/{key_hex}")
+            # copy to unfriendly name
+            shutil.copy(f"{self.db_path}/keyring/{key_hex}", f"{self.db_path}/keyring/{name}")
+
             os.rename(f"{path}.pub", f"{self.db_path}/keyring_pub/{key_hex}.pub")
+            # copy to unfriendly name
+            shutil.copy(f"{self.db_path}/keyring_pub/{key_hex}.pub", f"{self.db_path}/keyring_pub/{name}.pub")
 
         return key_hex, key_b64
 

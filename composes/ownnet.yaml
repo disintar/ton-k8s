@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  testnet:
-    container_name: testnet
+  genesis-dht-server:
+    container_name: genesis-dht-server
     image: ton-node-testnet
     environment:
       - CONFIG=https://newton-blockchain.github.io/testnet-global.config.json
@@ -10,4 +10,98 @@ services:
       - CONSOLE_PORT=30004
       - PUBLIC_PORT=30005
       - LITESERVER_PORT=30006
+      - GENESIS=True
+      - DHT_PORT=6302
+      - PUBLIC_IP=172.28.1.0
+    volumes:
+      - genesis:/var/ton-work/db
+      - config:/var/ton-work/network
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.0
 
+  validator:
+    container_name: validator
+    image: ton-node-testnet
+    environment:
+      - PRIVATE_CONFIG=true
+      - LITESERVER=true
+      - CONSOLE_PORT=30004
+      - PUBLIC_PORT=30005
+      - LITESERVER_PORT=30006
+      - DHT_PORT=6302
+      - PUBLIC_IP=172.28.1.1
+    volumes:
+      - genesis:/var/ton-work/db
+      - config:/var/ton-work/network
+    restart: always
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.1
+
+  onwnet-node:
+    container_name: onwnet-node
+    image: ton-node-testnet
+    restart: always
+
+    environment:
+      - LITESERVER=true
+      - CONSOLE_PORT=30004
+      - PUBLIC_PORT=30005
+      - LITESERVER_PORT=30006
+      - PRIVATE_CONFIG=true
+      - PUBLIC_IP=172.28.1.2
+    volumes:
+      - config:/var/ton-work/network
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.2
+
+  onwnet-node-1:
+    container_name: onwnet-node-1
+    image: ton-node-testnet
+    restart: always
+
+    environment:
+      - LITESERVER=true
+      - CONSOLE_PORT=30004
+      - PUBLIC_PORT=30005
+      - LITESERVER_PORT=30006
+      - PRIVATE_CONFIG=true
+      - PUBLIC_IP=172.28.1.3
+    volumes:
+      - config:/var/ton-work/network
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.3
+
+  onwnet-node-2:
+    container_name: onwnet-node-2
+    image: ton-node-testnet
+    restart: always
+
+    environment:
+      - LITESERVER=true
+      - CONSOLE_PORT=30004
+      - PUBLIC_PORT=30005
+      - LITESERVER_PORT=30006
+      - PRIVATE_CONFIG=true
+      - PUBLIC_IP=172.28.1.4
+    volumes:
+      - config:/var/ton-work/network
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.4
+
+volumes:
+  config:
+    external: false
+  genesis:
+    external: false
+
+networks:
+  testing_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16

@@ -13,7 +13,7 @@ ip = get_my_ip()
 cpu_count = os.cpu_count() - 1
 
 config = {
-    "PUBLIC_IP": ip,
+    "PUBLIC_IP": os.getenv('PUBLIC_IP', ip),
     "CONFIG": os.getenv('CONFIG', 'https://test.ton.org/ton-global.config.json'),
     "PRIVATE_CONFIG": os.getenv('PRIVATE_CONFIG', 'false') == 'true',
     "LITESERVER": os.getenv('LITESERVER', 'true') == 'true',  # convert to bool
@@ -23,7 +23,7 @@ config = {
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
-    "GENESIS": os.getenv("GENESIS", True),
+    "GENESIS": os.getenv("GENESIS", False),
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
 
@@ -36,13 +36,21 @@ logger.info("👋 Hi there!\n"
 
 if __name__ == "__main__":
     # First we need to download config of net
-    config_path = '/tmp/config.json'
+    config_path = '/var/ton-work/network/config.json'
+
+    if 'network' not in os.listdir("/var/ton-work/"):
+        os.mkdir("/var/ton-work/network")
+
     db_path = '/var/ton-work/db'
     log_path = '/var/ton-work/log'
     hard_rewrite = False
 
-    logger.info(f"Download config from 👾 [{config['CONFIG']}]")
-    download(config['CONFIG'], config_path)
+    if not config['PRIVATE_CONFIG']:
+        logger.info(f"Download config from 👾 [{config['CONFIG']}]")
+        download(config['CONFIG'], config_path)
+    else:
+        logger.info(f"Will use 🧬 GENESIS 🧬 config")
+        hard_rewrite = True
 
     if config['GENESIS']:
         logger.info(f"🧬 Run GENESIS 🧬")
@@ -80,6 +88,15 @@ if __name__ == "__main__":
 
     logger.info(f"All stuff with keys done! 🤴\n"
                 f"I'll try to run full-node 4you 🤖")
+
+    if config['PRIVATE_CONFIG']:
+        if 'keyring' in os.listdir('/var/ton-work/network'):
+            for file in os.listdir('/var/ton-work/network/keyring'):
+                shutil.copy(f'/var/ton-work/network/keyring/{file}', f"{db_path}/keyring/")
+
+        if 'keyring_pub' in os.listdir('/var/ton-work/network'):
+            for file in os.listdir('/var/ton-work/network/keyring_pub'):
+                shutil.copy(f'/var/ton-work/network/keyring_pub/{file}', f"{db_path}/keyring_pub/")
 
     run_command = [f"/usr/local/bin/validator-engine",
                    "--global-config", f"{config_path}",

@@ -34,6 +34,17 @@ class Genesis:
                                                                         store_to_keyring=True)
         logger.debug(f"🔑  Validator: b64: {validator_key_b64}, hex: {validator_key_hex}")
 
+        # save validator keys to other node
+        if 'keyring' not in os.listdir('/var/ton-work/network'):
+            os.mkdir('/var/ton-work/network/keyring')
+
+        if 'keyring_pub' not in os.listdir('/var/ton-work/network'):
+            os.mkdir('/var/ton-work/network/keyring_pub')
+
+        shutil.copy(f"{self.db_path}/keyring/{validator_key_hex}", '/var/ton-work/network/keyring/')
+        shutil.copy(f"{self.db_path}/keyring/validator", '/var/ton-work/network/keyring/')
+        shutil.copy(f"{self.db_path}/keyring_pub/validator.pub", '/var/ton-work/network/keyring_pub/')
+
         with open(f"{self.db_path}/keyring_pub/{validator_key_hex}.pub", 'rb') as f:
             key_with_prefix = f.read()
 
@@ -127,10 +138,10 @@ class Genesis:
             }
         }
 
-        with open(f"/tmp/config.json", 'w') as config_file:
+        with open(self.config_path, 'w') as config_file:
             json.dump(own_net_config, config_file)
 
         # dht-server -C my-ton-global.config.json -D . -I "$PUBLIC_IP:$DHT_PORT"&
-        command = ['dht-server', '-C', '/tmp/config.json', '-D', '.', '-I',
+        command = ['dht-server', '-C', self.config_path, '-D', '.', '-I',
                    f"{self.config['PUBLIC_IP']}:{self.config['DHT_PORT']}", '-v', '5']
         subprocess.run(command, cwd=f'{self.db_path}/dht-server/')

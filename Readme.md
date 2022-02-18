@@ -10,7 +10,7 @@ Docker images, python mini-lib, helm chart for comfortable [TON](https://ton.org
 | Lite-client for mainnet / testnet | ✅      |
 | Helm chart                        | ✅      |
 | K8s secrets for keys              | ✅      |
-| Custom ton network                | ⌛      |
+| Custom ton network                | ✅      |
 | Status page                       | ⌛      |
 | K8s resource limits               | ⌛      |
 | Compose                           | ⌛      |
@@ -59,7 +59,7 @@ Feel free to change environs in compose / helm
 
 ```
 config = {
-    "PUBLIC_IP": ip,
+    "PUBLIC_IP": os.getenv('PRIVATE_CONFIG', ip),
     "CONFIG": os.getenv('CONFIG', 'https://test.ton.org/ton-global.config.json'),
     "PRIVATE_CONFIG": os.getenv('PRIVATE_CONFIG', 'false') == 'true',
     "LITESERVER": os.getenv('LITESERVER', 'true') == 'true',  # convert to bool
@@ -72,4 +72,18 @@ config = {
     "GENESIS": os.getenv("GENESIS", False),
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
+```
+
+### Own-net locally
+
+Run:
+
+```
+./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
+```
+
+Down (and remove all volumes):
+
+```
+docker-compose -f ./composes/ownnet.yaml down -v --rmi all
 ```
