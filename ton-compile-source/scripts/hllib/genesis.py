@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import subprocess
 
 from hllib.command_line import run
 from hllib.key_storage import KeyStorage
@@ -126,7 +127,10 @@ class Genesis:
             }
         }
 
-        with open(f"{self.db_path}/dht-server/my-ton-global.config.json", 'w') as f_dht:
-            with open(f"{self.db_path}/my-ton-global.config.json", 'w') as f:
-                json.dump(own_net_config, f_dht)
-                json.dump(own_net_config, f)
+        with open(f"/tmp/config.json", 'w') as config_file:
+            json.dump(own_net_config, config_file)
+
+        # dht-server -C my-ton-global.config.json -D . -I "$PUBLIC_IP:$DHT_PORT"&
+        command = ['dht-server', '-C', '/tmp/config.json', '-D', '.', '-I',
+                   f"{self.config['PUBLIC_IP']}:{self.config['DHT_PORT']}"]
+        subprocess.run(command, cwd=f'{self.db_path}/dht-server/')
