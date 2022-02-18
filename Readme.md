@@ -82,7 +82,7 @@ Run:
 ./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
 ```
 
-Down (and remove all volumes):
+If you want to reset your private network - remove all volumes:
 
 ```
 docker-compose -f ./composes/ownnet.yaml down -v --rmi all

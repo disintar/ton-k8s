@@ -53,10 +53,17 @@ if __name__ == "__main__":
         hard_rewrite = True
 
     if config['GENESIS']:
-        logger.info(f"🧬 Run GENESIS 🧬")
-        genesis = Genesis(db_path=db_path, config=config, config_path=config_path)
-        genesis.run_genesis()
-        hard_rewrite = True
+        if len(os.listdir("/var/ton-work/network")) > 1:
+            print(os.listdir("/var/ton-work/network"))
+            # if StateInit already generated, just run dht server
+            command = ['dht-server', '-C', config_path, '-D', '.', '-I',
+                       f"{config['PUBLIC_IP']}:{config['DHT_PORT']}", '-v', '3']
+            subprocess.run(command, cwd=f'{db_path}/dht-server/')
+        else:
+            logger.info(f"🧬 Run GENESIS 🧬")
+            genesis = Genesis(db_path=db_path, config=config, config_path=config_path)
+            genesis.run_genesis()
+            hard_rewrite = True
 
     #
     # Init config.json
