@@ -132,5 +132,5 @@ class Genesis:
 
         # dht-server -C my-ton-global.config.json -D . -I "$PUBLIC_IP:$DHT_PORT"&
         command = ['dht-server', '-C', '/tmp/config.json', '-D', '.', '-I',
-                   f"{self.config['PUBLIC_IP']}:{self.config['DHT_PORT']}"]
+                   f"{self.config['PUBLIC_IP']}:{self.config['DHT_PORT']}", '-v', '5']
         subprocess.run(command, cwd=f'{self.db_path}/dht-server/')
