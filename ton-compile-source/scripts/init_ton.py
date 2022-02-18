@@ -23,7 +23,7 @@ config = {
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
-    "GENESIS": os.getenv("GENESIS", False),
+    "GENESIS": os.getenv("GENESIS", True),
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
 
