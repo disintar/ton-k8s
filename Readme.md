@@ -82,6 +82,13 @@ Run:
 ./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
 ```
 
+Change local validators count:
+
+```
+deploy:
+    replicas: 3
+```
+
 If you want to reset your private network - remove all volumes:
 
 ```

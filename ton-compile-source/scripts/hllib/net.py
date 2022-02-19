@@ -3,13 +3,16 @@ from typing import Optional
 import requests
 
 
-def get_my_ip() -> Optional[str]:
+def get_my_ip(mode: str = 'internet') -> Optional[str]:
     """Return public IP address"""
 
-    response = requests.get("https://ifconfig.me")
+    if mode == 'internet':
+        response = requests.get("https://ifconfig.me")
 
-    if response.status_code == 200:
-        return response.content.decode()
+        if response.status_code == 200:
+            return response.content.decode()
+    elif mode == 'docker':
+        return open('/etc/hosts').read().split()[-2]
 
 
 def download(url: str, path: str) -> bool:

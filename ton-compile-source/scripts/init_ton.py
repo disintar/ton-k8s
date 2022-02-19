@@ -9,7 +9,7 @@ from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
 
-ip = get_my_ip()
+ip = get_my_ip(os.getenv('IP_GET_MODE', 'internet'))
 cpu_count = os.cpu_count() - 1
 
 config = {
@@ -23,7 +23,7 @@ config = {
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
-    "GENESIS": os.getenv("GENESIS", False),
+    "GENESIS": os.getenv("GENESIS", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
 
@@ -53,8 +53,7 @@ if __name__ == "__main__":
         hard_rewrite = True
 
     if config['GENESIS']:
-        if len(os.listdir("/var/ton-work/network")) > 1:
-            print(os.listdir("/var/ton-work/network"))
+        if len(os.listdir("/var/ton-work/network")) > 3:
             # if StateInit already generated, just run dht server
             command = ['dht-server', '-C', config_path, '-D', '.', '-I',
                        f"{config['PUBLIC_IP']}:{config['DHT_PORT']}", '-v', '3']
