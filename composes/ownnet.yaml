@@ -42,6 +42,8 @@ services:
     depends_on:
       - "genesis"
       - "dht-server"
+    environment:
+      - GENESIS_VALIDATOR=true
     env_file:
       - 'genesis-common.env'
 

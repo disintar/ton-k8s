@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import multiprocessing
 
 from hllib.command_line import run
 from hllib.key_storage import KeyStorage
@@ -10,6 +11,7 @@ import base64 as b
 import struct
 import socket
 from pprint import pprint
+import time
 
 
 def ip2int(addr: str):
@@ -150,3 +152,81 @@ class Genesis:
 
         with open(self.config_path, 'w') as config_file:
             json.dump(own_net_config, config_file)
+
+    def setup_genesis_validator(self):
+        def run_validator(config_path, db_path, public_ip, public_port):
+            initializing_command = [f"/usr/local/bin/validator-engine",
+                                    "--global-config", f"{config_path}",
+                                    "--db", f"{db_path}",
+                                    "--ip", f"{public_ip}:{public_port}"]
+            logger.info("🦹 Run validator!")
+            run(initializing_command)
+
+        run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
+                      self.config['PUBLIC_PORT'])  # first run to init config
+
+        key_storage = KeyStorage(db_path=self.db_path, config=self.config, config_path=self.config_path)
+        key_storage.init_console_client_keys(True)
+
+        # run validator in thread to config new adnl / val id / ...
+        proc = multiprocessing.Process(target=run_validator, kwargs={
+            'config_path': self.config_path,
+            'db_path': self.db_path,
+            'public_ip': self.config['PUBLIC_IP'],
+            'public_port': self.config['PUBLIC_PORT']
+        })
+        proc.start()
+
+        command = ["validator-engine-console", "-k",
+                   f"{self.db_path}/keyring/client", "-p", f"{self.db_path}/keyring_pub/server.pub",
+                   "-v", "0", "-a", f"{self.config['PUBLIC_IP']}:{self.config['CONSOLE_PORT']}", "-rc"]
+        print(" ".join(command))
+        validator_hex = os.listdir('/var/ton-work/network/keyring/')
+        if 'validator' in validator_hex:
+            validator_hex.remove('validator')
+        validator_hex = validator_hex[0]
+
+        node_key = run([*command, 'newkey']).split()[-1]
+        validator_adnl = run([*command, 'newkey']).split()[-1]
+
+        logger.info(
+            f"🐼 \tNode key: {node_key}\n🥶\tValidator ADNL: {validator_adnl}\n✌\tValidator HEX: {validator_hex}")
+
+        valid_from = 0
+        valid_to = int(time.time() + 31414590)
+
+        tmp_command = [*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"])
+
+        tmp_command = [*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"])
+
+        adnl_category = 0
+
+        tmp_command = [*command, f"addadnl {validator_adnl} {adnl_category}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addadnl {validator_adnl} {adnl_category}"])
+
+        tmp_command = [*command, f"addadnl {validator_hex} {adnl_category}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addadnl {validator_hex} {adnl_category}"])
+
+        tmp_command = [*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"])
+
+        tmp_command = [*command, f"addadnl {node_key} 0"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"addadnl {node_key} 0"])
+
+        tmp_command = [*command, f"changefullnodeaddr {node_key}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"changefullnodeaddr {node_key}"])
+
+        tmp_command = [*command, f"importf /var/ton-work/network/keyring/{validator_hex}"]
+        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
+        run([*command, f"importf /var/ton-work/network/keyring/{validator_hex}"])
+
+        proc.terminate()

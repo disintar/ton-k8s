@@ -25,6 +25,7 @@ config = {
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
     "GENESIS": os.getenv("GENESIS", False) == 'true',
+    "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
 
@@ -64,14 +65,22 @@ if __name__ == "__main__":
             logger.info(f"🧬 Run GENESIS process 🧬")
             genesis = Genesis(db_path=db_path, config=config, config_path=config_path)
             genesis.run_genesis()
+
         sys.exit(0)
 
-    if config['DHT_PORT']:
+    elif config['GENESIS_VALIDATOR']:
+        logger.info(f"🧬 Run GENESIS VALIDATOR process 🧬")
+        genesis = Genesis(db_path=db_path, config=config, config_path=config_path)
+        genesis.setup_genesis_validator()
+
+    elif config['DHT_PORT']:
         logger.info("🥂 Start DHT server...")
         # if StateInit already generated, just run dht server
         command = ['dht-server', '-C', config_path, '-D', '.', '-I',
                    f"{config['PUBLIC_IP']}:{config['DHT_PORT']}", '-v', str(config['VERBOSE'])]
         subprocess.run(command, cwd=f'{db_path}/dht-server/')
+
+        sys.exit(0)
 
     #
     # Init config.json
@@ -124,7 +133,6 @@ if __name__ == "__main__":
 
 else:
     logger.error("Can't download config, please do something 😩")
-
 
 """
 
