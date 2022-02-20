@@ -114,7 +114,7 @@ class KeyStorage:
 
         # If we need to add liteserver keys - we will do it! 😁
         # https://ton.org/docs/#/howto/full-node?id=_9-setting-up-the-full-node-as-a-lite-server
-        if self.config['LITESERVER']:
+        if self.config['LITESERVER'] and not self.config['GENESIS_VALIDATOR']:
             ton_config['liteservers'] = [
                 {
                     "id": liteserver_key_b64,

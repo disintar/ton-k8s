@@ -39,11 +39,9 @@ class Genesis:
         logger.debug(f"🔑  Validator: b64: {validator_key_b64}, hex: {validator_key_hex}")
 
         # save validator keys to other node
-        if 'keyring' not in os.listdir('/var/ton-work/network'):
-            os.mkdir('/var/ton-work/network/keyring')
-
-        if 'keyring_pub' not in os.listdir('/var/ton-work/network'):
-            os.mkdir('/var/ton-work/network/keyring_pub')
+        for item in ['keyring', 'keyring_pub', 'wallet']:
+            if item not in os.listdir('/var/ton-work/network/'):
+                os.mkdir(f'/var/ton-work/network/{item}')
 
         shutil.copy(f"{self.db_path}/keyring/{validator_key_hex}", '/var/ton-work/network/keyring/')
         shutil.copy(f"{self.db_path}/keyring/validator", '/var/ton-work/network/keyring/')
@@ -57,6 +55,11 @@ class Genesis:
 
         run(['/var/ton-work/contracts/create-state', '-I', '/usr/local/lib/fift/lib', 'gen-zerostate.fif'],
             cwd="/var/ton-work/contracts/")
+
+        # shutil.copy("/var/ton-work/contracts/main-val-wallet.pk", "/var/ton-work/network/wallet/")
+        shutil.copy("/var/ton-work/contracts/main-wallet.pk", "/var/ton-work/network/wallet/")
+        shutil.copy("/var/ton-work/contracts/main-wallet.addr", "/var/ton-work/network/wallet/")
+        shutil.copy("/var/ton-work/contracts/wallet.fif", "/var/ton-work/network/wallet/")
 
         with open(f"/var/ton-work/contracts/zerostate.fhash", 'rb') as f:
             zerostate_hex = f.read().hex().upper()
@@ -154,13 +157,16 @@ class Genesis:
             json.dump(own_net_config, config_file)
 
     def setup_genesis_validator(self):
-        def run_validator(config_path, db_path, public_ip, public_port):
+        def run_validator(config_path, db_path, public_ip, public_port, popen: bool = False):
             initializing_command = [f"/usr/local/bin/validator-engine",
                                     "--global-config", f"{config_path}",
                                     "--db", f"{db_path}",
                                     "--ip", f"{public_ip}:{public_port}"]
             logger.info("🦹 Run validator!")
-            run(initializing_command)
+            if not popen:
+                run(initializing_command)
+            else:
+                return subprocess.Popen(args=initializing_command)
 
         run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
                       self.config['PUBLIC_PORT'])  # first run to init config
@@ -169,18 +175,13 @@ class Genesis:
         key_storage.init_console_client_keys(True)
 
         # run validator in thread to config new adnl / val id / ...
-        proc = multiprocessing.Process(target=run_validator, kwargs={
-            'config_path': self.config_path,
-            'db_path': self.db_path,
-            'public_ip': self.config['PUBLIC_IP'],
-            'public_port': self.config['PUBLIC_PORT']
-        })
-        proc.start()
+        proc = run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
+                             self.config['PUBLIC_PORT'], True)
 
         command = ["validator-engine-console", "-k",
                    f"{self.db_path}/keyring/client", "-p", f"{self.db_path}/keyring_pub/server.pub",
                    "-v", "0", "-a", f"{self.config['PUBLIC_IP']}:{self.config['CONSOLE_PORT']}", "-rc"]
-        print(" ".join(command))
+
         validator_hex = os.listdir('/var/ton-work/network/keyring/')
         if 'validator' in validator_hex:
             validator_hex.remove('validator')
@@ -229,4 +230,45 @@ class Genesis:
         logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"importf /var/ton-work/network/keyring/{validator_hex}"])
 
+        logger.debug("🔫 Terminate process with validator")
         proc.terminate()
+
+        liteserver_key_hex, liteserver_key_b64, liteserver_pub_key_b64 = self.key_storage.get_key(
+            f'{self.db_path}/keyring/liteserver',
+            store_to_keyring=True, get_pub=True)
+
+        logger.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
+
+        with open(f"{self.db_path}/config.json") as f:
+            ton_config = json.load(f)
+
+        ton_config['liteservers'] = [
+            {
+                "id": liteserver_key_b64,
+                "port": self.config['LITESERVER_PORT']
+            }
+        ]
+
+        with open(self.config_path, 'r') as f:
+            data = json.load(f)
+
+        if 'liteservers' not in data:
+            data['liteservers'] = []
+
+        data['liteservers'].append({
+            "ip": ip2int(self.config['PUBLIC_IP']),
+            "port": int(self.config['LITESERVER_PORT']),
+            "id": {
+                "@type": "pub.ed25519",
+                "key": liteserver_pub_key_b64
+            }
+        })
+
+        with open(self.config_path, 'w') as f:
+            json.dump(data, f)
+
+        with open(f"{self.db_path}/config.json", "w") as f:
+            json.dump(ton_config, f, indent=4)
+
+        # TODO: fix, catch LOCK files in db
+        time.sleep(3)

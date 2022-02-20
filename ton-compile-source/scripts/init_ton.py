@@ -133,19 +133,3 @@ if __name__ == "__main__":
 
 else:
     logger.error("Can't download config, please do something 😩")
-
-"""
-
-read -r t1 t2 t3 NEW_NODE_KEY <<< $(echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "newkey"|tail -n 1)
-read -r t1 t2 t3 NEW_VAL_ADNL <<< $(echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "newkey"|tail -n 1)
-
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addpermkey $VAL_ID_HEX 0 $(($(date +"%s")+31414590))" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addtempkey $VAL_ID_HEX $VAL_ID_HEX $(($(date +"%s")+31414590))" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $NEW_VAL_ADNL 0" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $VAL_ID_HEX 0" 2>&1
-
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addvalidatoraddr $VAL_ID_HEX $NEW_VAL_ADNL $(($(date +"%s")+31414590))" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $NEW_NODE_KEY 0" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "changefullnodeaddr $NEW_NODE_KEY" 2>&1
-echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a "$PUBLIC_IP:$CONSOLE_PORT" -rc "importf keyring/$VAL_ID_HEX" 2>&1
-"""

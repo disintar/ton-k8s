@@ -56,11 +56,10 @@ Libs{
   x{ABACABADABACABA} s>c public_lib
   x{1234} x{5678} |_ s>c private_lib
 }Libs  // libraries
-GR$4999990000 // balance
+GR$100000 // balance
 0 // split_depth
 0 // ticktock
-AllOnes 0 * // address
-6 // mode: create+setaddr
+2 // mode: create+setaddr
 register_smc
 dup make_special dup constant smc1_addr
 Masterchain over

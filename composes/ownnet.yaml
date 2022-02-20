@@ -46,19 +46,19 @@ services:
       - GENESIS_VALIDATOR=true
     env_file:
       - 'genesis-common.env'
-
-  onwnet-node:
-    image: ton-node-testnet
-    restart: always
-    volumes:
-      - config:/var/ton-work/network
-    depends_on:
-      - "genesis"
-      - "validator"
-    env_file:
-      - 'genesis-common.env'
-    deploy:
-      replicas: 3
+#
+#  onwnet-node:
+#    image: ton-node-testnet
+#    restart: always
+#    volumes:
+#      - config:/var/ton-work/network
+#    depends_on:
+#      - "genesis"
+#      - "validator"
+#    env_file:
+#      - 'genesis-common.env'
+#    deploy:
+#      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
 
 
 volumes:
