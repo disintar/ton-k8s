@@ -1,55 +1,73 @@
-version: '3'
+version: '3.4'
 
 services:
-  genesis-dht-server:
-    container_name: genesis-dht-server
+  genesis:
+    container_name: genesis
     image: ton-node-testnet
     environment:
-      - CONFIG=https://newton-blockchain.github.io/testnet-global.config.json
-      - LITESERVER=true
-      - CONSOLE_PORT=30004
-      - PUBLIC_PORT=30005
-      - LITESERVER_PORT=30006
       - GENESIS=true
+      - PRIVATE_CONFIG=false
+      - PUBLIC_IP=172.28.1.1
       - DHT_PORT=6302
-      - IP_GET_MODE=docker
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
+    env_file:
+      - 'genesis-common.env'
+
+  dht-server:
+    container_name: dht-server
+    image: ton-node-testnet
+    environment:
+      - DHT_PORT=6302
+    volumes:
+      - genesis:/var/ton-work/db
+      - config:/var/ton-work/network
+    env_file:
+      - 'genesis-common.env'
+    depends_on:
+      - "genesis"
+    networks:
+      default:
+        ipv4_address: 172.28.1.1
+
 
   validator:
     container_name: validator
     image: ton-node-testnet
-    environment:
-      - PRIVATE_CONFIG=true
-      - LITESERVER=true
-      - CONSOLE_PORT=30004
-      - PUBLIC_PORT=30005
-      - LITESERVER_PORT=30006
-      - DHT_PORT=6302
-      - IP_GET_MODE=docker
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
     restart: always
+    depends_on:
+      - "genesis"
+      - "dht-server"
+    env_file:
+      - 'genesis-common.env'
 
   onwnet-node:
     image: ton-node-testnet
     restart: always
-    environment:
-      - LITESERVER=true
-      - CONSOLE_PORT=30004
-      - PUBLIC_PORT=30005
-      - LITESERVER_PORT=30006
-      - PRIVATE_CONFIG=true
-      - IP_GET_MODE=docker
     volumes:
       - config:/var/ton-work/network
+    depends_on:
+      - "genesis"
+      - "validator"
+    env_file:
+      - 'genesis-common.env'
     deploy:
       replicas: 3
+
 
 volumes:
   config:
     external: false
   genesis:
     external: false
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16

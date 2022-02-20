@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import sys
 from pprint import pformat
 
 from hllib.command_line import run
@@ -19,13 +20,16 @@ config = {
     "LITESERVER": os.getenv('LITESERVER', 'true') == 'true',  # convert to bool
     "CONSOLE_PORT": int(os.getenv("CONSOLE_PORT", 46732)),
     "PUBLIC_PORT": int(os.getenv("PUBLIC_PORT", 50001)),
-    "DHT_PORT": int(os.getenv("DHT_PORT", 6302)),
+    "DHT_PORT": os.getenv("DHT_PORT", None),
     "LITESERVER_PORT": int(os.getenv("LITESERVER_PORT", 43680)),
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
     "GENESIS": os.getenv("GENESIS", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
+
+if config['DHT_PORT'] is not None:
+    config['DHT_PORT'] = int(config['DHT_PORT'])
 
 logger.info("👋 Hi there!\n"
             f"My config:\n"
@@ -53,16 +57,21 @@ if __name__ == "__main__":
         hard_rewrite = True
 
     if config['GENESIS']:
-        if len(os.listdir("/var/ton-work/network")) > 3:
-            # if StateInit already generated, just run dht server
-            command = ['dht-server', '-C', config_path, '-D', '.', '-I',
-                       f"{config['PUBLIC_IP']}:{config['DHT_PORT']}", '-v', '3']
-            subprocess.run(command, cwd=f'{db_path}/dht-server/')
-        else:
-            logger.info(f"🧬 Run GENESIS 🧬")
+        files = os.listdir("/var/ton-work/network")
+
+        if not os.path.exists(f'{db_path}/dht-server/') \
+                or len(os.listdir(f'{db_path}/dht-server/')) < 1:
+            logger.info(f"🧬 Run GENESIS process 🧬")
             genesis = Genesis(db_path=db_path, config=config, config_path=config_path)
             genesis.run_genesis()
-            hard_rewrite = True
+        sys.exit(0)
+
+    if config['DHT_PORT']:
+        logger.info("🥂 Start DHT server...")
+        # if StateInit already generated, just run dht server
+        command = ['dht-server', '-C', config_path, '-D', '.', '-I',
+                   f"{config['PUBLIC_IP']}:{config['DHT_PORT']}", '-v', str(config['VERBOSE'])]
+        subprocess.run(command, cwd=f'{db_path}/dht-server/')
 
     #
     # Init config.json
@@ -89,7 +98,7 @@ if __name__ == "__main__":
     # Create / use keys
     #
 
-    key_storage = KeyStorage(db_path=db_path, config=config)
+    key_storage = KeyStorage(db_path=db_path, config=config, config_path=config_path)
     key_storage.init_console_client_keys(hard_rewrite)
 
     logger.info(f"All stuff with keys done! 🤴\n"
@@ -115,3 +124,20 @@ if __name__ == "__main__":
 
 else:
     logger.error("Can't download config, please do something 😩")
+
+
+"""
+
+read -r t1 t2 t3 NEW_NODE_KEY <<< $(echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "newkey"|tail -n 1)
+read -r t1 t2 t3 NEW_VAL_ADNL <<< $(echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "newkey"|tail -n 1)
+
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addpermkey $VAL_ID_HEX 0 $(($(date +"%s")+31414590))" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addtempkey $VAL_ID_HEX $VAL_ID_HEX $(($(date +"%s")+31414590))" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $NEW_VAL_ADNL 0" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $VAL_ID_HEX 0" 2>&1
+
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addvalidatoraddr $VAL_ID_HEX $NEW_VAL_ADNL $(($(date +"%s")+31414590))" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "addadnl $NEW_NODE_KEY 0" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a  "$PUBLIC_IP:$CONSOLE_PORT" -rc "changefullnodeaddr $NEW_NODE_KEY" 2>&1
+echo | validator-engine-console -k keyring/client -p keyring_pub/server.pub -v 0 -a "$PUBLIC_IP:$CONSOLE_PORT" -rc "importf keyring/$VAL_ID_HEX" 2>&1
+"""

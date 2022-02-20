@@ -136,10 +136,10 @@ Masterchain swap
 // max-validators max-main-validators min-validators
 1000 100 3 config.validator_num!
 // min-stake max-stake min-total-stake max-factor
-GR$10000 GR$10000000 GR$30000 sg~3 config.validator_stake_limits!
+GR$10000 GR$100000 GR$30000 sg~10 config.validator_stake_limits!
 // elected-for elect-start-before elect-end-before stakes-frozen-for
 // 400000 200000 4000 400000 config.election_params!
-4000 2000 500 1000 config.election_params!  // DEBUG
+200 190 10 10 config.election_params!  // DEBUG
 // config-addr = -1:5555...5555
 AllOnes 5 * constant config_addr
 config_addr config.config_smc!
@@ -159,7 +159,7 @@ config.special!
 // mc-cc-lifetime sh-cc-lifetime sh-val-lifetime sh-val-num mc-shuffle
 250 250 5500 7 true config.catchain_params!
 // round-candidates next-cand-delay-ms consensus-timeout-ms fast-attempts attempt-duration cc-max-deps max-block-size max-collated-size new-cc-ids
-3 1000 16000 3 8 4 2 *Mi 2 *Mi true config.consensus_params!
+3 10000 64000 3 8 4 2 *Mi 2 *Mi true config.consensus_params!
 
 128 *Ki 512 *Ki 1 *Mi triple  // [ underload soft hard ] : block bytes limit
 100000 500000 1000000 triple  // gas limits
@@ -192,7 +192,7 @@ GR$100 1 500 config.complaint_prices!
 // 17 add-validator
 // newkeypair nip dup ."Validator #2 public key = " Bx. cr
 // 239 add-validator
-2000 =: orig_vset_valid_for  // original validator set valid 2000 seconds
+400 =: orig_vset_valid_for  // original validator set valid 2000 seconds
 now dup orig_vset_valid_for + 0 config.validators!
 
 /*

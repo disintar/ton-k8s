@@ -4,13 +4,14 @@ import logging
 import os
 import shutil
 from base64 import b64encode
+from time import sleep
 from typing import Tuple, List
 from hllib.command_line import run
 from hllib.kube_secrets import KubeConnector
 
 
 class KeyStorage:
-    def __init__(self, db_path: str, config: dict):
+    def __init__(self, db_path: str, config: dict, config_path: str):
         """
         We can run Docker locally or in k8s cluster
         If we use k8s cluster - we need to take care of public / private keys
@@ -18,12 +19,13 @@ class KeyStorage:
         """
         self.db_path = db_path
         self.config = config
+        self.config_path = config_path
         self.kubernetes = None
 
         if self.config['NAMESPACE']:
             self.kubernetes = KubeConnector(self.config['NAMESPACE'])
 
-    def get_key(self, path: str, store_to_keyring: bool = False):
+    def get_key(self, path: str, store_to_keyring: bool = False, get_pub: bool = False):
         key_hex, key_b64 = KeyStorage.generate_key('keys', path)
 
         if store_to_keyring:
@@ -36,7 +38,15 @@ class KeyStorage:
             # copy to unfriendly name
             shutil.copy(f"{self.db_path}/keyring_pub/{key_hex}.pub", f"{self.db_path}/keyring_pub/{name}.pub")
 
-        return key_hex, key_b64
+            if get_pub:
+                with open(f"{self.db_path}/keyring_pub/{name}.pub", "rb") as f:
+                    public_b64 = base64.b64encode(f.read()[4:]).decode()
+
+        answer = [key_hex, key_b64]
+        if get_pub:
+            answer.append(public_b64)
+
+        return answer
 
     def init_console_client_keys(self, hard_rewrite: bool = False):
         """
@@ -64,8 +74,10 @@ class KeyStorage:
         server_key_hex, server_key_b64 = self.get_key(f'{self.db_path}/keyring/server', store_to_keyring=True)
         logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
 
-        liteserver_key_hex, liteserver_key_b64 = self.get_key(f'{self.db_path}/keyring/liteserver',
-                                                              store_to_keyring=True)
+        liteserver_key_hex, liteserver_key_b64, liteserver_pub_key_b64 = self.get_key(
+            f'{self.db_path}/keyring/liteserver',
+            store_to_keyring=True, get_pub=True)
+
         logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
         with open(f"{self.db_path}/config.json") as f:
@@ -109,6 +121,38 @@ class KeyStorage:
                     "port": self.config['LITESERVER_PORT']
                 }
             ]
+
+            if self.config['PRIVATE_CONFIG'] and os.path.exists(self.config_path):
+                # TODO: fix hardcode
+                path = self.config_path.replace('config.json', '')[:-1]
+                while '.lock' in os.listdir(path):
+                    sleep(1)
+                    logging.info("😴 Wait until lock file will be removed")
+
+                with open(f"{path}/.lock", 'w') as f:
+                    f.write('')
+
+                with open(self.config_path, 'r') as f:
+                    data = json.load(f)
+
+                from hllib.genesis import ip2int
+
+                if 'liteservers' not in data:
+                    data['liteservers'] = []
+
+                data['liteservers'].append({
+                    "ip": ip2int(self.config['PUBLIC_IP']),
+                    "port": int(self.config['LITESERVER_PORT']),
+                    "id": {
+                        "@type": "pub.ed25519",
+                        "key": liteserver_pub_key_b64
+                    }
+                })
+
+                with open(self.config_path, 'w') as f:
+                    json.dump(data, f)
+
+                os.remove(f"{path}/.lock")
 
         with open(f"{self.db_path}/config.json", "w") as f:
             json.dump(ton_config, f, indent=4)
