@@ -2,6 +2,30 @@
 
 Docker images, python mini-lib, helm chart for comfortable [TON](https://ton.org) infrastructure
 
+
+### Own-net locally
+
+Run:
+
+```
+./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
+```
+
+(you need to wait some time while network is starting)
+
+Change local validators count:
+
+```
+deploy:
+    replicas: 3
+```
+
+If you want to reset your private network - remove all volumes:
+
+```
+docker-compose -f ./composes/ownnet.yaml down -v --rmi all
+```
+
 ## Features
 
 | Feature name                      | Status |
@@ -72,27 +96,4 @@ config = {
     "GENESIS": os.getenv("GENESIS", False),
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
-```
-
-### Own-net locally
-
-Run:
-
-```
-./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
-```
-
-(you need to wait some time while network is starting)
-
-Change local validators count:
-
-```
-deploy:
-    replicas: 3
-```
-
-If you want to reset your private network - remove all volumes:
-
-```
-docker-compose -f ./composes/ownnet.yaml down -v --rmi all
 ```
