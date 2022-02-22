@@ -35,8 +35,6 @@ ENV FIFTPATH /usr/local/lib/fift
 RUN cp -r /ton/crypto/fift/lib /usr/local/lib/fift
 RUN mkdir /var/ton-work/contracts
 RUN cp -r /ton/crypto/smartcont/* /var/ton-work/contracts
-ADD ./contracts/gen-zerostate.fif /var/ton-work/contracts
-RUN cp /ton/build/crypto/create-state /var/ton-work/contracts
 RUN cp /ton/build/dht-server/dht-server /usr/local/bin
 RUN cp /ton/build/rldp-http-proxy/rldp-http-proxy /usr/local/bin
 
@@ -46,4 +44,7 @@ RUN mkdir /var/ton-work/scripts
 COPY ./scripts/requirements.txt /var/ton-work/
 RUN pip install -r /var/ton-work/requirements.txt
 
+ADD ./contracts/gen-zerostate.fif /var/ton-work/contracts
+ADD ./contracts/wallet.fif /var/ton-work/contracts/valik-wallet.fif
+RUN cp /ton/build/crypto/create-state /var/ton-work/contracts
 ADD ./scripts/ /var/ton-work/scripts/

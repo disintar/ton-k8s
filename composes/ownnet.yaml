@@ -3,7 +3,7 @@ version: '3.4'
 services:
   genesis:
     container_name: genesis
-    image: ton-node-testnet
+    image: ton-node-mainnet
     environment:
       - GENESIS=true
       - PRIVATE_CONFIG=false
@@ -17,7 +17,7 @@ services:
 
   dht-server:
     container_name: dht-server
-    image: ton-node-testnet
+    image: ton-node-mainnet
     environment:
       - DHT_PORT=6302
     volumes:
@@ -34,7 +34,7 @@ services:
 
   validator:
     container_name: validator
-    image: ton-node-testnet
+    image: ton-node-mainnet
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
@@ -46,19 +46,19 @@ services:
       - GENESIS_VALIDATOR=true
     env_file:
       - 'genesis-common.env'
-#
-#  onwnet-node:
-#    image: ton-node-testnet
-#    restart: always
-#    volumes:
-#      - config:/var/ton-work/network
-#    depends_on:
-#      - "genesis"
-#      - "validator"
-#    env_file:
-#      - 'genesis-common.env'
-#    deploy:
-#      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
+
+  ownnet-node:
+    image: ton-node-mainnet
+    restart: always
+    volumes:
+      - config:/var/ton-work/network
+    depends_on:
+      - "genesis"
+      - "validator"
+    env_file:
+      - 'genesis-common.env'
+    deploy:
+      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
 
 
 volumes:

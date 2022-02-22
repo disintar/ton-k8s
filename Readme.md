@@ -82,6 +82,8 @@ Run:
 ./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
 ```
 
+(you need to wait some time while network is starting)
+
 Change local validators count:
 
 ```

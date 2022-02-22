@@ -3,12 +3,14 @@ import shutil
 import subprocess
 import sys
 from pprint import pformat
+from time import sleep
 
 from hllib.command_line import run
 from hllib.genesis import Genesis
 from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
+from hllib.validator_auto import ValidatorAuto
 
 ip = get_my_ip(os.getenv('IP_GET_MODE', 'internet'))
 cpu_count = os.cpu_count() - 1
@@ -26,7 +28,7 @@ config = {
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
     "GENESIS": os.getenv("GENESIS", False) == 'true',
     "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
-    "VERBOSE": os.getenv("VERBOSE", 3)
+    "VERBOSE": os.getenv("VERBOSE", 0)
 }
 
 if config['DHT_PORT'] is not None:
@@ -121,6 +123,9 @@ if __name__ == "__main__":
         if 'keyring_pub' in os.listdir('/var/ton-work/network'):
             for file in os.listdir('/var/ton-work/network/keyring_pub'):
                 shutil.copy(f'/var/ton-work/network/keyring_pub/{file}', f"{db_path}/keyring_pub/")
+
+    validator = ValidatorAuto(db_path=db_path, config=config, config_path=config_path)
+    validator.start()
 
     run_command = [f"/usr/local/bin/validator-engine",
                    "--global-config", f"{config_path}",

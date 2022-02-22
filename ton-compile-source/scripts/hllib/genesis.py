@@ -56,10 +56,14 @@ class Genesis:
         run(['/var/ton-work/contracts/create-state', '-I', '/usr/local/lib/fift/lib', 'gen-zerostate.fif'],
             cwd="/var/ton-work/contracts/")
 
-        # shutil.copy("/var/ton-work/contracts/main-val-wallet.pk", "/var/ton-work/network/wallet/")
+        # validator wallet
+        shutil.copy("/var/ton-work/contracts/valik.pk", "/var/ton-work/network/wallet/")
+        shutil.copy("/var/ton-work/contracts/valik-wallet.fif", "/var/ton-work/network/wallet/")
+
+        # main wallet
         shutil.copy("/var/ton-work/contracts/main-wallet.pk", "/var/ton-work/network/wallet/")
         shutil.copy("/var/ton-work/contracts/main-wallet.addr", "/var/ton-work/network/wallet/")
-        shutil.copy("/var/ton-work/contracts/wallet.fif", "/var/ton-work/network/wallet/")
+        shutil.copy("/var/ton-work/contracts/wallet.fif", "/var/ton-work/network/wallet/main-wallet.fif")
 
         with open(f"/var/ton-work/contracts/zerostate.fhash", 'rb') as f:
             zerostate_hex = f.read().hex().upper()
@@ -197,37 +201,29 @@ class Genesis:
         valid_to = int(time.time() + 31414590)
 
         tmp_command = [*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"])
 
         tmp_command = [*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"])
 
         adnl_category = 0
 
         tmp_command = [*command, f"addadnl {validator_adnl} {adnl_category}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addadnl {validator_adnl} {adnl_category}"])
 
         tmp_command = [*command, f"addadnl {validator_hex} {adnl_category}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addadnl {validator_hex} {adnl_category}"])
 
         tmp_command = [*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"])
 
         tmp_command = [*command, f"addadnl {node_key} 0"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"addadnl {node_key} 0"])
 
         tmp_command = [*command, f"changefullnodeaddr {node_key}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"changefullnodeaddr {node_key}"])
 
         tmp_command = [*command, f"importf /var/ton-work/network/keyring/{validator_hex}"]
-        logger.debug(f"🐼 RUN: {' '.join(tmp_command)}")
         run([*command, f"importf /var/ton-work/network/keyring/{validator_hex}"])
 
         logger.debug("🔫 Terminate process with validator")
