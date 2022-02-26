@@ -1,4 +1,4 @@
----
+{{- if .Values.run.testnet -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -12,3 +12,4 @@ spec:
     requests:
       storage:  {{ .Values.persistent.testnetFullNode.storageSize }}
 ---
+{{- end }}

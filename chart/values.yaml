@@ -2,6 +2,11 @@ registry: registry.head-labs.com
 imagePullPolicy: Always
 namespace: ton
 
+# what services to run
+run:
+  mainnet: false
+  testnet: true
+
 # By default we create volume and mount it to /var/ton-work/db
 persistent:
   tonFullNode:

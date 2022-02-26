@@ -1,0 +1,15 @@
+{{- if .Values.run.mainnet -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-database
+spec:
+  storageClassName: {{ .Values.persistent.tonFullNode.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage:  {{ .Values.persistent.tonFullNode.storageSize }}
+---
+{{- end }}

@@ -1,0 +1,58 @@
+{{- if .Values.run.mainnet -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-mainnet-deployment
+  labels:
+    app: ton-mainnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-mainnet
+  template:
+    metadata:
+      labels:
+        app: ton-mainnet
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: ton-mainnet
+        image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
+          protocol: UDP
+        - containerPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
+          protocol: UDP
+        - containerPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
+          protocol: UDP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.ports.tonFullNode.PUBLIC_PORT }}"
+          - name: CONSOLE_PORT
+            value: "{{ .Values.ports.tonFullNode.CONSOLE_PORT }}"
+          - name: LITESERVER_PORT
+            value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
+          - name: NAMESPACE
+            value: "{{ .Values.namespace }}"
+          - name: SERVICE_ACCOUNT
+            value: "{{ .Values.serviceAccount.name }}"
+        volumeMounts:
+          - mountPath: "/var/ton-work/db/"
+            name: ton-database
+          - name: secret-volume
+            readOnly: true
+            mountPath: "/etc/secret-volume"
+      volumes:
+        - name: ton-database
+          persistentVolumeClaim:
+            claimName: ton-database
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.serviceAccount.name }}-token-secret
+---
+{{- end }}

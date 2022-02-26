@@ -1,4 +1,4 @@
----
+{{- if .Values.run.testnet -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -55,3 +55,4 @@ spec:
           secret:
             secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
+{{- end }}
