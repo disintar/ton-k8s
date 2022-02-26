@@ -1,6 +1,5 @@
 import base64
 import json
-import logging
 import os
 import shutil
 from base64 import b64encode
@@ -8,6 +7,7 @@ from time import sleep
 from typing import Tuple, List, Optional
 from hllib.command_line import run
 from hllib.kube_secrets import KubeConnector
+from hllib.log import logger
 
 
 class KeyStorage:
@@ -67,20 +67,20 @@ class KeyStorage:
             pass
         else:
             if not hard_rewrite:
-                logging.debug(f"👀 Keyring folder already exist, so no need to change it")
+                logger.debug(f"👀 Keyring folder already exist, so no need to change it")
                 return
 
         client_key_hex, client_key_b64 = self.get_key(f'{self.db_path}/keyring/client', store_to_keyring=True)
-        logging.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
+        logger.debug(f"🔑 Client: b64: {client_key_b64}, hex: {client_key_hex}")
 
         server_key_hex, server_key_b64 = self.get_key(f'{self.db_path}/keyring/server', store_to_keyring=True)
-        logging.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
+        logger.debug(f"🔑 Server: b64: {server_key_b64}, hex: {server_key_hex}")
 
         liteserver_key_hex, liteserver_key_b64, liteserver_pub_key_b64 = self.get_key(
             f'{self.db_path}/keyring/liteserver',
             store_to_keyring=True, get_pub=True)
 
-        logging.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
+        logger.debug(f"🔑 Liteserver: b64: {liteserver_key_b64}, hex: {liteserver_key_hex}")
 
         with open(f"{self.db_path}/config.json") as f:
             ton_config = json.load(f)
@@ -92,7 +92,7 @@ class KeyStorage:
         fullnode_key_b64 = ton_config['fullnode']
         fullnode_key_hex = base64.b64decode(fullnode_key_b64)
 
-        logging.debug(f"🔑 FullNode: b64: {fullnode_key_b64}, hex: {fullnode_key_hex.hex().upper()}")
+        logger.debug(f"🔑 FullNode: b64: {fullnode_key_b64}, hex: {fullnode_key_hex.hex().upper()}")
 
         if self.kubernetes:
             self.kubernetes.create_secret('ton-keys', {
@@ -101,7 +101,7 @@ class KeyStorage:
                 'liteserver': liteserver_key_b64,
                 'fullnode': fullnode_key_b64,
             })
-            logging.info(f"🧞 Saved keys to kube secret")
+            logger.info(f"🧞 Saved keys to kube secret")
 
         ton_config['control'] = [{
             "id": server_key_b64,
@@ -129,7 +129,7 @@ class KeyStorage:
                 path = self.config_path.replace('config.json', '')[:-1]
                 while '.lock' in os.listdir(path):
                     sleep(1)
-                    logging.info("😴 Wait until lock file will be removed")
+                    logger.info("😴 Wait until lock file will be removed")
 
                 with open(f"{path}/.lock", 'w') as f:
                     f.write('')
@@ -140,6 +140,7 @@ class KeyStorage:
                     pathes.append(self.config_local_path)
 
                 for c_path in pathes:
+                    logger.info(f"🥞 Add liteserver to {c_path}")
                     with open(c_path, 'r') as f:
                         data = json.load(f)
 
