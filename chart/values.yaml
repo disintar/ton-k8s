@@ -39,6 +39,14 @@ images:
     name: ton/ton-http-config
     version: v1
 
+  toncenter:
+    name: ton/ton-toncenter
+    version: mainnet-v1
+
+  testnetToncenter:
+    name: ton/ton-toncenter
+    version: testnet-v1
+
 # Here we use node-ports to auto open ports in nodes
 ports:
   # MAINNET
@@ -58,5 +66,41 @@ ports:
     VERBOSE: 3
 
   httpConfig:
-    PUBLIC_PORT: 30007
+    PUBLIC_PORT: 8081 # this is only local port of application will be run
 
+  testnetHttpConfig:
+    PUBLIC_PORT: 8082 # this is only local port of application will be run
+
+  toncenter:
+    PUBLIC_PORT: 8083 # this is only local port of application will be run
+
+  testnetToncenter:
+    PUBLIC_PORT: 8084 # this is only local port of application will be run
+    CONFIG: https://http-config.testnet.ton.head-labs.com/config-local.json
+
+
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100000M
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-next-upstream: "600"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      client_body_in_file_only clean;
+      client_body_buffer_size 32K;
+      http2_max_concurrent_streams 2560;
+      client_max_body_size 100000M;
+
+
+      sendfile on;
+
+      ssl_session_cache shared:SSL:10m;
+      keepalive_disable safari;
+  hosts:
+    testnetHttpConfig: http-config.testnet.ton.head-labs.com
+    testnetToncenter: toncenter.testnet.ton.head-labs.com

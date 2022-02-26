@@ -1,0 +1,41 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ton-testnet-ingress
+  labels:
+    app: ton-testnet
+  {{- with .Values.ingress.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.hosts.testnetHttpConfig }}
+        - {{ .Values.ingress.hosts.testnetToncenter }}
+      secretName: ton-testnet-tls
+  rules:
+    - host: {{ .Values.ingress.hosts.testnetHttpConfig }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ton-http-config-testnet
+                port:
+                  number: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+    - host: {{ .Values.ingress.hosts.testnetToncenter }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ton-toncenter-testnet
+                port:
+                  number: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+---
+{{- end }}

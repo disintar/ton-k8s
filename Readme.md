@@ -65,7 +65,13 @@ or `testnet-v0`
 
 1. Change registry in build_for_k8s.sh
 2. Run build_for_k8s.sh and push images to registry
-3. Change `./chart/values.yaml` to specify your needs
+3. Change `./chart/values.yaml` to specify your needs:
+   1. Change `run` section to chose which images you want to run
+   2. Change `persistent`, add your storageClassName / create persistent
+   3. Change `imagePullSecrets` to your registry
+   4. Notice that ports in nodes used `30001-30006` nodePorts that will open in all your nodes (to get UDP traffic to local TON stuff)
+   5. Change `testnetToncenter.CONFIG` / `toncenter.CONFIG` params to your domains
+   6. Change `ingress` to correct setup of domains
 
 Then:
 

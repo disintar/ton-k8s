@@ -56,7 +56,7 @@ spec:
             readOnly: true
             mountPath: "/etc/secret-volume"
 
-      - name: ton-http-config
+      - name: ton-http-config-testnet
         image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
@@ -69,6 +69,18 @@ spec:
           - mountPath: "/var/ton-work/network/"
             name: ton-testnet-database
             subPath: network
+
+      - name: ton-toncenter-testnet
+        image: "{{ .Values.registry }}/{{ .Values.images.testnetToncenter.name }}:{{ .Values.images.testnetToncenter.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.ports.testnetToncenter.PUBLIC_PORT }}"
+          - name: CONFIG
+            value: "{{ .Values.ports.testnetToncenter.CONFIG }}"
 
       volumes:
         - name: ton-testnet-database

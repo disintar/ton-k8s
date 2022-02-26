@@ -40,7 +40,6 @@ spec:
     name: http-config-ownnet
     protocol: TCP
     port: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
-    nodePort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
   type: LoadBalancer
   selector:
     app: ton-ownnet

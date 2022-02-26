@@ -36,11 +36,10 @@ metadata:
     run: ton-http-config-load-balancer
 spec:
   ports:
-  - targetPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+  - targetPort: {{ .Values.ports.testnetHttpConfig.PUBLIC_PORT }}
     name: http-config-testnet
     protocol: TCP
-    port: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
-    nodePort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+    port: {{ .Values.ports.testnetHttpConfig.PUBLIC_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet
