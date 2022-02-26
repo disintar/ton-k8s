@@ -157,8 +157,8 @@ class KeyStorage:
             #
             #         with open(c_path, 'w') as f:
             #             json.dump(data, f)
-
-                os.remove(f"{path}/.lock")
+            #
+            #     os.remove(f"{path}/.lock")
 
         with open(f"{self.db_path}/config.json", "w") as f:
             json.dump(ton_config, f, indent=4)
