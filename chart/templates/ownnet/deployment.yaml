@@ -24,27 +24,27 @@ spec:
         image: "{{ .Values.registry }}/{{ .Values.images.testnetFullNode.name }}:{{ .Values.images.testnetFullNode.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
           protocol: UDP
-        - containerPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+        - containerPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
           protocol: UDP
-        - containerPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+        - containerPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
           protocol: UDP
         env:
           - name: PUBLIC_PORT
-            value: "{{ .Values.ports.testnetFullNode.PUBLIC_PORT }}"
+            value: "{{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}"
           - name: CONSOLE_PORT
-            value: "{{ .Values.ports.testnetFullNode.CONSOLE_PORT }}"
+            value: "{{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
-            value: "{{ .Values.ports.testnetFullNode.LITESERVER_PORT }}"
+            value: "{{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}"
           - name: NAMESPACE
             value: "{{ .Values.namespace }}"
           - name: SERVICE_ACCOUNT
             value: "{{ .Values.serviceAccount.name }}"
           - name: CONFIG
-            value: "{{ .Values.ports.testnetFullNode.CONFIG }}"
+            value: "{{ .Values.customEnv.testnetFullNode.CONFIG }}"
           - name: VERBOSE
-            value: "{{ .Values.ports.testnetFullNode.VERBOSE }}"
+            value: "{{ .Values.customEnv.testnetFullNode.VERBOSE }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-ownnet-database
@@ -60,11 +60,11 @@ spec:
         image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
           protocol: TCP
         env:
           - name: PUBLIC_PORT
-            value: "{{ .Values.ports.httpConfig.PUBLIC_PORT }}"
+            value: "{{ .Values.customEnv.httpConfig.PUBLIC_PORT }}"
         volumeMounts:
           - mountPath: "/var/ton-work/network/"
             name: ton-ownnet-database

@@ -8,21 +8,21 @@ metadata:
     run: ton-testnet-load-balancer
 spec:
   ports:
-  - targetPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     name: testnet-node
     protocol: UDP
-    port: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
-    nodePort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
-  - targetPort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
+    port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
     name: testnet-client
     protocol: UDP
-    port: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.ports.testnetFullNode.CONSOLE_PORT }}
-  - targetPort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
     protocol: UDP
-    port: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
-    nodePort: {{ .Values.ports.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet
@@ -31,15 +31,32 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-http-config-load-balancer
+  name: ton-testnet-http-config-load-balancer
   labels:
-    run: ton-http-config-load-balancer
+    run: ton-testnet-http-config-load-balancer
 spec:
   ports:
-  - targetPort: {{ .Values.ports.testnetHttpConfig.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
     name: http-config-testnet
     protocol: TCP
-    port: {{ .Values.ports.testnetHttpConfig.PUBLIC_PORT }}
+    port: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
+  type: LoadBalancer
+  selector:
+    app: ton-testnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-testnet-toncenter-load-balancer
+  labels:
+    run: ton-testnet-toncenter-load-balancer
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
+    name: ton-toncenter-testnet
+    protocol: TCP
+    port: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet

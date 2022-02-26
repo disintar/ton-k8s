@@ -24,9 +24,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ton-http-config-testnet
+                name: ton-testnet-http-config-load-balancer
                 port:
-                  number: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+                  number: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
     - host: {{ .Values.ingress.hosts.testnetToncenter }}
       http:
         paths:
@@ -34,8 +34,8 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ton-toncenter-testnet
+                name: ton-testnet-toncenter-load-balancer
                 port:
-                  number: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+                  number: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
 ---
 {{- end }}

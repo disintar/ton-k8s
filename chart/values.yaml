@@ -48,37 +48,59 @@ images:
     version: testnet-v1
 
 # Here we use node-ports to auto open ports in nodes
-ports:
+customEnv:
   # MAINNET
   tonFullNode:
     CONSOLE_PORT: 30001
     PUBLIC_PORT: 30002
     LITESERVER_PORT: 30003
-    CONFIG: https://newton-blockchain.github.io/global.config.json
-    VERBOSE: 3
+
+  env:
+    - name: CONFIG
+      value: https://newton-blockchain.github.io/global.config.json
+    - name: VERBOSE
+      value: 3
 
   # TESTNET
   testnetFullNode:
     CONSOLE_PORT: 30004
     PUBLIC_PORT: 30005
     LITESERVER_PORT: 30006
-    CONFIG: https://newton-blockchain.github.io/testnet-global.config.json
-    VERBOSE: 3
+
+    env:
+      - name: CONFIG
+        value: https://newton-blockchain.github.io/testnet-global.config.json
+      - name: VERBOSE
+        value: 3
 
   httpConfig:
-    PUBLIC_PORT: 8081 # this is only local port of application will be run
+    PUBLIC_PORT: 8081
 
   testnetHttpConfig:
-    PUBLIC_PORT: 8082 # this is only local port of application will be run
+    PUBLIC_PORT: 8082
 
   toncenter:
-    PUBLIC_PORT: 8083 # this is only local port of application will be run
+    PUBLIC_PORT: 8083
+
+    env:
+      - name: TON_API_GET_METHODS_ENABLED
+        value: 1
+      - name: TON_API_JSON_RPC_ENABLED
+        value: 1
+      - name: TON_API_WEBSERVERS_WORKERS
+        value: 1
 
   testnetToncenter:
-    PUBLIC_PORT: 8084 # this is only local port of application will be run
+    PUBLIC_PORT: 8084
     CONFIG: https://http-config.testnet.ton.head-labs.com/config-local.json
 
-
+    env:
+      - name: TON_API_GET_METHODS_ENABLED
+        value: 1
+      - name: TON_API_JSON_RPC_ENABLED
+        value: 1
+      - name: TON_API_WEBSERVERS_WORKERS
+        value: 1
 
 ingress:
   enabled: true

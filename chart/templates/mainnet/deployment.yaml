@@ -24,27 +24,24 @@ spec:
         image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.ports.tonFullNode.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.tonFullNode.PUBLIC_PORT }}
           protocol: UDP
-        - containerPort: {{ .Values.ports.tonFullNode.CONSOLE_PORT }}
+        - containerPort: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
           protocol: UDP
-        - containerPort: {{ .Values.ports.tonFullNode.LITESERVER_PORT }}
+        - containerPort: {{ .Values.customEnv.tonFullNode.LITESERVER_PORT }}
           protocol: UDP
         env:
           - name: PUBLIC_PORT
-            value: "{{ .Values.ports.tonFullNode.PUBLIC_PORT }}"
+            value: "{{ .Values.customEnv.tonFullNode.PUBLIC_PORT }}"
           - name: CONSOLE_PORT
-            value: "{{ .Values.ports.tonFullNode.CONSOLE_PORT }}"
+            value: "{{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}"
           - name: LITESERVER_PORT
-            value: "{{ .Values.ports.tonFullNode.LITESERVER_PORT }}"
+            value: "{{ .Values.customEnv.tonFullNode.LITESERVER_PORT }}"
           - name: NAMESPACE
             value: "{{ .Values.namespace }}"
           - name: SERVICE_ACCOUNT
             value: "{{ .Values.serviceAccount.name }}"
-          - name: CONFIG
-            value: "{{ .Values.ports.tonFullNode.CONFIG }}"
-          - name: VERBOSE
-            value: "{{ .Values.ports.tonFullNode.VERBOSE }}"
+          {{- toYaml .Values.customEnv.tonFullNode.env | nindent 10 }}
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-database
