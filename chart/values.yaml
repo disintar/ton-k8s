@@ -34,7 +34,7 @@ images:
     name: ton/ton-node
     version: testnet-v1
 
-  http-config:
+  httpConfig:
     name: ton/ton-http-config
     version: v1
 

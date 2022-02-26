@@ -53,7 +53,7 @@ spec:
             mountPath: "/etc/secret-volume"
 
       - name: ton-http-config
-        image: "{{ .Values.registry }}/{{ .Values.images.http-config.name }}:{{ .Values.images.http-config.version }}"
+        image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
