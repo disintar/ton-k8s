@@ -18,5 +18,5 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    simple_serve = HTTPServer(('0.0.0.0', int(os.getenv('PORT'))), SimpleServeFiles)
+    simple_serve = HTTPServer(('0.0.0.0', int(os.getenv('PUBLIC_PORT'))), SimpleServeFiles)
     simple_serve.serve_forever()

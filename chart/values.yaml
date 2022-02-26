@@ -28,11 +28,15 @@ imagePullSecrets:
 images:
   tonFullNode:
     name: ton/ton-node
-    version: mainnet-v1 # `v0` - is version from pre-build.sh
+    version: mainnet-v1
 
   testnetFullNode:
     name: ton/ton-node
     version: testnet-v1
+
+  http-config:
+    name: ton/ton-http-config
+    version: v1
 
 ports:
   # MAINNET
@@ -46,6 +50,9 @@ ports:
     CONSOLE_PORT: 30004
     PUBLIC_PORT: 30005
     LITESERVER_PORT: 30006
+
+  httpConfig:
+    PUBLIC_PORT: 8081
 
 env:
   # MAINNET

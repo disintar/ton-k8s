@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import subprocess
@@ -6,7 +7,7 @@ from pprint import pformat
 from time import sleep
 
 from hllib.command_line import run
-from hllib.genesis import Genesis
+from hllib.genesis import Genesis, ip2int
 from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
@@ -43,7 +44,8 @@ logger.info("👋 Hi there!\n"
 
 if __name__ == "__main__":
     # First we need to download config of net
-    config_path = '/var/ton-work/network/config.json'
+    config_dir = '/var/ton-work/network'
+    config_path = f'{config_dir}/config.json'
 
     if 'network' not in os.listdir("/var/ton-work/"):
         os.mkdir("/var/ton-work/network")
@@ -53,8 +55,24 @@ if __name__ == "__main__":
     hard_rewrite = False
 
     if not config['PRIVATE_CONFIG']:
-        logger.info(f"Download config from 👾 [{config['CONFIG']}]")
-        download(config['CONFIG'], config_path)
+        # if we have multiple nodes we want to attach config_dir so lite-servers will write correctly
+        if 'config.json' not in os.listdir(config_dir):
+            logger.info(f"Download config from 👾 [{config['CONFIG']}]")
+            download(config['CONFIG'], config_path)
+
+            # load config and remove liteservers from list,
+            # so we can use own-ones
+            with open(config_path, 'r') as f:
+                data = json.load(f)
+
+            if 'liteservers' in data:
+                data['liteservers'] = []
+
+            with open(config_path, 'w') as f:
+                json.dump(data, f)
+
+        else:
+            logger.info(f"Found existing config in 👾 [{config_dir}]")
     else:
         logger.info(f"Will use 🧬 GENESIS 🧬 config")
         hard_rewrite = True

@@ -12,8 +12,7 @@ docker build -f Dockerfile -t ton-node-testnet . --build-arg base=ton-base-testn
 
 cd ../ton-http-config || return
 
-docker build -f Dockerfile -t ton-http-mainnet . --build-arg base=ton-base-mainnet
-docker build -f Dockerfile -t ton-http-testnet . --build-arg base=ton-base-testnet
+docker build -f Dockerfile -t ton-http-config . --build-arg base=ton-base-mainnet
 
 cd ../ton-toncenter || return
 

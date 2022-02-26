@@ -27,4 +27,21 @@ spec:
   selector:
     app: ton-testnet
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-testnet-load-balancer
+  labels:
+    run: ton-testnet-load-balancer
+spec:
+  ports:
+  - targetPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+    name: http-config-testnet
+    protocol: TCP
+    port: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+    nodePort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+  type: LoadBalancer
+  selector:
+    app: ton-testnet
 {{- end }}

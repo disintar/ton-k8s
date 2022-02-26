@@ -50,10 +50,10 @@ services:
 
   http-config:
     container_name: http-conifg
-    image: ton-http-mainnet
+    image: ton-http-config
     restart: always
     environment:
-      - PORT=8081
+      - PUBLIC_PORT=8081
     ports:
       - 8081:8081
     volumes:
@@ -72,7 +72,7 @@ services:
       - config:/var/ton-work/network
     environment:
       - CONFIG=http://http-config:8081/config.json
-      - PORT=8082
+      - PUBLIC_PORT=8082
     env_file:
       - 'toncenter.env'
     depends_on:

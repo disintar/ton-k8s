@@ -44,9 +44,28 @@ spec:
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-testnet-database
+            subPath: db
+          - mountPath: "/var/ton-work/network/"
+            name: ton-testnet-database
+            subPath: network
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/secret-volume"
+
+      - name: ton-http-config
+        image: "{{ .Values.registry }}/{{ .Values.images.http-config.name }}:{{ .Values.images.http-config.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.ports.httpConfig.PUBLIC_PORT }}"
+        volumeMounts:
+          - mountPath: "/var/ton-work/network/"
+            name: ton-testnet-database
+            subPath: network
+
       volumes:
         - name: ton-testnet-database
           persistentVolumeClaim:
