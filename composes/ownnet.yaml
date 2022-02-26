@@ -68,13 +68,11 @@ services:
     restart: always
     ports:
       - 8082:8082
-      - 8083:8083
     volumes:
       - config:/var/ton-work/network
     environment:
       - CONFIG=http://http-config:8081/config.json
       - PORT=8082
-      - JUPYTER_PORT=8083
     env_file:
       - 'toncenter.env'
     depends_on:

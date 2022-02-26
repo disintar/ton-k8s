@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  testnet:
+  mainnet:
     container_name: mainnet
     image: ton-node-mainnet
     environment:
@@ -11,3 +11,18 @@ services:
       - PUBLIC_PORT=30002
       - LITESERVER_PORT=30003
 
+  toncenter:
+    container_name: http-toncenter
+    image: ton-toncenter-mainnet
+    restart: always
+    ports:
+      - 8082:8082
+    volumes:
+      - config:/var/ton-work/network
+    environment:
+      - CONFIG=https://test.ton.org/ton-global.config.json
+      - PORT=8082
+    env_file:
+      - 'toncenter.env'
+    depends_on:
+      - "mainnet"
