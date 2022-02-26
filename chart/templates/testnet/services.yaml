@@ -37,7 +37,7 @@ metadata:
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
-    name: http-config-testnet
+    name: ton-http-config-testnet
     protocol: TCP
     port: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
   type: ClusterIP
