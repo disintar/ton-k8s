@@ -28,17 +28,19 @@ docker-compose -f ./composes/ownnet.yaml down -v --rmi all
 
 ## Features
 
-| Feature name                      | Status |
-|-----------------------------------|--------|
-| Full node for mainnet / testnet   | ✅      |
-| Lite-client for mainnet / testnet | ✅      |
-| Helm chart                        | ✅      |
-| K8s secrets for keys              | ✅      |
-| Custom ton network                | ✅      |
-| Status page                       | ⌛      |
-| K8s resource limits               | ⌛      |
-| Compose                           | ⌛      |
-| RPC API                           | ⌛      |
+| Feature name                       | Status |
+|------------------------------------|--------|
+| Full node for mainnet / testnet    | ✅      |
+| Lite-client for mainnet / testnet  | ✅      |
+| Helm chart                         | ✅      |
+| K8s secrets for keys               | ✅      |
+| Custom ton network                 | ✅      |
+| Compose                            | ✅      |
+| RPC API / ton-http-api             | ✅      |
+| Jupyter in toncenter with examples | ✅      |
+| Punisher on validator nodes        | ⌛      |
+| Status page                        | ⌛      |
+| K8s resource limits                | ⌛      |
 
 ### Local build
 

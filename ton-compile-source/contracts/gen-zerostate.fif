@@ -149,8 +149,6 @@ dup make_special dup constant smc3_addr
     AllOnes @' subwallet-id -
     6 // mode: create+setaddr
     register_smc
-
-    .s
 } : gen-wallet
 
 50

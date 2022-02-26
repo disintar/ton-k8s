@@ -1,4 +1,7 @@
 ARG  base
 FROM ${base}
 
-ENTRYPOINT ["python3", "/var/ton-work/scripts/init_ton.py"]
+WORKDIR /var/ton-work/network/
+ADD ./simple_server.py ./
+
+ENTRYPOINT ["python3", "simple_server.py"]

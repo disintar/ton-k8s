@@ -200,30 +200,17 @@ class Genesis:
         valid_from = 0
         valid_to = int(time.time() + 31414590)
 
-        tmp_command = [*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"]
         run([*command, f"addpermkey {validator_hex} {valid_from} {valid_to}"])
-
-        tmp_command = [*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"]
         run([*command, f"addtempkey {validator_hex} {validator_hex} {valid_to}"])
 
         adnl_category = 0
 
-        tmp_command = [*command, f"addadnl {validator_adnl} {adnl_category}"]
         run([*command, f"addadnl {validator_adnl} {adnl_category}"])
-
-        tmp_command = [*command, f"addadnl {validator_hex} {adnl_category}"]
         run([*command, f"addadnl {validator_hex} {adnl_category}"])
 
-        tmp_command = [*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"]
         run([*command, f"addvalidatoraddr {validator_hex} {validator_adnl} {valid_to}"])
-
-        tmp_command = [*command, f"addadnl {node_key} 0"]
         run([*command, f"addadnl {node_key} 0"])
-
-        tmp_command = [*command, f"changefullnodeaddr {node_key}"]
         run([*command, f"changefullnodeaddr {node_key}"])
-
-        tmp_command = [*command, f"importf /var/ton-work/network/keyring/{validator_hex}"]
         run([*command, f"importf /var/ton-work/network/keyring/{validator_hex}"])
 
         logger.debug("🔫 Terminate process with validator")

@@ -20,6 +20,7 @@ services:
     image: ton-node-mainnet
     environment:
       - DHT_PORT=6302
+      - PRIVATE_CONFIG=true
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
@@ -30,7 +31,6 @@ services:
     networks:
       default:
         ipv4_address: 172.28.1.1
-
 
   validator:
     container_name: validator
@@ -44,21 +44,59 @@ services:
       - "dht-server"
     environment:
       - GENESIS_VALIDATOR=true
+      - PRIVATE_CONFIG=true
     env_file:
       - 'genesis-common.env'
 
-  ownnet-node:
-    image: ton-node-mainnet
+  http-config:
+    container_name: http-conifg
+    image: ton-http-mainnet
     restart: always
+    environment:
+      - PORT=8081
+    ports:
+      - 8081:8081
     volumes:
       - config:/var/ton-work/network
     depends_on:
       - "genesis"
-      - "validator"
+      - "dht-server"
+
+  toncenter:
+    container_name: http-toncenter
+    image: ton-toncenter-mainnet
+    restart: always
+    ports:
+      - 8082:8082
+      - 8083:8083
+    volumes:
+      - config:/var/ton-work/network
+    environment:
+      - CONFIG=http://http-config:8081/config.json
+      - PORT=8082
+      - JUPYTER_PORT=8083
     env_file:
-      - 'genesis-common.env'
-    deploy:
-      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
+      - 'toncenter.env'
+    depends_on:
+      - "genesis"
+      - "dht-server"
+      - "http-config"
+
+#  ownnet-node:
+#    image: ton-node-mainnet
+#    restart: always
+#    volumes:
+#      - config:/var/ton-work/network
+#    depends_on:
+#      - "genesis"
+#      - "validator"
+#      - "http-config"
+#    environment:
+#      - CONFIG=http://http-config:6666/config.json
+#    env_file:
+#      - 'genesis-common.env'
+#    deploy:
+#      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
 
 
 volumes:
