@@ -3,9 +3,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-load-balancer
+  name: ton-testnet-deployment
   labels:
-    run: ton-testnet-load-balancer
+    app: ton-testnet
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
@@ -31,28 +31,15 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-http-config
+  name: ton-testnet-deployment
   labels:
-    run: ton-testnet-http-config
+    app: ton-testnet
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
     name: ton-http-config-testnet
     protocol: TCP
     port: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
-  type: ClusterIP
-  selector:
-    app: ton-testnet
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: {{ .Values.namespace }}
-  name: ton-testnet-toncenter
-  labels:
-    run: ton-testnet-toncenter
-spec:
-  ports:
   - targetPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
     name: ton-toncenter-testnet
     protocol: TCP
