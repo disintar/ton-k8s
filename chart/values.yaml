@@ -45,26 +45,15 @@ ports:
     CONSOLE_PORT: 30001
     PUBLIC_PORT: 30002
     LITESERVER_PORT: 30003
+    CONFIG: https://newton-blockchain.github.io/global.config.json
 
   # TESTNET
   testnetFullNode:
     CONSOLE_PORT: 30004
     PUBLIC_PORT: 30005
     LITESERVER_PORT: 30006
+    CONFIG: https://newton-blockchain.github.io/testnet-global.config.json
 
   httpConfig:
     PUBLIC_PORT: 30007
-
-env:
-  # MAINNET
-  - name: CONFIG
-    value: https://test.ton.org/ton-global.config.json # mainnet config
-  - name: LITESERVER # need to run liteserver on mainnet / not
-    value: true
-
-  # TESTNET
-  - name: TESTNET_CONFIG
-    value: https://newton-blockchain.github.io/testnet-global.config.json # testnet config
-  - name: TESTNET_LITESERVER # need to run liteserver on testnet / not
-    value: true
 

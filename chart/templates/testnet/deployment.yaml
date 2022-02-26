@@ -41,6 +41,8 @@ spec:
             value: "{{ .Values.namespace }}"
           - name: SERVICE_ACCOUNT
             value: "{{ .Values.serviceAccount.name }}"
+          - name: CONFIG
+            value: "{{ .Values.testnetFullNode.CONFIG }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-testnet-database

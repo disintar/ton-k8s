@@ -18,7 +18,7 @@ cpu_count = os.cpu_count() - 1
 
 config = {
     "PUBLIC_IP": os.getenv('PUBLIC_IP', ip),
-    "CONFIG": os.getenv('CONFIG', 'https://test.ton.org/ton-global.config.json'),
+    "CONFIG": os.getenv('CONFIG', 'https://newton-blockchain.github.io/testnet-global.config.json'),
     "PRIVATE_CONFIG": os.getenv('PRIVATE_CONFIG', 'false') == 'true',
     "LITESERVER": os.getenv('LITESERVER', 'true') == 'true',  # convert to bool
     "CONSOLE_PORT": int(os.getenv("CONSOLE_PORT", 46732)),
