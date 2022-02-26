@@ -52,7 +52,7 @@ ports:
     LITESERVER_PORT: 30006
 
   httpConfig:
-    PUBLIC_PORT: 8081
+    PUBLIC_PORT: 30007
 
 env:
   # MAINNET
