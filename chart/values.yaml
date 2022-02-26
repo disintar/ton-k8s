@@ -38,6 +38,7 @@ images:
     name: ton/ton-http-config
     version: v1
 
+# Here we use node-ports to auto open ports in nodes
 ports:
   # MAINNET
   tonFullNode:

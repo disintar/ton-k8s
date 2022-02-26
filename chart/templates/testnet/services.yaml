@@ -31,9 +31,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-load-balancer
+  name: ton-http-config-load-balancer
   labels:
-    run: ton-testnet-load-balancer
+    run:ton-http-config-load-balancer
 spec:
   ports:
   - targetPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
