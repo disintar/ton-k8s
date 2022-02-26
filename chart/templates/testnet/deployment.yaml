@@ -71,9 +71,8 @@ spec:
         image: "{{ .Values.registry }}/{{ .Values.images.testnetToncenter.name }}:{{ .Values.images.testnetToncenter.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
           protocol: TCP
-
         env:
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}"
