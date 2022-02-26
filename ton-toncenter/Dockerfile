@@ -6,7 +6,7 @@ RUN git clone https://github.com/toncenter/ton-http-api.git
 WORKDIR ton-http-api
 
 RUN rm -f ./pyTON/distlib/linux/libtonlibjson.so
-RUN mv /ton/build/tonlib/libtonlibjson.so.0.5 ./pyTON/distlib/linux/libtonlibjson.so
+RUN cp /ton/build/tonlib/libtonlibjson.so.0.5 ./pyTON/distlib/linux/libtonlibjson.so
 
 # latest commit in master
 RUN git checkout 5d1717c
