@@ -33,7 +33,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: ton-http-config-load-balancer
   labels:
-    run:ton-http-config-load-balancer
+    run: ton-http-config-load-balancer
 spec:
   ports:
   - targetPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
