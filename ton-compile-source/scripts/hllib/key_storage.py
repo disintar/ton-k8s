@@ -123,40 +123,40 @@ class KeyStorage:
                     "port": self.config['LITESERVER_PORT']
                 }
             ]
-
-            if self.config['PRIVATE_CONFIG'] and os.path.exists(self.config_path):
-                # TODO: fix hardcode
-                path = self.config_path.replace('config.json', '')[:-1]
-                while '.lock' in os.listdir(path):
-                    sleep(1)
-                    logging.info("😴 Wait until lock file will be removed")
-
-                with open(f"{path}/.lock", 'w') as f:
-                    f.write('')
-
-                pathes = [self.config_path]
-
-                if self.config_local_path:
-                    pathes.append(self.config_local_path)
-
-                for c_path in pathes:
-                    with open(c_path, 'r') as f:
-                        data = json.load(f)
-
-                    if 'liteservers' not in data:
-                        data['liteservers'] = []
-
-                    data['liteservers'].append({
-                        "ip": ip2int(self.config['PUBLIC_IP']),
-                        "port": int(self.config['LITESERVER_PORT']),
-                        "id": {
-                            "@type": "pub.ed25519",
-                            "key": liteserver_pub_key_b64
-                        }
-                    })
-
-                    with open(c_path, 'w') as f:
-                        json.dump(data, f)
+            #
+            # if self.config['PRIVATE_CONFIG'] and os.path.exists(self.config_path):
+            #     # TODO: fix hardcode
+            #     path = self.config_path.replace('config.json', '')[:-1]
+            #     while '.lock' in os.listdir(path):
+            #         sleep(1)
+            #         logging.info("😴 Wait until lock file will be removed")
+            #
+            #     with open(f"{path}/.lock", 'w') as f:
+            #         f.write('')
+            #
+            #     pathes = [self.config_path]
+            #
+            #     if self.config_local_path:
+            #         pathes.append(self.config_local_path)
+            #
+            #     for c_path in pathes:
+            #         with open(c_path, 'r') as f:
+            #             data = json.load(f)
+            #
+            #         if 'liteservers' not in data:
+            #             data['liteservers'] = []
+            #
+            #         data['liteservers'].append({
+            #             "ip": ip2int(self.config['PUBLIC_IP']),
+            #             "port": int(self.config['LITESERVER_PORT']),
+            #             "id": {
+            #                 "@type": "pub.ed25519",
+            #                 "key": liteserver_pub_key_b64
+            #             }
+            #         })
+            #
+            #         with open(c_path, 'w') as f:
+            #             json.dump(data, f)
 
                 os.remove(f"{path}/.lock")
 
