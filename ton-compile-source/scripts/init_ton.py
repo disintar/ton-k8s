@@ -28,6 +28,7 @@ config = {
     "NAMESPACE": os.getenv("NAMESPACE", None),
     "THREADS": int(os.getenv("CPU_COUNT", cpu_count)),
     "GENESIS": os.getenv("GENESIS", False) == 'true',
+    "AUTO_VALIDATOR": os.getenv("AUTO_VALIDATOR", False) == 'true',
     "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 0)
 }
@@ -144,8 +145,9 @@ if __name__ == "__main__":
             for file in os.listdir('/var/ton-work/network/keyring_pub'):
                 shutil.copy(f'/var/ton-work/network/keyring_pub/{file}', f"{db_path}/keyring_pub/")
 
-    validator = ValidatorAuto(db_path=db_path, config=config, config_path=config_path)
-    validator.start()
+    if config['AUTO_VALIDATOR']:
+        validator = ValidatorAuto(db_path=db_path, config=config, config_path=config_path)
+        validator.start()
 
     run_command = [f"/usr/local/bin/validator-engine",
                    "--global-config", f"{config_path}",
