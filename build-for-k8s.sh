@@ -35,5 +35,5 @@ cd ../ton-http-config || return
 
 # http-config mainnet
 docker build -f Dockerfile -t ton-http-config . --build-arg base=${REGISTRY}/ton/ton-base:mainnet-${VERSION}
-docker tag ton-http-config ${REGISTRY}/ton/ton-http-config:mainnet-${VERSION}
+docker tag ton-http-config ${REGISTRY}/ton/ton-http-config:${VERSION}
 docker push ${REGISTRY}/ton/ton-http-config:${VERSION}
