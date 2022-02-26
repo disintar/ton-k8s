@@ -5,13 +5,13 @@ import os
 import shutil
 from base64 import b64encode
 from time import sleep
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 from hllib.command_line import run
 from hllib.kube_secrets import KubeConnector
 
 
 class KeyStorage:
-    def __init__(self, db_path: str, config: dict, config_path: str):
+    def __init__(self, db_path: str, config: dict, config_path: str, config_local_path: Optional[str] = None):
         """
         We can run Docker locally or in k8s cluster
         If we use k8s cluster - we need to take care of public / private keys
@@ -20,6 +20,7 @@ class KeyStorage:
         self.db_path = db_path
         self.config = config
         self.config_path = config_path
+        self.config_local_path = config_local_path
         self.kubernetes = None
 
         if self.config['NAMESPACE']:
@@ -54,6 +55,7 @@ class KeyStorage:
 
         https://ton.org/docs/#/howto/full-node?id=_6-setting-up-remote-control-cli
         """
+        from hllib.genesis import ip2int
 
         # Check if keyring folder already exist and some keys contains in this folder
         if 'keyring' not in os.listdir(self.db_path):
@@ -132,25 +134,29 @@ class KeyStorage:
                 with open(f"{path}/.lock", 'w') as f:
                     f.write('')
 
-                with open(self.config_path, 'r') as f:
-                    data = json.load(f)
+                pathes = [self.config_path]
 
-                from hllib.genesis import ip2int
+                if self.config_local_path:
+                    pathes.append(self.config_local_path)
 
-                if 'liteservers' not in data:
-                    data['liteservers'] = []
+                for c_path in pathes:
+                    with open(c_path, 'r') as f:
+                        data = json.load(f)
 
-                data['liteservers'].append({
-                    "ip": ip2int(self.config['PUBLIC_IP']),
-                    "port": int(self.config['LITESERVER_PORT']),
-                    "id": {
-                        "@type": "pub.ed25519",
-                        "key": liteserver_pub_key_b64
-                    }
-                })
+                    if 'liteservers' not in data:
+                        data['liteservers'] = []
 
-                with open(self.config_path, 'w') as f:
-                    json.dump(data, f)
+                    data['liteservers'].append({
+                        "ip": ip2int(self.config['PUBLIC_IP']),
+                        "port": int(self.config['LITESERVER_PORT']),
+                        "id": {
+                            "@type": "pub.ed25519",
+                            "key": liteserver_pub_key_b64
+                        }
+                    })
+
+                    with open(c_path, 'w') as f:
+                        json.dump(data, f)
 
                 os.remove(f"{path}/.lock")
 

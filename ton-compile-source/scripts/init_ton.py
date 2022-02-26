@@ -46,6 +46,7 @@ if __name__ == "__main__":
     # First we need to download config of net
     config_dir = '/var/ton-work/network'
     config_path = f'{config_dir}/config.json'
+    config_local_path = f'{config_dir}/config-local.json'
 
     if 'network' not in os.listdir("/var/ton-work/"):
         os.mkdir("/var/ton-work/network")
@@ -68,7 +69,7 @@ if __name__ == "__main__":
             if 'liteservers' in data:
                 data['liteservers'] = []
 
-            with open(config_path, 'w') as f:
+            with open(config_local_path, 'w') as f:
                 json.dump(data, f)
 
         else:
@@ -127,7 +128,8 @@ if __name__ == "__main__":
     # Create / use keys
     #
 
-    key_storage = KeyStorage(db_path=db_path, config=config, config_path=config_path)
+    key_storage = KeyStorage(db_path=db_path, config=config, config_path=config_path,
+                             config_local_path=config_local_path)
     key_storage.init_console_client_keys(hard_rewrite)
 
     logger.info(f"All stuff with keys done! 🤴\n"
