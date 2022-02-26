@@ -46,6 +46,7 @@ ports:
     PUBLIC_PORT: 30002
     LITESERVER_PORT: 30003
     CONFIG: https://newton-blockchain.github.io/global.config.json
+    VERBOSE: 3
 
   # TESTNET
   testnetFullNode:
@@ -53,6 +54,7 @@ ports:
     PUBLIC_PORT: 30005
     LITESERVER_PORT: 30006
     CONFIG: https://newton-blockchain.github.io/testnet-global.config.json
+    VERBOSE: 3
 
   httpConfig:
     PUBLIC_PORT: 30007

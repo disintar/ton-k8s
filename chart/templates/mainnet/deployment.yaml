@@ -43,6 +43,8 @@ spec:
             value: "{{ .Values.serviceAccount.name }}"
           - name: CONFIG
             value: "{{ .Values.ports.tonFullNode.CONFIG }}"
+          - name: VERBOSE
+            value: "{{ .Values.ports.tonFullNode.VERBOSE }}"
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-database
