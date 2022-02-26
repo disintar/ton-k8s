@@ -57,11 +57,11 @@ spec:
         image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
           protocol: TCP
         env:
           - name: PUBLIC_PORT
-            value: "{{ .Values.customEnv.httpConfig.PUBLIC_PORT }}"
+            value: "{{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}"
         volumeMounts:
           - mountPath: "/var/ton-work/network/"
             name: ton-testnet-database
