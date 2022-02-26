@@ -80,21 +80,21 @@ services:
       - "dht-server"
       - "http-config"
 
-#  ownnet-node:
-#    image: ton-node-mainnet
-#    restart: always
-#    volumes:
-#      - config:/var/ton-work/network
-#    depends_on:
-#      - "genesis"
-#      - "validator"
-#      - "http-config"
-#    environment:
-#      - CONFIG=http://http-config:6666/config.json
-#    env_file:
-#      - 'genesis-common.env'
-#    deploy:
-#      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
+  ownnet-node:
+    image: ton-node-mainnet
+    restart: always
+    volumes:
+      - config:/var/ton-work/network
+    depends_on:
+      - "genesis"
+      - "validator"
+      - "http-config"
+    environment:
+      - CONFIG=http://http-config:6666/config.json
+    env_file:
+      - 'genesis-common.env'
+    deploy:
+      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
 
 
 volumes:
