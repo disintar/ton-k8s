@@ -124,7 +124,7 @@ class KeyStorage:
                 }
             ]
 
-            if self.config['PRIVATE_CONFIG'] and os.path.exists(self.config_path):
+            if os.path.exists(self.config_path):
                 # TODO: fix hardcode
                 path = self.config_path.replace('config.json', '')[:-1]
                 while '.lock' in os.listdir(path):

@@ -1,0 +1,15 @@
+{{- if .Values.run.ownnet -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-ownnet-database
+spec:
+  storageClassName: {{ .Values.persistent.testnetFullNode.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage:  {{ .Values.persistent.testnetFullNode.storageSize }}
+---
+{{- end }}

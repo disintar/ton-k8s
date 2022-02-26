@@ -3,13 +3,13 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-load-balancer
+  name: ton-ownnet-load-balancer
   labels:
-    run: ton-testnet-load-balancer
+    run: ton-ownnet-load-balancer
 spec:
   ports:
   - targetPort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
-    name: testnet-node
+    name: ownnet-node
     protocol: UDP
     port: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.ports.testnetFullNode.PUBLIC_PORT }}
@@ -37,11 +37,11 @@ metadata:
 spec:
   ports:
   - targetPort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
-    name: http-config-testnet
+    name: http-config-ownnet
     protocol: TCP
     port: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
     nodePort: {{ .Values.ports.httpConfig.PUBLIC_PORT }}
   type: LoadBalancer
   selector:
-    app: ton-testnet
+    app: ton-ownnet
 {{- end }}
