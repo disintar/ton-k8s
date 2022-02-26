@@ -83,6 +83,18 @@ customEnv:
     PUBLIC_PORT: 8083
 
     env:
+      - name: TON_API_CACHE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_LOGS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_RATE_LIMIT_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_SSL_ENABLED # this is not real ssl (hi toncenter folks)
+        value: "0"
+      - name: TON_API_ANALYTICS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_CLOUDFLARE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
       - name: TON_API_GET_METHODS_ENABLED
         value: "1"
       - name: TON_API_JSON_RPC_ENABLED
@@ -95,6 +107,18 @@ customEnv:
     CONFIG: https://http-config.testnet.ton.head-labs.com/config-local.json
 
     env:
+      - name: TON_API_CACHE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_LOGS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_RATE_LIMIT_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_SSL_ENABLED # this is not real ssl (hi toncenter folks)
+        value: "0"
+      - name: TON_API_ANALYTICS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_CLOUDFLARE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
       - name: TON_API_GET_METHODS_ENABLED
         value: "1"
       - name: TON_API_JSON_RPC_ENABLED
