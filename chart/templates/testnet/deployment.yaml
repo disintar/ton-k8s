@@ -66,5 +66,12 @@ spec:
           - mountPath: "/var/ton-work/network/"
             name: ton-testnet-database
             subPath: network
+      volumes:
+        - name: ton-testnet-database
+          persistentVolumeClaim:
+            claimName: ton-testnet-database
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
 {{- end }}
