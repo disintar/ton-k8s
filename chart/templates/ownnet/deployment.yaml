@@ -241,6 +241,6 @@ spec:
             claimName: ton-ownnet-database
         - name: secret-volume
           secret:
-            secretName: { { .Values.serviceAccount.name } }-token-secret
+            secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
 {{- end }}
