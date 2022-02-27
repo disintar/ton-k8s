@@ -41,9 +41,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-ownnet-load-balancer-udp
+  name: ton-ownnet-load-balancer-tcp
   labels:
-    run: ton-ownnet-load-balancer-udp
+    run: ton-ownnet-load-balancer-tcp
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
