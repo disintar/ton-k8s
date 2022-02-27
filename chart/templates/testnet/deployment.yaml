@@ -66,25 +66,5 @@ spec:
           - mountPath: "/var/ton-work/network/"
             name: ton-testnet-database
             subPath: network
-
-      - name: ton-toncenter-testnet
-        image: "{{ .Values.registry }}/{{ .Values.images.testnetToncenter.name }}:{{ .Values.images.testnetToncenter.version }}"
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
-        ports:
-        - containerPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
-          protocol: TCP
-        env:
-          - name: PUBLIC_PORT
-            value: "{{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}"
-          - name: CONFIG
-            value: "{{ .Values.customEnv.testnetToncenter.CONFIG }}"
-          {{- toYaml .Values.customEnv.testnetToncenter.env | nindent 10 }}
-      volumes:
-        - name: ton-testnet-database
-          persistentVolumeClaim:
-            claimName: ton-testnet-database
-        - name: secret-volume
-          secret:
-            secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
 {{- end }}
