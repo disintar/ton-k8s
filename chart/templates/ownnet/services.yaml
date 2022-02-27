@@ -57,5 +57,5 @@ spec:
     port: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
   type: ClusterIP
   selector:
-    app: ton-testnet
+    app: ton-ownnet
 {{- end }}
