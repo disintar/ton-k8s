@@ -138,7 +138,6 @@ spec:
             - name: secret-volume
               readOnly: true
               mountPath: "/etc/secret-volume"
-
       volumes:
         - name: ton-ownnet-database
           persistentVolumeClaim:
@@ -236,5 +235,12 @@ spec:
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/secret-volume"
+      volumes:
+        - name: ton-ownnet-database
+          persistentVolumeClaim:
+            claimName: ton-ownnet-database
+        - name: secret-volume
+          secret:
+            secretName: { { .Values.serviceAccount.name } }-token-secret
 ---
 {{- end }}
