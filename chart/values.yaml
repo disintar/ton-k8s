@@ -145,7 +145,7 @@ customEnv:
 
   ownnetToncenter:
     PUBLIC_PORT: 8086
-    CONFIG: https://http-config.ownnet.ton.head-labs.com/config-local.json
+    CONFIG: https://http-config.ownnet.ton.head-labs.com/config.json
 
     env:
       - name: TON_API_CACHE_ENABLED # don't change (if you don't know wtf is toncenter)

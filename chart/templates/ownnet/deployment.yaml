@@ -45,6 +45,8 @@ spec:
             value: "true"
           - name: PRIVATE_CONFIG
             value: "true"
+          - name: AUTO_VALIDATOR
+            value: "true"
           {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
