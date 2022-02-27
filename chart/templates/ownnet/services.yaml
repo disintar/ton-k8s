@@ -3,9 +3,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-ownnet-load-balancer
+  name: ton-ownnet-load-balancer-udp
   labels:
-    run: ton-ownnet-load-balancer
+    run: ton-ownnet-load-balancer-udp
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
@@ -43,6 +43,19 @@ spec:
     protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
+  type: LoadBalancer
+  selector:
+    app: ton-ownnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-ownnet-load-balancer-tcp
+  labels:
+    run: ton-ownnet-load-balancer-tcp
+spec:
+  ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     name: ownnet-node-tcp
     protocol: TCP
