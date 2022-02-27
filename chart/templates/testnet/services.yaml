@@ -31,9 +31,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-http-config
+  name: ton-http-config-testnet
   labels:
-    run: ton-testnet-http-config
+    run: ton-http-config-testnet
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
@@ -47,9 +47,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-toncenter
+  name: ton-toncenter-testnet
   labels:
-    run: ton-testnet-toncenter
+    run: ton-toncenter-testnet
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
