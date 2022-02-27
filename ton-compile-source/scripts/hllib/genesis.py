@@ -174,8 +174,14 @@ class Genesis:
 
         if 'celldb' not in os.listdir(self.config_path.replace('/config.json', '')):
             logger.info("🛀 Run validator first time!")
-            run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
-                          self.config['PUBLIC_PORT'])  # first run to init config
+            proc = run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
+                                 self.config['PUBLIC_PORT'], True)  # first run to init config
+
+            logger.info("😴 Sleep 2 secs...")
+            time.sleep(2)
+
+            logger.debug("🔫 Terminate process with validator")
+            proc.terminate()
 
         key_storage = KeyStorage(db_path=self.db_path, config=self.config, config_path=self.config_path)
         key_storage.init_console_client_keys(True)
