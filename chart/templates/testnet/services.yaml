@@ -3,26 +3,26 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-load-balancer
+  name: ton-ownnet-load-balancer
   labels:
     app: ton-testnet
 spec:
   ports:
-  - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     name: testnet-node
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
-  - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     name: testnet-client
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-  - targetPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet
