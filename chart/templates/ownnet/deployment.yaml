@@ -199,6 +199,16 @@ spec:
       labels:
         app: ton-ownnet
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - ton-ownnet
+              topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
