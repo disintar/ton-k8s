@@ -172,8 +172,9 @@ class Genesis:
             else:
                 return subprocess.Popen(args=initializing_command)
 
-        run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
-                      self.config['PUBLIC_PORT'])  # first run to init config
+        if 'config.json' not in os.listdir(self.config_path):
+            run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
+                          self.config['PUBLIC_PORT'])  # first run to init config
 
         key_storage = KeyStorage(db_path=self.db_path, config=self.config, config_path=self.config_path)
         key_storage.init_console_client_keys(True)
