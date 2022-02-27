@@ -171,6 +171,16 @@ customEnv:
       - name: TON_API_WEBSERVERS_WORKERS
         value: "1"
 
+# TODO: fix
+
+nodeSelector:
+  mainnet:
+    name: head-labs-ton
+  testnet:
+    name: head-labs-ton
+  ownnet: # ownnet nodes will have this settings (only main)
+    name: head-labs-ton
+
 ingress:
   enabled: true
   annotations:

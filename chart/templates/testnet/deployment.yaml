@@ -73,6 +73,7 @@ spec:
         - name: secret-volume
           secret:
             secretName: {{ .Values.serviceAccount.name }}-token-secret
+      {{- toYaml .Values.nodeSelector.testnet | nindent 6 }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -95,7 +96,6 @@ spec:
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
-
       - name: ton-toncenter-testnet
         image: "{{ .Values.registry }}/{{ .Values.images.testnetToncenter.name }}:{{ .Values.images.testnetToncenter.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
@@ -108,5 +108,6 @@ spec:
           - name: CONFIG
             value: "{{ .Values.customEnv.testnetToncenter.CONFIG }}"
           {{- toYaml .Values.customEnv.testnetToncenter.env | nindent 10 }}
+      {{- toYaml .Values.nodeSelector.testnet | nindent 6 }}
 ---
 {{- end }}
