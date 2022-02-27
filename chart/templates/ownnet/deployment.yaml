@@ -106,7 +106,7 @@ spec:
             name: ton-ownnet-database
             subPath: network
       initContainers:
-        - name: ton-http-config-ownnet
+        - name: ton-genesis-ownnet
           image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
