@@ -10,30 +10,72 @@ spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     name: ownnet-node
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     name: ownnet-client
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
     name: ownnet-liteserver
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
     name: ownnet-dht
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     name: validator-consoleport
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     name: validator-publicport
+    protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     name: validator-liteserver
+    protocol: UDP
+    port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    name: ownnet-node
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    name: ownnet-client
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    name: ownnet-liteserver
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
+    name: ownnet-dht
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
+    name: validator-consoleport
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
+    name: validator-publicport
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
+    name: validator-liteserver
+    protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
   type: LoadBalancer
