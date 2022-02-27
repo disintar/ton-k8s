@@ -6,7 +6,7 @@ namespace: ton
 run:
   mainnet: false
   testnet: true
-  ownnet: false
+  ownnet: true
 
 # By default we create volume and mount it to /var/ton-work/db
 persistent:
@@ -73,11 +73,28 @@ customEnv:
       - name: VERBOSE
         value: "3"
 
+  # OWNNET
+  ownnetFullNode:
+    CONSOLE_PORT: 30007
+    PUBLIC_PORT: 30008
+    LITESERVER_PORT: 30009
+    DHT_PORT: 30010
+
+    env:
+      - name: CONFIG
+        value: "https://newton-blockchain.github.io/testnet-global.config.json"
+      - name: VERBOSE
+        value: "3"
+
   httpConfig:
     PUBLIC_PORT: 8081
 
+
   testnetHttpConfig:
     PUBLIC_PORT: 8082
+
+  ownnetHttpConfig:
+    PUBLIC_PORT: 8085
 
   toncenter:
     PUBLIC_PORT: 8083
@@ -126,6 +143,30 @@ customEnv:
       - name: TON_API_WEBSERVERS_WORKERS
         value: "1"
 
+  ownnetToncenter:
+    PUBLIC_PORT: 8086
+    CONFIG: https://http-config.ownnet.ton.head-labs.com/config-local.json
+
+    env:
+      - name: TON_API_CACHE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_LOGS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_RATE_LIMIT_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_SSL_ENABLED # this is not real ssl (hi toncenter folks)
+        value: "0"
+      - name: TON_API_ANALYTICS_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_CLOUDFLARE_ENABLED # don't change (if you don't know wtf is toncenter)
+        value: "0"
+      - name: TON_API_GET_METHODS_ENABLED
+        value: "1"
+      - name: TON_API_JSON_RPC_ENABLED
+        value: "1"
+      - name: TON_API_WEBSERVERS_WORKERS
+        value: "1"
+
 ingress:
   enabled: true
   annotations:
@@ -135,3 +176,5 @@ ingress:
   hosts:
     testnetHttpConfig: http-config.testnet.ton.head-labs.com
     testnetToncenter: toncenter.testnet.ton.head-labs.com
+    ownnetHttpConfig: http-config.ownnet.ton.head-labs.com
+    ownnetToncenter: toncenter.ownnet.ton.head-labs.com

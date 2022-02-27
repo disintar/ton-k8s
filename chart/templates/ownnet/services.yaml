@@ -8,39 +8,54 @@ metadata:
     run: ton-ownnet-load-balancer
 spec:
   ports:
-  - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     name: ownnet-node
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
-  - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     name: testnet-client
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-  - targetPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
     protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+    port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   type: LoadBalancer
   selector:
-    app: ton-testnet
+    app: ton-ownnet
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-http-config-load-balancer
+  name: ownhttpconfig
   labels:
-    run: ton-http-config-load-balancer
+    app: ton-ownnet
 spec:
   ports:
-  - targetPort: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
-    name: http-config-ownnet
+  - targetPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
     protocol: TCP
-    port: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
-  type: LoadBalancer
+    port: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
+  type: ClusterIP
   selector:
     app: ton-ownnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: owntoncenter
+  labels:
+    app: ton-ownnet
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
+  type: ClusterIP
+  selector:
+    app: ton-testnet
 {{- end }}
