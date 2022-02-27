@@ -44,37 +44,37 @@ spec:
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
-    name: ownnet-node
+    name: ownnet-node-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
-    name: ownnet-client
+    name: ownnet-client-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
-    name: ownnet-liteserver
+    name: ownnet-liteserver-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
-    name: ownnet-dht
+    name: ownnet-dht-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
-    name: validator-consoleport
+    name: validator-consoleport-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
-    name: validator-publicport
+    name: validator-publicport-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
-    name: validator-liteserver
+    name: validator-liteserver-tcp
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
