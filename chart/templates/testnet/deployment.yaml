@@ -74,4 +74,39 @@ spec:
           secret:
             secretName: {{ .Values.serviceAccount.name }}-token-secret
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-testnet-toncenter
+  labels:
+    app: ton-testnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-testnet
+  template:
+    metadata:
+      labels:
+        app: ton-testnet
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+
+      - name: ton-toncenter-testnet
+        image: "{{ .Values.registry }}/{{ .Values.images.testnetToncenter.name }}:{{ .Values.images.testnetToncenter.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}"
+          - name: CONFIG
+            value: "{{ .Values.customEnv.testnetToncenter.CONFIG }}"
+          {{- toYaml .Values.customEnv.testnetToncenter.env | nindent 10 }}
+---
 {{- end }}
