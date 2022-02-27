@@ -5,7 +5,7 @@ namespace: ton
 # what services to run
 run:
   mainnet: false
-  testnet: true
+  testnet: false
   ownnet: true
 
 # By default we create volume and mount it to /var/ton-work/db
