@@ -80,6 +80,10 @@ customEnv:
     LITESERVER_PORT: 30009
     DHT_PORT: 30010
 
+    VALIDATOR_CONSOLE_PORT: 30011
+    VALIDATOR_PUBLIC_PORT: 30012
+    VALIDATOR_LITESERVER_PORT: 30013
+
     env:
       - name: CONFIG
         value: "https://newton-blockchain.github.io/testnet-global.config.json"
