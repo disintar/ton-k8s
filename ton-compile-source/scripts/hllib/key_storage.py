@@ -94,7 +94,7 @@ class KeyStorage:
 
         logger.debug(f"🔑 FullNode: b64: {fullnode_key_b64}, hex: {fullnode_key_hex.hex().upper()}")
 
-        if self.kubernetes:
+        if self.kubernetes and not self.kubernetes.is_secret_existing('ton-keys'):
             self.kubernetes.create_secret('ton-keys', {
                 'client': client_key_b64,
                 'server': server_key_b64,
