@@ -253,5 +253,8 @@ class Genesis:
         with open(f"{self.db_path}/config.json", "w") as f:
             json.dump(ton_config, f, indent=4)
 
+        with open(f"{self.db_path}/config-local.json", "w") as f:
+            json.dump(ton_config, f, indent=4)
+
         # TODO: fix, catch LOCK files in db
         time.sleep(3)

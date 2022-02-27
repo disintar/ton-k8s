@@ -2,6 +2,7 @@ import subprocess
 from subprocess import Popen
 from threading import Thread
 from time import sleep
+import requests as r
 
 from hllib.command_line import run
 from hllib.key_storage import KeyStorage
@@ -17,6 +18,8 @@ class AbstractAuto(Thread):
         self.stake_amount = 10001
 
         self.key_storage = KeyStorage(db_path=db_path, config=config, config_path=config_path)
+        self.wallet = int(r.get(f"{self.config['HTTP_CONFIG_SERVER']}/wallet").content.decode())
+        logger.debug(f"💵 My wallet number is: {self.wallet}")
 
     def wait_while_server_ready(self):
         while True:

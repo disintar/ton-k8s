@@ -10,17 +10,17 @@ spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     name: testnet-node
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
     name: testnet-client
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
   type: LoadBalancer

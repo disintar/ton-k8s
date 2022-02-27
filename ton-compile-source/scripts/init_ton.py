@@ -30,7 +30,8 @@ config = {
     "GENESIS": os.getenv("GENESIS", False) == 'true',
     "AUTO_VALIDATOR": os.getenv("AUTO_VALIDATOR", False) == 'true',
     "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
-    "VERBOSE": os.getenv("VERBOSE", 0)
+    "VERBOSE": os.getenv("VERBOSE", 0),
+    "HTTP_CONFIG_SERVER": os.getenv('HTTP_CONFIG_SERVER', '')
 }
 
 if config['DHT_PORT'] is not None:

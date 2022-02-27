@@ -5,7 +5,7 @@ namespace: ton
 # what services to run
 run:
   mainnet: false
-  testnet: false
+  testnet: true
   ownnet: true
 
 # By default we create volume and mount it to /var/ton-work/db
@@ -87,6 +87,8 @@ customEnv:
     env:
       - name: CONFIG
         value: "https://newton-blockchain.github.io/testnet-global.config.json"
+      - name: HTTP_CONFIG_SERVER
+        value: "https://http-config.ownnet.ton.head-labs.com"
       - name: VERBOSE
         value: "0"
 

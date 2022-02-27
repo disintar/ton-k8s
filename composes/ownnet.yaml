@@ -94,7 +94,7 @@ services:
     env_file:
       - 'genesis-common.env'
     deploy:
-      replicas: 3 # up to 50 validators (check gen-zerostate, wallets count)
+      replicas: 2 # up to 50 validators (check gen-zerostate, wallets count)
 
 
 volumes:

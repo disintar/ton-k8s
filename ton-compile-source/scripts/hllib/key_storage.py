@@ -134,7 +134,7 @@ class KeyStorage:
                 with open(f"{path}/.lock", 'w') as f:
                     f.write('')
 
-                pathes = [self.config_path]
+                pathes = []
 
                 if self.config_local_path:
                     pathes.append(self.config_local_path)
