@@ -193,11 +193,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ton-ownnet
+      app: ton-ownnet-node
   template:
     metadata:
       labels:
-        app: ton-ownnet
+        app: ton-ownnet-node
     spec:
       affinity:
         podAntiAffinity:
@@ -207,7 +207,7 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - ton-ownnet
+                      - ton-ownnet-node
               topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
