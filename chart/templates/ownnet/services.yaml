@@ -10,22 +10,22 @@ spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     name: ownnet-node
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     name: ownnet-client
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     name: validator-consoleport
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     name: validator-publicport
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
   type: LoadBalancer
