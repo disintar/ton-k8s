@@ -44,7 +44,7 @@ cd ../ton-toncenter || return
 # toncenter mainnet
 docker build -f Dockerfile -t ton-toncenter-mainnet . --build-arg base=${REGISTRY}/ton/ton-base:mainnet-${VERSION}
 docker tag ton-toncenter-mainnet ${REGISTRY}/ton/ton-toncenter:mainnet-${VERSION}
-docker push ${REGISTRY}/ton/ton-node:mainnet-${VERSION}
+docker push ${REGISTRY}/ton/ton-toncenter:mainnet-${VERSION}
 
 # toncenter testnet
 docker build -f Dockerfile -t ton-toncenter-testnet . --build-arg base=${REGISTRY}/ton/ton-base:testnet-${VERSION}
