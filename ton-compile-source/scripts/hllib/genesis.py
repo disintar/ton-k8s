@@ -172,27 +172,19 @@ class Genesis:
             else:
                 return subprocess.Popen(args=initializing_command)
 
-        if 'celldb' not in os.listdir(self.config_path.replace('/config.json', '')):
-            logger.info("🛀 Run validator first time!")
-            proc = run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
-                                 self.config['PUBLIC_PORT'], True)  # first run to init config
-
-            logger.info("😴 Sleep 2 secs...")
-            time.sleep(2)
-
-            logger.debug("🔫 Terminate process with validator")
-            proc.terminate()
+        run_validator(self.config_path, self.db_path, 'localhost',
+                      self.config['PUBLIC_PORT'])  # first run to init config
 
         key_storage = KeyStorage(db_path=self.db_path, config=self.config, config_path=self.config_path)
         key_storage.init_console_client_keys(True)
 
         # run validator in thread to config new adnl / val id / ...
-        proc = run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
+        proc = run_validator(self.config_path, self.db_path, 'localhost',
                              self.config['PUBLIC_PORT'], True)
 
         command = ["validator-engine-console", "-k",
                    f"{self.db_path}/keyring/client", "-p", f"{self.db_path}/keyring_pub/server.pub",
-                   "-v", "0", "-a", f"{self.config['PUBLIC_IP']}:{self.config['CONSOLE_PORT']}", "-rc"]
+                   "-v", "0", "-a", f"localhost:{self.config['CONSOLE_PORT']}", "-rc"]
 
         validator_hex = os.listdir('/var/ton-work/network/keyring/')
         if 'validator' in validator_hex:
