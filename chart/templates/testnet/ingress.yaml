@@ -3,8 +3,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ton-testnet-ingress
-  labels:
-    app: ton-testnet
   {{- with .Values.ingress.annotations }}
   annotations:
   {{- toYaml . | nindent 4 }}
@@ -24,7 +22,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ton-testnet-http-config
+                name: testhttpconfig
                 port:
                   number: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
     - host: {{ .Values.ingress.hosts.testnetToncenter }}
@@ -34,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ton-testnet-toncenter
+                name: testtoncenter
                 port:
                   number: {{ .Values.customEnv.testnetToncenter.PUBLIC_PORT }}
 ---
