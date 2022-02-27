@@ -172,7 +172,7 @@ class Genesis:
             else:
                 return subprocess.Popen(args=initializing_command)
 
-        if 'config.json' not in os.listdir(self.config_path):
+        if 'config.json' not in os.listdir(self.config_path.replace('/config.json', '')):
             run_validator(self.config_path, self.db_path, self.config['PUBLIC_IP'],
                           self.config['PUBLIC_PORT'])  # first run to init config
 
