@@ -13,11 +13,6 @@ spec:
     protocol: UDP
     port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
-  - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-    name: testnet-client
-    protocol: UDP
-    port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet
@@ -36,6 +31,11 @@ spec:
     protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
+  - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+    name: testnet-client
+    protocol: TCP
+    port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
   type: LoadBalancer
   selector:
     app: ton-testnet
