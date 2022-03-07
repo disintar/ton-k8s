@@ -103,6 +103,8 @@ spec:
         env:
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}"
+          - name: SHARED_SECRET
+            value: "{{ .Values.customEnv.ownnetFullNode.SHARED_SECRET }}"
         volumeMounts:
           - mountPath: "/var/ton-work/network/"
             name: ton-ownnet-database

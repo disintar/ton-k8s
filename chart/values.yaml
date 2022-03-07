@@ -91,6 +91,8 @@ customEnv:
         value: "http://ownhttpconfig.ton.svc.cluster.local:8085"
       - name: VERBOSE
         value: "5"
+      - name: SHARED_SECRET
+        value: "40a55d8128d1"
 
   httpConfig:
     PUBLIC_PORT: 8081

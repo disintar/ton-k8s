@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pprint import pformat
 from time import sleep
-
+import requests as r
 from hllib.command_line import run
 from hllib.genesis import Genesis, ip2int
 from hllib.key_storage import KeyStorage
@@ -31,7 +31,8 @@ config = {
     "AUTO_VALIDATOR": os.getenv("AUTO_VALIDATOR", False) == 'true',
     "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 0),
-    "HTTP_CONFIG_SERVER": os.getenv('HTTP_CONFIG_SERVER', '')
+    "HTTP_CONFIG_SERVER": os.getenv('HTTP_CONFIG_SERVER', ''),
+    "SHARED_SECRET": os.getenv('SHARED_SECRET', None)
 }
 
 if config['DHT_PORT'] is not None:
@@ -75,6 +76,13 @@ if __name__ == "__main__":
 
                     if len(data['liteservers']) == 1:
                         success = True
+
+                if config['SHARED_SECRET'] and config['HTTP_CONFIG_SERVER']:
+                    logger.info(f"Check if i'm privilege... 👑")
+
+                    answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/private")
+                    logger.info(answer.status_code)
+                    logger.info(answer.content.decode())
 
             download(config['CONFIG'], config_path)
 
