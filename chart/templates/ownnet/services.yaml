@@ -57,9 +57,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-ownnet-load-balancer-tcp-nodes
+  name: ton-ownnet-load-balancer-tcp-validator
   labels:
-    run: ton-ownnet-load-balancer-tcp-nodes
+    run: ton-ownnet-load-balancer-tcp-validator
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
