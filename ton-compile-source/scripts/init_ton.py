@@ -12,6 +12,7 @@ from hllib.key_storage import KeyStorage
 from hllib.log import logger
 from hllib.net import get_my_ip, download
 from hllib.validator_auto import ValidatorAuto
+import base64 as b
 
 ip = get_my_ip(os.getenv('IP_GET_MODE', 'internet'))
 cpu_count = os.cpu_count() - 1
@@ -83,6 +84,21 @@ if __name__ == "__main__":
                     answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/private?token={config['SHARED_SECRET']}")
                     logger.info(answer.status_code)
                     logger.info(answer.content.decode())
+
+                    if 'wallet' not in os.listdir("/var/ton-work/network"):
+                        os.mkdir("/var/ton-work/network/wallet")
+
+                    for file in ['valik-wallet.fif', 'wallet.fif']:
+                        answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/wallet/{file}?token={config['SHARED_SECRET']}")
+
+                        with open(f"/var/ton-work/network/wallet/{file}", 'w') as f:
+                            f.write(answer.content.decode())
+
+                    for file in ['valik.pk', 'main-wallet.pk', 'main-wallet.addr']:
+                        answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/{file}?token={config['SHARED_SECRET']}")
+
+                        with open(f"/var/ton-work/network/wallet/{file}", 'wb') as f:
+                            f.write(b.b64decode(answer.content.decode()))
 
             download(config['CONFIG'], config_path)
 
