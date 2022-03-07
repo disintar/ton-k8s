@@ -71,7 +71,7 @@ customEnv:
       - name: CONFIG
         value: "https://newton-blockchain.github.io/testnet-global.config.json"
       - name: VERBOSE
-        value: "3"
+        value: "5"
 
   # OWNNET
   ownnetFullNode:
@@ -90,7 +90,7 @@ customEnv:
       - name: HTTP_CONFIG_SERVER
         value: "http://ownhttpconfig.ton.svc.cluster.local"
       - name: VERBOSE
-        value: "0"
+        value: "5"
 
   httpConfig:
     PUBLIC_PORT: 8081
