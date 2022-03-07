@@ -1,6 +1,17 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 from urllib.parse import urlparse, parse_qs
+import logging
+import sys
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 current_wallet = 1
 
@@ -14,6 +25,8 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
         privelaged = False
         if 'token' in params and params['token'][0] == os.getenv('SHARED_SECRET'):
             privelaged = True
+
+        logger.debug(f"GET, Url: {o.path}, Params: {params}, Privelage: {privelaged}")
 
         files_to_share = ['config-local.json', 'config.json']
         if o.path[1:] in files_to_share:
