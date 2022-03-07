@@ -39,7 +39,7 @@ class AbstractAuto(Thread):
         answer = None
         while answer is None:
             try:
-                answer = run(['lite-client', '-C', self.config_path, '-v', '0', '--timeout', '1', '-rc', command])
+                answer = run(['lite-client', '-C', self.config_path, '-v', '5', '--timeout', '1', '-rc', command])
                 logger.debug(answer)
             except subprocess.CalledProcessError as exc:
                 logger.error(f"FATAL {exc.returncode} {exc.output}")
