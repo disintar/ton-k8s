@@ -93,8 +93,7 @@ PROGRAM{
 }END>c
 // code
 <b x{11EF55AA} s,
-"Ef9yNgE6aW4h1wrIAU4ldKP5BBl52AD-uUoxrj8Qt5pL31qK" true parse-load-address drop swap drop 256 u,
-b> // data
+"Ef9yNgE6aW4h1wrIAU4ldKP5BBl52AD-uUoxrj8Qt5pL31qK" true parse-load-address drop swap drop 256 u, b> // data
 // empty_cell // libraries
 Libs{
   x{ABACABADABACABA} s>c public_lib
@@ -190,7 +189,7 @@ Masterchain swap
 GR$10000 GR$100000 GR$30000 sg~10 config.validator_stake_limits!
 // elected-for elect-start-before elect-end-before stakes-frozen-for
 // 400000 200000 4000 400000 config.election_params!
-200 190 10 10 config.election_params!  // DEBUG
+2000 190 10 10 config.election_params!  // DEBUG
 // config-addr = -1:5555...5555
 AllOnes 5 * constant config_addr
 config_addr config.config_smc!
