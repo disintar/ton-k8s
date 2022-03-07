@@ -100,7 +100,7 @@ spec:
         ports:
         - containerPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
           protocol: TCP
-        env:g
+        env:
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}"
           {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
