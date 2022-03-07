@@ -88,7 +88,7 @@ if __name__ == "__main__":
                     if 'wallet' not in os.listdir("/var/ton-work/network"):
                         os.mkdir("/var/ton-work/network/wallet")
 
-                    for file in ['valik-wallet.fif', 'wallet.fif']:
+                    for file in ['valik-wallet.fif', 'main-wallet.fif']:
                         answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/wallet/{file}?token={config['SHARED_SECRET']}")
 
                         with open(f"/var/ton-work/network/wallet/{file}", 'w') as f:

@@ -29,7 +29,7 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
 
         logger.debug(f"GET, Url: {o.path}, Params: {params}, Privelage: {privelaged}")
 
-        files_to_share = ['config-local.json', 'config.json', 'wallet/valik-wallet.fif', 'wallet/wallet.fif']
+        files_to_share = ['config-local.json', 'config.json', 'wallet/valik-wallet.fif', 'wallet/main-wallet.fif']
         if o.path[1:] in files_to_share:
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
