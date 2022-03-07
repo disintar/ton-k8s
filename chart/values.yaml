@@ -71,7 +71,7 @@ customEnv:
       - name: CONFIG
         value: "https://newton-blockchain.github.io/testnet-global.config.json"
       - name: VERBOSE
-        value: "5"
+        value: "3"
 
   # OWNNET
   ownnetFullNode:
