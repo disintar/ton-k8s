@@ -259,6 +259,13 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
+            - nodeSelectorTerms:
+                - matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - s1kube
+                        - s3kube
             - labelSelector:
                 matchExpressions:
                   - key: app
