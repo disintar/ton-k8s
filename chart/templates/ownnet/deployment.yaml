@@ -288,9 +288,9 @@ spec:
         - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
           protocol: UDP
         - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
-          protocol: UDP
+          protocol: TCP
         - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
-          protocol: UDP
+          protocol: TCP
         env:
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}"

@@ -15,7 +15,7 @@ spec:
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
   type: LoadBalancer
   selector:
-    app: ton-ownnet
+    app: ton-ownnet-nodes
 ---
 apiVersion: v1
 kind: Service
@@ -97,7 +97,7 @@ spec:
     nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   type: LoadBalancer
   selector:
-    app: ton-ownnet-nodes
+    app: ton-ownnet
 ---
 apiVersion: v1
 kind: Service
