@@ -1,4 +1,5 @@
 import subprocess
+from time import sleep
 from typing import Optional, List
 
 from hllib.log import logger
@@ -25,6 +26,7 @@ def run(command: List[str], cwd: str = None) -> Optional[str]:
             if get_output:
                 logger.debug(f"🐼 Answer: {answer}")
                 return answer
+            sleep(2)
     except subprocess.CalledProcessError as exc:
         logger.error(f"Status : FAIL {exc.returncode} {exc.output}")
         raise exc

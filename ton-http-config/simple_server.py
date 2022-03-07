@@ -3,6 +3,7 @@ import os
 from urllib.parse import urlparse, parse_qs
 import logging
 import sys
+import base64 as b
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -28,7 +29,7 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
 
         logger.debug(f"GET, Url: {o.path}, Params: {params}, Privelage: {privelaged}")
 
-        files_to_share = ['config-local.json', 'config.json']
+        files_to_share = ['config-local.json', 'config.json', 'wallet/valik-wallet.fif', 'wallet/wallet.fif']
         if o.path[1:] in files_to_share:
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -44,6 +45,15 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
             self.end_headers()
 
             self.wfile.write('true'.encode())
+        elif privelaged and o.path[1:] in ['valik.pk', 'main-wallet.pk', 'main-wallet.addr']:
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+
+            with open(f'/var/ton-work/network/wallet/{o.path[1:]}', 'rb') as file:
+                data = file.read()
+                data = b.b64encode(data).decode()
+            self.wfile.write(data.encode(encoding='utf_8'))
         elif o.path == '/wallet':
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
