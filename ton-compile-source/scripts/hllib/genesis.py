@@ -97,7 +97,7 @@ class Genesis:
 
         shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
 
-        dht_ip = get_my_ip('docker')
+        dht_ip = self.config['PUBLIC_IP']
         run(['dht-server', '-C', f'{self.db_path}/dht-server/example.json', '-v', '5', '-D', '.', '-I',
              f'{dht_ip}:{self.config["DHT_PORT"]}'], cwd=f'{self.db_path}/dht-server')
 
