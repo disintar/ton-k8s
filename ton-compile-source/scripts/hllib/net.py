@@ -34,7 +34,7 @@ def download(url: str, path: str) -> bool:
     :param path: path to save file
     :return: bool - success or not
     """
-    response = requests.get(url, stream=True)
+    response = r.get(url, stream=True)
 
     if response.status_code == 200:
         with open(path, "wb") as handle:
