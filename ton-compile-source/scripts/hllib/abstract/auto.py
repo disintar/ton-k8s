@@ -11,13 +11,17 @@ from hllib.log import logger
 
 class AbstractAuto(Thread):
     def __init__(self, db_path: str, config: dict, config_path: str):
+        logger.debug(f"Init AbstractAuto")
         super().__init__()
         self.db_path = db_path
         self.config = config
         self.config_path = config_path
         self.stake_amount = 10001
 
+        logger.debug(f"Init KeyStorage")
         self.key_storage = KeyStorage(db_path=db_path, config=config, config_path=config_path)
+
+        logger.debug(f"Init wallet seqno")
         self.wallet = int(r.get(f"{self.config['HTTP_CONFIG_SERVER']}/wallet").content.decode())
         logger.debug(f"💵 My wallet number is: {self.wallet}")
 
