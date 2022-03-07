@@ -63,9 +63,19 @@ if __name__ == "__main__":
             logger.info(f"Download config from 👾 [{config['CONFIG']}]")
 
             if config['AUTO_VALIDATOR']:
-                # this is needed to ownnet start
-                logger.info(f"Wait...")
-                sleep(5)
+                success = False
+                while not success:
+                    # this is needed to ownnet start
+                    logger.info(f"Try to get config with exact one liteserver, wait...")
+                    sleep(5)
+                    download(config['CONFIG'], config_path)
+
+                    with open(config_path, 'r') as f:
+                        data = json.load(f)
+
+                    if len(data['liteservers']) == 1:
+                        success = True
+
             download(config['CONFIG'], config_path)
 
             # load config and remove liteservers from list,
