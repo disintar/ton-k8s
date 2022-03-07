@@ -234,7 +234,7 @@ spec:
             value: "{{ .Values.namespace }}"
           - name: SERVICE_ACCOUNT
             value: "{{ .Values.serviceAccount.name }}"
-          - name: CONFIG
+          - name: CONFIGF
             value: "{{ .Values.customEnv.ownnetToncenter.CONFIG }}"
           - name: AUTO_VALIDATOR
             value: "true"

@@ -146,7 +146,10 @@ if __name__ == "__main__":
             for file in os.listdir('/var/ton-work/network/keyring_pub'):
                 shutil.copy(f'/var/ton-work/network/keyring_pub/{file}', f"{db_path}/keyring_pub/")
 
+    logger.info(f"Auto validator is: {config['AUTO_VALIDATOR']} 🤔")
+
     if config['AUTO_VALIDATOR']:
+        logger.info(f"Run auto validator 🙀")
         validator = ValidatorAuto(db_path=db_path, config=config, config_path=config_path)
         validator.start()
 
