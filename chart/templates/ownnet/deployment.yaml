@@ -100,11 +100,10 @@ spec:
         ports:
         - containerPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
           protocol: TCP
-        env:
+        env:g
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}"
-          - name: SHARED_SECRET
-            value: "{{ .Values.customEnv.ownnetFullNode.SHARED_SECRET }}"
+          {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
         volumeMounts:
           - mountPath: "/var/ton-work/network/"
             name: ton-ownnet-database

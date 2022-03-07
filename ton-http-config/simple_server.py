@@ -26,7 +26,7 @@ class SimpleServeFiles(BaseHTTPRequestHandler):
         if 'token' in params and params['token'][0] == os.getenv('SHARED_SECRET'):
             privelaged = True
 
-        logger.debug(f"GET, Url: {o.path}, Params: {params}, Privelage: {privelaged}, admin token: {os.getenv('SHARED_SECRET')}")
+        logger.debug(f"GET, Url: {o.path}, Params: {params}, Privelage: {privelaged}")
 
         files_to_share = ['config-local.json', 'config.json']
         if o.path[1:] in files_to_share:
