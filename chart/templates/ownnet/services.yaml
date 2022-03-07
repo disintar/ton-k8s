@@ -8,17 +8,29 @@ metadata:
     run: ton-ownnet-load-balancer-udp
 spec:
   ports:
-  - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
-    name: ownnet-node
-    protocol: UDP
-    port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
-    nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     name: validator-publicport
     protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
   type: LoadBalancer
+  selector:
+    app: ton-ownnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-ownnet-load-balancer-udp
+  labels:
+    run: ton-ownnet-load-balancer-udp
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    name: ownnet-node
+    protocol: UDP
+    port: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}
   selector:
     app: ton-ownnet
 ---
@@ -44,26 +56,16 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-ownnet-load-balancer-tcp
+  name: ton-ownnet-load-balancer-tcp-nodes
   labels:
-    run: ton-ownnet-load-balancer-tcp
+    run: ton-ownnet-load-balancer-tcp-nodes
 spec:
   ports:
-  - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
-    name: ownnet-client
-    protocol: TCP
-    port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     name: validator-consoleport
     protocol: TCP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
-  - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
-    name: ownnet-liteserver
-    protocol: TCP
-    port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
-    nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
   - targetPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
     name: validator-liteserver
     protocol: TCP
@@ -71,7 +73,30 @@ spec:
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
   type: LoadBalancer
   selector:
-    app: ton-ownnet
+    app: ton-ownnet-nodes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-ownnet-load-balancer-tcp-nodes
+  labels:
+    run: ton-ownnet-load-balancer-tcp-nodes
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    name: ownnet-client
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.CONSOLE_PORT }}
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    name: ownnet-liteserver
+    protocol: TCP
+    port: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.LITESERVER_PORT }}
+  type: LoadBalancer
+  selector:
+    app: ton-ownnet-nodes
 ---
 apiVersion: v1
 kind: Service

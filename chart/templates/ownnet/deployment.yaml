@@ -245,16 +245,16 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: ton-ownnet-nodes
   labels:
-    app: ton-ownnet
+    app: ton-ownnet-nodes
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ton-ownnet-node
+      app: ton-ownnet-nodes
   template:
     metadata:
       labels:
-        app: ton-ownnet-node
+        app: ton-ownnet-nodes
     spec:
       affinity:
         podAntiAffinity:
