@@ -18,11 +18,11 @@ spec:
     protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
-  - targetPort: { { .Values.customEnv.ownnetFullNode.DHT_PORT } }
+  - targetPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
     name: ownnet-dht
     protocol: UDP
-    port: { { .Values.customEnv.ownnetFullNode.DHT_PORT } }
-    nodePort: { { .Values.customEnv.ownnetFullNode.DHT_PORT } }
+    port: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
+    nodePort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
   type: LoadBalancer
   selector:
     app: ton-ownnet
