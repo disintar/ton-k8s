@@ -187,7 +187,7 @@ class Genesis:
 
         command = ["validator-engine-console", "-k",
                    f"{self.db_path}/keyring/client", "-p", f"{self.db_path}/keyring_pub/server.pub",
-                   "-v", "0", "-a", f"localhost:{self.config['CONSOLE_PORT']}", "-rc"]
+                   "-v", "0", "-a", f"{self.config['PUBLIC_IP']}:{self.config['CONSOLE_PORT']}", "-rc"]
 
         validator_hex = os.listdir('/var/ton-work/network/keyring/')
         if 'validator' in validator_hex:
