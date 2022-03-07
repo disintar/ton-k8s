@@ -92,7 +92,9 @@ PROGRAM{
   }>
 }END>c
 // code
-<b x{11EF55AA} s, smc1_addr 256 u, b> // data
+<b x{11EF55AA} s,
+"Ef9yNgE6aW4h1wrIAU4ldKP5BBl52AD-uUoxrj8Qt5pL31qK" true parse-load-address drop swap drop 256 u,
+b> // data
 // empty_cell // libraries
 Libs{
   x{ABACABADABACABA} s>c public_lib
