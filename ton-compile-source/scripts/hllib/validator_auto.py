@@ -26,6 +26,7 @@ class ValidatorAuto(AbstractAuto):
     def run(self):
         while True:
             try:
+                logger.info(f"🙀  Wait while server start")
                 # TODO: fix, try to get state automatically
                 self.wait_while_server_ready()
                 elector = self.get_elector_address()

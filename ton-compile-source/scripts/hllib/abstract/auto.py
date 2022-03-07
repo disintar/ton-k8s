@@ -23,12 +23,10 @@ class AbstractAuto(Thread):
 
     def wait_while_server_ready(self):
         while True:
-            get_status = Popen(args=['lite-client', '-C', self.config_path, '-v', '3', '-rc', 'known'],
-                               stdout=subprocess.PIPE)
-            stdout = get_status.communicate()[0].decode()
+            get_status = self.lite_query('known')
             sleep(2)
 
-            if 'BLK#2' in stdout:
+            if 'BLK#2' in get_status:
                 logger.info("🍟 Node is ready!")
                 break
             else:
