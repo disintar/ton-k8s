@@ -247,7 +247,7 @@ metadata:
   labels:
     app: ton-ownnet-nodes
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: ton-ownnet-nodes
