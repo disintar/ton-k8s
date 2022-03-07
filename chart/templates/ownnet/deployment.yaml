@@ -63,7 +63,7 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
-          protocol: TCP
+          protocol: UDP
         env:
           - name: PUBLIC_PORT
             value: "{{ .Values.customEnv.ownnetFullNode.PUBLIC_PORT }}"
