@@ -178,13 +178,13 @@ customEnv:
 nodeSelector:
   mainnet:
     nodeSelector:
-      name: head-labs-ton
+      name: s2kube
   testnet:
     nodeSelector:
-      name: head-labs-ton
+      name: s2kube
   ownnet: # ownnet nodes will have this settings (only main)
     nodeSelector:
-      name: head-labs-ton
+      name: s2kube
 
 ingress:
   enabled: true
