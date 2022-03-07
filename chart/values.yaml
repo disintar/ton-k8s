@@ -86,7 +86,7 @@ customEnv:
 
     env:
       - name: CONFIG
-        value: "https://newton-blockchain.github.io/testnet-global.config.json"
+        value: "http://ownhttpconfig.ton.svc.cluster.local:8085/config.json"
       - name: HTTP_CONFIG_SERVER
         value: "http://ownhttpconfig.ton.svc.cluster.local:8085"
       - name: VERBOSE
