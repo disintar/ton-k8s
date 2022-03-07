@@ -118,16 +118,16 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: ton-ownnet-deployment-dht
   labels:
-    app: ton-ownnet
+    app: ton-ownnet-dht
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ton-ownnet
+      app: ton-ownnet-dht
   template:
     metadata:
       labels:
-        app: ton-ownnet
+        app: ton-ownnet-dht
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
