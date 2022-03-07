@@ -13,6 +13,8 @@ import socket
 from pprint import pprint
 import time
 
+from hllib.net import get_my_ip
+
 
 def ip2int(addr: str):
     return struct.unpack("!i", socket.inet_aton(addr))[0]
@@ -95,8 +97,9 @@ class Genesis:
 
         shutil.move(self.config_path, f'{self.db_path}/dht-server/example.json')
 
+        dht_ip = get_my_ip('docker')
         run(['dht-server', '-C', f'{self.db_path}/dht-server/example.json', '-v', '5', '-D', '.', '-I',
-             f'{self.config["PUBLIC_IP"]}:{self.config["DHT_PORT"]}'], cwd=f'{self.db_path}/dht-server')
+             f'{dht_ip}:{self.config["DHT_PORT"]}'], cwd=f'{self.db_path}/dht-server')
 
         logger.debug(f"🧐 DHT server inited...")
 
@@ -105,7 +108,7 @@ class Genesis:
             "addrs": [
                 {
                     "@type": "adnl.address.udp",
-                    "ip": ip2int(self.config['PUBLIC_IP']),
+                    "ip": ip2int(dht_ip),
                     "port": self.config["DHT_PORT"]
                 }
             ],
