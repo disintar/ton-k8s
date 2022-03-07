@@ -80,7 +80,7 @@ if __name__ == "__main__":
                 if config['SHARED_SECRET'] and config['HTTP_CONFIG_SERVER']:
                     logger.info(f"Check if i'm privilege... 👑")
 
-                    answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/private")
+                    answer = r.get(f"{config['HTTP_CONFIG_SERVER']}/private?token={config['SHARED_SECRET']}")
                     logger.info(answer.status_code)
                     logger.info(answer.content.decode())
 
