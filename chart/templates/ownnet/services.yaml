@@ -18,11 +18,6 @@ spec:
     protocol: UDP
     port: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
-  - targetPort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
-    name: ownnet-dht
-    protocol: UDP
-    port: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
-    nodePort: {{ .Values.customEnv.ownnetFullNode.DHT_PORT }}
   type: LoadBalancer
   selector:
     app: ton-ownnet
@@ -84,7 +79,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: ownhttpconfig
   labels:
-    app: ton-ownnet
+    app: ton-ownnet-http
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
@@ -92,7 +87,7 @@ spec:
     port: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
   type: ClusterIP
   selector:
-    app: ton-ownnet
+    app: ton-ownnet-http
 ---
 apiVersion: v1
 kind: Service

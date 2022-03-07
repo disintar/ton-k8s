@@ -58,20 +58,6 @@ spec:
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/secret-volume"
-      - name: ton-http-config-ownnet
-        image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
-        ports:
-        - containerPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
-          protocol: TCP
-        env:
-          - name: PUBLIC_PORT
-            value: "{{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}"
-          {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
-        volumeMounts:
-          - mountPath: "/var/ton-work/network/"
-            name: ton-ownnet-database
-            subPath: network
       initContainers:
         - name: ton-genesis-ownnet
           image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
@@ -103,6 +89,50 @@ spec:
             - name: secret-volume
               readOnly: true
               mountPath: "/etc/secret-volume"
+      volumes:
+        - name: ton-ownnet-database
+          persistentVolumeClaim:
+            claimName: ton-ownnet-database
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.serviceAccount.name }}-token-secret
+      {{- toYaml .Values.nodeSelector.ownnet | nindent 6 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-ownnet-deployment-http
+  labels:
+    app: ton-ownnet-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-ownnet-http
+  template:
+    metadata:
+      labels:
+        app: ton-ownnet-http
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: ton-http-config-ownnet
+        image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}"
+          {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
+        volumeMounts:
+          - mountPath: "/var/ton-work/network/"
+            name: ton-ownnet-database
+            subPath: network
       volumes:
         - name: ton-ownnet-database
           persistentVolumeClaim:
