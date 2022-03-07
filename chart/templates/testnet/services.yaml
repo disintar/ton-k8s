@@ -10,27 +10,14 @@ spec:
   ports:
   - targetPort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     name: testnet-node
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.PUBLIC_PORT }}
   - targetPort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
     name: testnet-client
-    protocol: UDP
+    protocol: TCP
     port: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
     nodePort: {{ .Values.customEnv.testnetFullNode.CONSOLE_PORT }}
-  type: LoadBalancer
-  selector:
-    app: ton-testnet
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: {{ .Values.namespace }}
-  name: ton-testnet-tcp-load-balancer
-  labels:
-    app: ton-testnet
-spec:
-  ports:
   - targetPort: {{ .Values.customEnv.testnetFullNode.LITESERVER_PORT }}
     name: testnet-liteserver
     protocol: TCP
