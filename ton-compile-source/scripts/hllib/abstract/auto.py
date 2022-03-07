@@ -38,7 +38,7 @@ class AbstractAuto(Thread):
 
     def lite_query(self, command: str, parse: bool = False):
         try:
-            answer = run(['lite-client', '-C', self.config_path, '-v', '5', '-rc', command])
+            answer = run(['lite-client', '-C', self.config_path, '-v', '0', '-rc', command])
             logger.debug(answer)
         except subprocess.CalledProcessError as exc:
             logger.error(f"FATAL {exc.returncode} {exc.output}")

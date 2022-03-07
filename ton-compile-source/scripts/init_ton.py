@@ -61,6 +61,11 @@ if __name__ == "__main__":
         # if we have multiple nodes we want to attach config_dir so lite-servers will write correctly
         if 'config.json' not in os.listdir(config_dir):
             logger.info(f"Download config from 👾 [{config['CONFIG']}]")
+
+            if config['AUTO_VALIDATOR']:
+                # this is needed to ownnet start
+                logger.info(f"Wait...")
+                sleep(5)
             download(config['CONFIG'], config_path)
 
             # load config and remove liteservers from list,
