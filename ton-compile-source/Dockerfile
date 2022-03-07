@@ -12,7 +12,7 @@ RUN git clone --recursive https://github.com/newton-blockchain/ton
 WORKDIR /ton
 
 ARG is_testnet
-RUN if $is_testnet; then git checkout safer_overlay; fi
+RUN if $is_testnet; then git checkout safer_overlay_plus; fi
 
 RUN mkdir build && \
 	cd build && \
