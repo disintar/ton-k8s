@@ -256,17 +256,6 @@ spec:
       labels:
         app: ton-ownnet-nodes
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: name
-                    operator: In
-                    values:
-                      - s1kube
-                      - s3kube
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
@@ -274,7 +263,8 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - ton-ownnet-node
+                      - ton-ownnet-nodes
+                      - ton-ownnet
               topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
