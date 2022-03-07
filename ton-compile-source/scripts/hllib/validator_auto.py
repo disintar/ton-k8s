@@ -32,8 +32,7 @@ class ValidatorAuto(AbstractAuto):
                 elector = self.get_elector_address()
                 logger.info(f"🤓  Elector: {elector}")
 
-                ip = get_my_ip('docker')
-                sub_wallet_id = int(ip.split('.')[-1])
+                sub_wallet_id = self.wallet
                 my_address = f"-1:{format(address(sub_wallet_id), 'X')}"
 
                 logger.info(f"👛  My sub wallet is: {sub_wallet_id};")
