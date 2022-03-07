@@ -247,7 +247,7 @@ metadata:
   labels:
     app: ton-ownnet-nodes
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: ton-ownnet-nodes
@@ -256,17 +256,6 @@ spec:
       labels:
         app: ton-ownnet-nodes
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: name
-                    operator: In
-                    values:
-                      - s1kube
-                      - s3kube
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
@@ -275,7 +264,6 @@ spec:
                     operator: In
                     values:
                       - ton-ownnet-nodes
-                      - ton-ownnet
               topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ .Values.serviceAccount.name }}
       imagePullSecrets:
