@@ -36,12 +36,13 @@ class AbstractAuto(Thread):
                 logger.info(f"🌟 Node is not ready yet")
 
     def lite_query(self, command: str, parse: bool = False):
-        try:
-            answer = run(['lite-client', '-C', self.config_path, '-v', '0', '--timeout', '1', '-rc', command])
-            logger.debug(answer)
-        except subprocess.CalledProcessError as exc:
-            logger.error(f"FATAL {exc.returncode} {exc.output}")
-            raise exc
+        answer = None
+        while answer is None:
+            try:
+                answer = run(['lite-client', '-C', self.config_path, '-v', '0', '--timeout', '1', '-rc', command])
+                logger.debug(answer)
+            except subprocess.CalledProcessError as exc:
+                logger.error(f"FATAL {exc.returncode} {exc.output}")
 
         if parse:
             answer = list(filter(lambda x: 'result:' in x, answer.split('\n')))[0] \
