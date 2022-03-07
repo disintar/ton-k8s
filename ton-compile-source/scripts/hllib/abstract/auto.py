@@ -2,8 +2,7 @@ import subprocess
 from subprocess import Popen
 from threading import Thread
 from time import sleep
-import requests as r
-
+from hllib.net import r
 from hllib.command_line import run
 from hllib.key_storage import KeyStorage
 from hllib.log import logger

@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pprint import pformat
 from time import sleep
-import requests as r
+from hllib.net import r
 from hllib.command_line import run
 from hllib.genesis import Genesis, ip2int
 from hllib.key_storage import KeyStorage

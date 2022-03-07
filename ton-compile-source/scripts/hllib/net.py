@@ -2,12 +2,23 @@ from typing import Optional
 
 import requests
 
+from requests.adapters import HTTPAdapter, Retry
+
+r = requests.Session()
+
+retries = Retry(total=10,
+                backoff_factor=0.1,
+                status_forcelist=[ 500, 502, 503, 504 ])
+
+r.mount('http://', HTTPAdapter(max_retries=retries))
+r.mount('https://', HTTPAdapter(max_retries=retries))
+
 
 def get_my_ip(mode: str = 'internet') -> Optional[str]:
     """Return public IP address"""
 
     if mode == 'internet':
-        response = requests.get("https://ifconfig.me")
+        response = r.get("https://ifconfig.me")
 
         if response.status_code == 200:
             return response.content.decode()
