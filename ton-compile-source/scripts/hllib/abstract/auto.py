@@ -43,6 +43,7 @@ class AbstractAuto(Thread):
                 logger.debug(answer)
             except subprocess.CalledProcessError as exc:
                 logger.error(f"FATAL {exc.returncode} {exc.output}")
+                sleep(2)
 
         if parse:
             answer = list(filter(lambda x: 'result:' in x, answer.split('\n')))[0] \
