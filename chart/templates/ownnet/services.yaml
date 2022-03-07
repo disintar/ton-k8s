@@ -121,7 +121,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: owntoncenter
   labels:
-    app: ton-ownnet
+    app: ton-ownnet-http
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
@@ -129,5 +129,5 @@ spec:
     port: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
   type: ClusterIP
   selector:
-    app: ton-ownnet
+    app: ton-ownnet-http
 {{- end }}

@@ -14,20 +14,9 @@ metadata:
 spec:
   tls:
     - hosts:
-        - {{ .Values.ingress.hosts.ownnetHttpConfig }}
         - {{ .Values.ingress.hosts.ownnetToncenter }}
       secretName: ton-ownnet-tls
   rules:
-    - host: {{ .Values.ingress.hosts.ownnetHttpConfig }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ownhttpconfig
-                port:
-                  number: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
     - host: {{ .Values.ingress.hosts.ownnetToncenter }}
       http:
         paths:
