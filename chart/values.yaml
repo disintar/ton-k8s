@@ -90,7 +90,7 @@ customEnv:
       - name: HTTP_CONFIG_SERVER
         value: "http://ownhttpconfig.ton.svc.cluster.local:8085"
       - name: VERBOSE
-        value: "0"
+        value: "3"
       - name: SHARED_SECRET
         value: "40a55d8128d1"
 
