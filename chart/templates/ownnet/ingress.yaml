@@ -28,5 +28,33 @@ spec:
                 port:
                   number: {{ .Values.customEnv.ownnetToncenter.PUBLIC_PORT }}
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ton-ownnet-ingress
+  labels:
+    app: ton-ownnet
+  {{- with .Values.ingress.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.hosts.ownnetHttpConfig }}
+      secretName: ton-ownnet-tls
+  rules:
+    - host: {{ .Values.ingress.hosts.ownnetHttpConfig }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ownhttpconfig
+                port:
+                  number: {{ .Values.customEnv.ownnetHttpConfig.PUBLIC_PORT }}
+---
 {{- end }}
 {{- end }}
