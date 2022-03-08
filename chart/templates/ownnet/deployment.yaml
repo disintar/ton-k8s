@@ -239,75 +239,75 @@ spec:
           {{- toYaml .Values.customEnv.ownnetToncenter.env | nindent 10 }}
       {{- toYaml .Values.nodeSelector.ownnet | nindent 6 }}
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: {{ .Values.namespace }}
-  name: ton-ownnet-nodes
-  labels:
-    app: ton-ownnet-nodes
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: ton-ownnet-nodes
-  template:
-    metadata:
-      labels:
-        app: ton-ownnet-nodes
-    spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - ton-ownnet-nodes
-              topologyKey: "kubernetes.io/hostname"
-      serviceAccountName: {{ .Values.serviceAccount.name }}
-      imagePullSecrets:
-        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
-      containers:
-      - name: ton-ownnet-validator
-        image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
-        ports:
-        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
-          protocol: UDP
-        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
-          protocol: TCP
-        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
-          protocol: TCP
-        env:
-          - name: PUBLIC_PORT
-            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}"
-          - name: CONSOLE_PORT
-            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}"
-          - name: LITESERVER_PORT
-            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}"
-          - name: NAMESPACE
-            value: "{{ .Values.namespace }}"
-          - name: SERVICE_ACCOUNT
-            value: "{{ .Values.serviceAccount.name }}"
-          - name: CONFIG
-            value: "{{ .Values.customEnv.ownnetToncenter.CONFIG }}"
-          - name: AUTO_VALIDATOR
-            value: "true"
-          - name: IP_GET_MODE
-            value: "docker"
-          {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
-        volumeMounts:
-          - name: secret-volume
-            readOnly: true
-            mountPath: "/etc/secret-volume"
-      volumes:
-        - name: ton-ownnet-database
-          persistentVolumeClaim:
-            claimName: ton-ownnet-database
-        - name: secret-volume
-          secret:
-            secretName: {{ .Values.serviceAccount.name }}-token-secret
----
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  namespace: {{ .Values.namespace }}
+#  name: ton-ownnet-nodes
+#  labels:
+#    app: ton-ownnet-nodes
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      app: ton-ownnet-nodes
+#  template:
+#    metadata:
+#      labels:
+#        app: ton-ownnet-nodes
+#    spec:
+#      affinity:
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            - labelSelector:
+#                matchExpressions:
+#                  - key: app
+#                    operator: In
+#                    values:
+#                      - ton-ownnet-nodes
+#              topologyKey: "kubernetes.io/hostname"
+#      serviceAccountName: {{ .Values.serviceAccount.name }}
+#      imagePullSecrets:
+#        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+#      containers:
+#      - name: ton-ownnet-validator
+#        image: "{{ .Values.registry }}/{{ .Values.images.tonFullNode.name }}:{{ .Values.images.tonFullNode.version }}"
+#        imagePullPolicy: {{ .Values.imagePullPolicy }}
+#        ports:
+#        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}
+#          protocol: UDP
+#        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}
+#          protocol: TCP
+#        - containerPort: {{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}
+#          protocol: TCP
+#        env:
+#          - name: PUBLIC_PORT
+#            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_PUBLIC_PORT }}"
+#          - name: CONSOLE_PORT
+#            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_CONSOLE_PORT }}"
+#          - name: LITESERVER_PORT
+#            value: "{{ .Values.customEnv.ownnetFullNode.VALIDATOR_LITESERVER_PORT }}"
+#          - name: NAMESPACE
+#            value: "{{ .Values.namespace }}"
+#          - name: SERVICE_ACCOUNT
+#            value: "{{ .Values.serviceAccount.name }}"
+#          - name: CONFIG
+#            value: "{{ .Values.customEnv.ownnetToncenter.CONFIG }}"
+#          - name: AUTO_VALIDATOR
+#            value: "true"
+#          - name: IP_GET_MODE
+#            value: "docker"
+#          {{- toYaml .Values.customEnv.ownnetFullNode.env | nindent 10 }}
+#        volumeMounts:
+#          - name: secret-volume
+#            readOnly: true
+#            mountPath: "/etc/secret-volume"
+#      volumes:
+#        - name: ton-ownnet-database
+#          persistentVolumeClaim:
+#            claimName: ton-ownnet-database
+#        - name: secret-volume
+#          secret:
+#            secretName: {{ .Values.serviceAccount.name }}-token-secret
+#---
 {{- end }}
