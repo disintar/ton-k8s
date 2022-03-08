@@ -200,7 +200,7 @@ elector_addr config.elector_smc!
 1 500 1000 500000 config.storage_prices!
 config.special!
 
-// gas_price gas_limit special_gas_limit gas_credit block_gas_limit freeze_due_limit delete_due_limit flat_gas_limit flat_gas_price --
+// flat_gas_limit flat_gas_price gas_price gas_limit special_gas_limit gas_credit block_gas_limit freeze_due_limit delete_due_limit flat_gas_limit flat_gas_price --
 100 1000000 65536000 1000000 1000000 10000 10000000 100000000 1000000000 config.gas_prices!
 100 1000000 655360000 1000000 10000000 10000 10000000 100000000 1000000000 config.mc_gas_prices!
 // lump_price bit_price cell_price ihr_factor first_frac next_frac
