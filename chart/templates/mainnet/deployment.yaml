@@ -77,7 +77,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-testnet-toncenter
+  name: ton-toncenter
   labels:
     app: ton-mainnet
 spec:
