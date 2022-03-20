@@ -3,27 +3,72 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: ton-mainnet-load-balancer
+  name: ton-mainnet-load-balancer-udp
   labels:
-    run: ton-mainnet-load-balancer
+    app: ton-mainnet
 spec:
   ports:
   - targetPort: {{ .Values.customEnv.tonFullNode.PUBLIC_PORT }}
-    name: ton-node
+    name: mainnet-node
     protocol: UDP
     port: {{ .Values.customEnv.tonFullNode.PUBLIC_PORT }}
     nodePort: {{ .Values.customEnv.tonFullNode.PUBLIC_PORT }}
-  - targetPort: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
-    name: ton-client
-    protocol: UDP
-    port: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
-    nodePort: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
+  type: LoadBalancer
+  selector:
+    app: ton-mainnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-mainnet-load-balancer
+  labels:
+    app: ton-mainnet
+spec:
+  ports:
   - targetPort: {{ .Values.customEnv.tonFullNode.LITESERVER_PORT }}
-    name: ton-liteserver
-    protocol: UDP
+    name: mainnet-liteserver
+    protocol: TCP
     port: {{ .Values.customEnv.tonFullNode.LITESERVER_PORT }}
     nodePort: {{ .Values.customEnv.tonFullNode.LITESERVER_PORT }}
+  - targetPort: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
+    name: mainnet-client
+    protocol: TCP
+    port: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
+    nodePort: {{ .Values.customEnv.tonFullNode.CONSOLE_PORT }}
   type: LoadBalancer
+  selector:
+    app: ton-mainnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: testhttpconfig
+  labels:
+    app: ton-mainnet
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
+    protocol: TCP
+    port: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
+  type: ClusterIP
+  selector:
+    app: ton-mainnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: toncenter
+  labels:
+    app: ton-mainnet
+spec:
+  ports:
+  - targetPort: {{ .Values.customEnv.toncenter.PUBLIC_PORT }}
+    protocol: TCP
+    port: {{ .Values.customEnv.toncenter.PUBLIC_PORT }}
+  type: ClusterIP
   selector:
     app: ton-mainnet
 ---

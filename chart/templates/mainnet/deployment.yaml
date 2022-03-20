@@ -45,9 +45,26 @@ spec:
         volumeMounts:
           - mountPath: "/var/ton-work/db/"
             name: ton-database
+            subPath: db
+          - mountPath: "/var/ton-work/network/"
+            name: ton-database
+            subPath: network
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/secret-volume"
+      - name: ton-http-config-testnet
+        image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}"
+        volumeMounts:
+          - mountPath: "/var/ton-work/network/"
+            name: ton-database
+            subPath: network
       volumes:
         - name: ton-database
           persistentVolumeClaim:
@@ -55,5 +72,40 @@ spec:
         - name: secret-volume
           secret:
             secretName: {{ .Values.serviceAccount.name }}-token-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: ton-testnet-toncenter
+  labels:
+    app: ton-mainnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ton-mainnet
+  template:
+    metadata:
+      labels:
+        app: ton-mainnet
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: ton-toncenter-testnet
+        image: "{{ .Values.registry }}/{{ .Values.images.toncenter.name }}:{{ .Values.images.toncenter.version }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.customEnv.toncenter.PUBLIC_PORT }}
+          protocol: TCP
+        env:
+          - name: PUBLIC_PORT
+            value: "{{ .Values.customEnv.toncenter.PUBLIC_PORT }}"
+          - name: CONFIG
+            value: "{{ .Values.customEnv.toncenter.CONFIG }}"
+          {{- toYaml .Values.customEnv.toncenter.env | nindent 10 }}
+      {{- toYaml .Values.nodeSelector.mainnet | nindent 6 }}
 ---
 {{- end }}

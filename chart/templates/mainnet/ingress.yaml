@@ -1,0 +1,43 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Values.run.mainnet -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ton-mainnet-ingress
+  labels:
+    app: ton-mainnet
+  {{- with .Values.ingress.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.hosts.mainnetHttpConfig }}
+        - {{ .Values.ingress.hosts.mainnetToncenter }}
+      secretName: ton-mainnet-tls
+  rules:
+    - host: {{ .Values.ingress.hosts.mainnetHttpConfig }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: httpconfig
+                port:
+                  number: {{ .Values.customEnv.httpConfig.PUBLIC_PORT }}
+    - host: {{ .Values.ingress.hosts.mainnetToncenter }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: toncenter
+                port:
+                  number: {{ .Values.customEnv.toncenter.PUBLIC_PORT }}
+---
+{{- end }}
+{{- end }}

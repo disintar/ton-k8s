@@ -4,7 +4,7 @@ namespace: ton
 
 # what services to run
 run:
-  mainnet: false
+  mainnet: true
   testnet: true
   ownnet: true
 
@@ -55,11 +55,11 @@ customEnv:
     PUBLIC_PORT: 30002
     LITESERVER_PORT: 30003
 
-  env:
-    - name: CONFIG
-      value: "https://newton-blockchain.github.io/global.config.json"
-    - name: VERBOSE
-      value: "3"
+    env:
+      - name: CONFIG
+        value: "https://newton-blockchain.github.io/global.config.json"
+      - name: VERBOSE
+        value: "3"
 
   # TESTNET
   testnetFullNode:
@@ -106,6 +106,7 @@ customEnv:
 
   toncenter:
     PUBLIC_PORT: 8083
+    CONFIG: https://http-config.mainnet.ton.head-labs.com/config-local.json
 
     env:
       - name: TON_API_CACHE_ENABLED # don't change (if you don't know wtf is toncenter)
@@ -195,6 +196,8 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 
   hosts:
+    mainnetHttpConfig: http-config.mainnet.ton.head-labs.com
+    mainnetToncenter: toncenter.mainnet.ton.head-labs.com
     testnetHttpConfig: http-config.testnet.ton.head-labs.com
     testnetToncenter: toncenter.testnet.ton.head-labs.com
     ownnetHttpConfig: http-config.ownnet.ton.head-labs.com
