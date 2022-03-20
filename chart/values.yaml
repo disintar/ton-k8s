@@ -97,7 +97,6 @@ customEnv:
   httpConfig:
     PUBLIC_PORT: 8081
 
-
   testnetHttpConfig:
     PUBLIC_PORT: 8082
 

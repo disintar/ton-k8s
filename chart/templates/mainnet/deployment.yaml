@@ -52,15 +52,15 @@ spec:
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/secret-volume"
-      - name: ton-http-config-testnet
+      - name: ton-http-config
         image: "{{ .Values.registry }}/{{ .Values.images.httpConfig.name }}:{{ .Values.images.httpConfig.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}
+        - containerPort: {{ .Values.customEnv.httpconfig.PUBLIC_PORT }}
           protocol: TCP
         env:
           - name: PUBLIC_PORT
-            value: "{{ .Values.customEnv.testnetHttpConfig.PUBLIC_PORT }}"
+            value: "{{ .Values.customEnv.httpconfig.PUBLIC_PORT }}"
         volumeMounts:
           - mountPath: "/var/ton-work/network/"
             name: ton-database
@@ -94,7 +94,7 @@ spec:
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
-      - name: ton-toncenter-testnet
+      - name: ton-toncenter
         image: "{{ .Values.registry }}/{{ .Values.images.toncenter.name }}:{{ .Values.images.toncenter.version }}"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
