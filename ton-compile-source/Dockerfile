@@ -7,7 +7,7 @@ ENV CMAKE_C_COMPILER clang-11.0
 ENV CMAKE_CXX_COMPILER clang++-11.0
 WORKDIR /
 
-RUN git clone --recursive https://github.com/newton-blockchain/ton
+RUN git clone --recursive https://github.com/ton-blockchain/ton
 
 WORKDIR /ton
 
