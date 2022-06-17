@@ -7,9 +7,18 @@ ENV CMAKE_C_COMPILER clang-11.0
 ENV CMAKE_CXX_COMPILER clang++-11.0
 WORKDIR /
 
-RUN git clone --recursive https://github.com/ton-blockchain/ton
+RUN mkdir /root/.ssh
+ADD keys/id_rsa /root/.ssh/id_rsa
+ADD keys/id_rsa.pub /root/.ssh/id_rsa.pub
+
+RUN  echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /root/.ssh/id_rsa.pub
+RUN ssh-keyscan -t rsa -p 228 git.head-labs.com >> ~/.ssh/known_hosts && chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
+
+RUN git clone --recursive ssh://git@git.head-labs.com:228/disintar/ton.git
 
 WORKDIR /ton
+RUN git submodule update
 
 ARG is_testnet
 RUN if $is_testnet; then git checkout testnet; fi
