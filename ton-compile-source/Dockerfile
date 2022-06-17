@@ -26,7 +26,7 @@ RUN if $is_testnet; then git checkout testnet; fi
 RUN mkdir build && \
 	cd build && \
 	cmake .. -DCMAKE_BUILD_TYPE=Release && \
-	make -j 4
+	make -j 24
 
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
