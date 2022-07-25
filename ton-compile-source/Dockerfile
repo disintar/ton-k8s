@@ -15,7 +15,8 @@ RUN  echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /ro
 RUN ssh-keyscan -t rsa -p 228 git.head-labs.com >> ~/.ssh/known_hosts && chmod 600 /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa.pub
 
-RUN git clone --recursive ssh://git@git.head-labs.com:228/disintar/ton.git
+ARG repo
+RUN git clone --recursive $repo
 
 WORKDIR /ton
 RUN git submodule update

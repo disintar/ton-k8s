@@ -2,8 +2,8 @@
 
 cd ton-compile-source || return
 
-docker build -f Dockerfile -t ton-base-mainnet . --build-arg is_testnet=false
-docker build -f Dockerfile -t ton-base-testnet . --build-arg is_testnet=true
+docker build -f Dockerfile -t ton-base-mainnet . --build-arg is_testnet=false --build-arg repo=https://github.com/ton-blockchain/ton.git
+docker build -f Dockerfile -t ton-base-testnet . --build-arg is_testnet=true --build-arg repo=https://github.com/ton-blockchain/ton.git
 
 cd ../ton-full-node || return
 

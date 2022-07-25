@@ -8,13 +8,13 @@ export VERSION=v1
 cd ton-compile-source || return
 
 # mainnet
-docker build -f Dockerfile -t ton-base-mainnet . --build-arg is_testnet=false
+docker build -f Dockerfile -t ton-base-mainnet . --build-arg is_testnet=false --build-arg repo=ssh://git@git.head-labs.com:228/disintar/ton.git
 
 docker tag ton-base-mainnet ${REGISTRY}/ton/ton-base:mainnet-${VERSION}
 docker push ${REGISTRY}/ton/ton-base:mainnet-${VERSION}
 
 # testnet
-docker build -f Dockerfile -t ton-base-testnet . --build-arg is_testnet=true
+docker build -f Dockerfile -t ton-base-testnet . --build-arg is_testnet=true --build-arg repo=ssh://git@git.head-labs.com:228/disintar/ton.git
 
 docker tag ton-base-testnet ${REGISTRY}/ton/ton-base:testnet-${VERSION}
 docker push ${REGISTRY}/ton/ton-base:testnet-${VERSION}
