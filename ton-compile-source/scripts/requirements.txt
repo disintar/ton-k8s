@@ -1,3 +1,4 @@
 requests
 kubernetes
 ed25519
+loguru

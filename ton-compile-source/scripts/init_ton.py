@@ -33,7 +33,8 @@ config = {
     "GENESIS_VALIDATOR": os.getenv("GENESIS_VALIDATOR", False) == 'true',
     "VERBOSE": os.getenv("VERBOSE", 0),
     "HTTP_CONFIG_SERVER": os.getenv('HTTP_CONFIG_SERVER', ''),
-    "SHARED_SECRET": os.getenv('SHARED_SECRET', None)
+    "SHARED_SECRET": os.getenv('SHARED_SECRET', None),
+    "KAFKA_CONSUMER": os.getenv('KAFKA_CONSUMER', None)
 }
 
 if config['DHT_PORT'] is not None:
@@ -199,6 +200,11 @@ if __name__ == "__main__":
                    "--state-ttl", "604800",
                    "--verbosity", f"{config['VERBOSE']}",
                    "--ip", f"{config['PUBLIC_IP']}:{config['PUBLIC_PORT']}"]
+
+    if config['KAFKA_CONSUMER'] is not None:
+        run_command.extend(['--publish', config['KAFKA_CONSUMER']])
+    logger.info(" ".join(run_command))
+
     subprocess.run(run_command)
 
 else:
