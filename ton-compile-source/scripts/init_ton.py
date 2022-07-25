@@ -163,7 +163,7 @@ if __name__ == "__main__":
             logger.info(f"Basic config successfully created! 😉\n"
                         f"Start key management process... 🔑")
         else:
-            raise ValueError(f"✋ Can't create initial config file with {pformat(initializing_command)}")
+            raise ValueError(f"✋ Can't create initial config file withg {pformat(initializing_command)}")
 
     #
     # Create / use keys
