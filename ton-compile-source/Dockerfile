@@ -24,10 +24,12 @@ RUN git submodule update
 ARG is_testnet
 RUN if $is_testnet; then git checkout testnet; fi
 
+RUN export CPU_COUNT=$(python3.9 -c 'from multiprocessing import cpu_count ; print(cpu_count() - 1)')
+
 RUN mkdir build && \
 	cd build && \
 	cmake .. -DCMAKE_BUILD_TYPE=Release && \
-	make -j 24
+	make -j $CPU_COUNT
 
 RUN mkdir -p /var/ton-work/db && \
 	mkdir -p /var/ton-work/db/static
