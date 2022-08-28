@@ -9,6 +9,7 @@ services:
       - PRIVATE_CONFIG=false
       - PUBLIC_IP=172.28.1.1
       - DHT_PORT=6302
+      - AUTO_VALIDATOR=false
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
@@ -38,6 +39,8 @@ services:
     volumes:
       - genesis:/var/ton-work/db
       - config:/var/ton-work/network
+    ports:
+      - 30006:30006
     restart: always
     depends_on:
       - "genesis"
@@ -54,6 +57,7 @@ services:
     restart: always
     environment:
       - PUBLIC_PORT=8081
+      - SHARED_SECRET=secret
     ports:
       - 8081:8081
     volumes:
