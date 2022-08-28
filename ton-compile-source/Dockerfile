@@ -15,7 +15,7 @@ ADD keys/id_rsa /root/.ssh/id_rsa
 ADD keys/id_rsa.pub /root/.ssh/id_rsa.pub
 ADD keys/known_hosts /root/.ssh/known_hosts
 
-RUN echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /root/.ssh/id_rsa.pub
+RUN echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /root/.ssh/id_rsa.pub && \
 		chmod 600 /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa.pub
 

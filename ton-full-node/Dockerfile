@@ -1,7 +1,7 @@
 ARG  base
 FROM ${base} as builder
 
-FROM python:3.10-bullseye
+FROM python:3.10-slim
 
 RUN mkdir -p /var/ton-work/db/static
 
@@ -25,7 +25,12 @@ COPY --from=builder /ton/crypto/smartcont /var/ton-work/contracts
 WORKDIR /var/ton-work/
 
 ADD /scripts/requirements.txt /var/ton-work/requirements.txt
-RUN pip install -r /var/ton-work/requirements.txt
+RUN apt-get update && apt-get install -y gcc && \
+  PIP_NO_CACHE_DIR=1 pip install -r /var/ton-work/requirements.txt && \
+  apt-get remove -y gcc && \
+  apt-get autoremove -y && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 ADD ./contracts/gen-zerostate.fif /var/ton-work/contracts
 ADD ./contracts/wallet.fif /var/ton-work/contracts/valik-wallet.fif
