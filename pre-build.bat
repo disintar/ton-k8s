@@ -1,4 +1,4 @@
-#!/bin/bash
+@echo off
 
 docker build -f ton-compile-source/Dockerfile -t ton-base-mainnet ton-compile-source/. --build-arg is_testnet=false --build-arg repo=https://github.com/ton-blockchain/ton.git
 docker build -f ton-compile-source/Dockerfile -t ton-base-testnet ton-compile-source/. --build-arg is_testnet=true --build-arg repo=https://github.com/ton-blockchain/ton.git

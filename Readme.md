@@ -10,6 +10,7 @@ Run:
 ```
 ./pre-build.sh && docker-compose -f ./composes/ownnet.yaml up
 ```
+More info about ownnet - [ownnet.md](ownnet.md)
 
 (you need to wait some time while network is starting)
 
