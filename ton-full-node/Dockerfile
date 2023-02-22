@@ -12,6 +12,7 @@ COPY --from=builder \
   /ton/build/validator-engine/validator-engine \
   /ton/build/validator-engine-console/validator-engine-console \
   /ton/build/utils/generate-random-id \
+  /ton/build/blockchain-explorer/blockchain-explorer \
   /ton/build/test-ton-collator \
   /ton/build/crypto/fift \
   /ton/build/crypto/func \
@@ -25,7 +26,7 @@ COPY --from=builder /ton/crypto/smartcont /var/ton-work/contracts
 WORKDIR /var/ton-work/
 
 ADD /scripts/requirements.txt /var/ton-work/requirements.txt
-RUN apt-get update && apt-get install -y gcc && \
+RUN apt-get update && apt-get install -y gcc libmicrohttpd12 && apt-mark manual libmicrohttpd12 &&\
   PIP_NO_CACHE_DIR=1 pip install -r /var/ton-work/requirements.txt && \
   apt-get remove -y gcc && \
   apt-get autoremove -y && \
