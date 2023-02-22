@@ -189,7 +189,7 @@ Masterchain swap
 GR$10000 GR$100000 GR$30000 sg~10 config.validator_stake_limits!
 // elected-for elect-start-before elect-end-before stakes-frozen-for
 // 400000 200000 4000 400000 config.election_params!
-2000 190 10 10 config.election_params!  // DEBUG
+1735314096 1735314096 10 10 config.election_params!  // DEBUG
 // config-addr = -1:5555...5555
 AllOnes 5 * constant config_addr
 config_addr config.config_smc!

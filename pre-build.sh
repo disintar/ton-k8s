@@ -10,3 +10,5 @@ docker build -f ton-http-config/Dockerfile -t ton-http-config ton-http-config/. 
 
 docker build -f ton-toncenter/Dockerfile -t ton-toncenter-mainnet ton-toncenter/. --build-arg base=ton-base-mainnet
 docker build -f ton-toncenter/Dockerfile -t ton-toncenter-testnet ton-toncenter/. --build-arg base=ton-base-testnet
+
+docker build -f blockchain-explorer/Dockerfile -t blockchain-explorer blockchain-explorer/. --build-arg base=ton-base-mainnet
