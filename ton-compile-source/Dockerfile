@@ -9,15 +9,16 @@ ENV CMAKE_C_COMPILER clang-11.0
 ENV CMAKE_CXX_COMPILER clang++-11.0
 WORKDIR /
 
-FROM base AS base-ssh-true
-RUN mkdir /root/.ssh
-ADD keys/id_rsa /root/.ssh/id_rsa
-ADD keys/id_rsa.pub /root/.ssh/id_rsa.pub
-ADD keys/known_hosts /root/.ssh/known_hosts
+# Todo: move to another file
+#FROM base AS base-ssh-true
+#RUN mkdir /root/.ssh
+#ADD keys/id_rsa /root/.ssh/id_rsa
+#ADD keys/id_rsa.pub /root/.ssh/id_rsa.pub
+#ADD keys/known_hosts /root/.ssh/known_hosts
 
-RUN echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /root/.ssh/id_rsa.pub && \
-		chmod 600 /root/.ssh/id_rsa && \
-    chmod 600 /root/.ssh/id_rsa.pub
+#RUN echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config && cat /root/.ssh/id_rsa.pub && \
+#		chmod 600 /root/.ssh/id_rsa && \
+#    chmod 600 /root/.ssh/id_rsa.pub
 
 FROM base AS base-ssh-false
 
