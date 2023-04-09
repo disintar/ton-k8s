@@ -106,3 +106,7 @@ config = {
     "VERBOSE": os.getenv("VERBOSE", 3)
 }
 ```
+
+## Donations
+
+TON: `EQCsCSLisPZ6xUtkgi_Tn5c-kipelVHRCxGdPu9x1gaVTfVC`
