@@ -52,7 +52,7 @@ services:
       - 'genesis-common.env'
 
   http-config:
-    container_name: http-conifg
+    container_name: http-config
     image: ton-http-config
     restart: always
     environment:
