@@ -3,7 +3,7 @@ ARG is_ssh=false
 FROM python:3.10-bullseye AS base
 
 RUN apt-get update && \
-        apt-get install -y build-essential cmake clang-11 openssl libssl-dev zlib1g-dev libmicrohttpd-dev gperf wget git openssl wget python nano && \
+        apt-get install -y build-essential cmake clang-11 openssl libssl-dev zlib1g-dev libmicrohttpd-dev gperf wget git openssl wget python nano libsecp256k1-dev libsodium-dev pkg-config && \
         rm -rf /var/lib/apt/lists/*
 ENV CMAKE_C_COMPILER clang-11.0
 ENV CMAKE_CXX_COMPILER clang++-11.0
@@ -27,8 +27,8 @@ ARG repo
 RUN git clone --recursive $repo
 
 WORKDIR /ton
-ADD FindMHD.cmake.patch /tmp
-RUN patch CMake/FindMHD.cmake /tmp/FindMHD.cmake.patch
+#ADD FindMHD.cmake.patch /tmp
+#RUN patch CMake/FindMHD.cmake /tmp/FindMHD.cmake.patch
 RUN git submodule update
 
 ARG is_testnet
